@@ -12,8 +12,25 @@ import net.trentv.gasesframework.api.GFManipulationAPI;
 
 public class CommonEvents
 {
+    // Water + Lava -> Obsidian + Steam
     @SubscribeEvent
-    public void onBlockBreak(BlockEvent.HarvestDropsEvent event)
+    public void onBlockEvent(BlockEvent event)
+    {
+        if (event.getState().getBlock() == Blocks.OBSIDIAN)
+        {
+            if (event instanceof BlockEvent.NeighborNotifyEvent)
+            {
+                if (event.getWorld().getBlockState(event.getPos().up()).getMaterial().isLiquid())
+                {
+                    GFManipulationAPI.addGasLevel(event.getPos().up(2), event.getWorld(), GasesObjects.STEAM, 8);
+                }
+            }
+        }
+    }
+
+    // Mining Coal Ore -> Coal Dust
+    @SubscribeEvent
+    public void onHarvestDropsEvent(BlockEvent.HarvestDropsEvent event)
     {
         if (event.getState().getBlock() == Blocks.COAL_ORE)
         {
@@ -21,8 +38,9 @@ public class CommonEvents
         }
     }
 
+    // Bedrock -> Modified Bedrock
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onPopulateChunkPre(PopulateChunkEvent.Pre event)
+    public void onPopulateChunkEventPre(PopulateChunkEvent.Pre event)
     {
         Chunk chunk = event.getWorld().getChunk(event.getChunkX(), event.getChunkZ());
         for (ExtendedBlockStorage storage : chunk.getBlockStorageArray())
