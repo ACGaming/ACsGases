@@ -53,7 +53,7 @@ public class GasesObjects
 
 	private static final HashMap<Block, BlockHeated> HEATED_RECIPE_LIST = new HashMap<Block, BlockHeated>();
 
-	public static final BlockModifiedBedrock MODIFIED_BEDROCK = new BlockModifiedBedrock(VOID_GAS, 4, 5, new ResourceLocation("minecraft:bedrock"));
+	public static final BlockModifiedBedrock MODIFIED_BEDROCK = new BlockModifiedBedrock(VOID_GAS, 4, 5, new ResourceLocation(Gases.MODID, "bedrock"));
 
 	public static final BlockModifiedBedrock WHISPERING_FOG_EMITTER = (BlockModifiedBedrock) new BlockModifiedBedrock(WHISPERING_FOG, 1, 16, new ResourceLocation(Gases.MODID, "whispering_fog_emitter")).setCreativeTab(Gases.CREATIVE_TAB);
 
