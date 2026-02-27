@@ -1,6 +1,7 @@
 package net.trentv.gases.common;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
@@ -42,6 +43,7 @@ public class CommonEvents
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onPopulateChunkEventPre(PopulateChunkEvent.Pre event)
     {
+        if (event.getWorld().provider.getDimensionType() != DimensionType.OVERWORLD) return;
         Chunk chunk = event.getWorld().getChunk(event.getChunkX(), event.getChunkZ());
         for (ExtendedBlockStorage storage : chunk.getBlockStorageArray())
         {
