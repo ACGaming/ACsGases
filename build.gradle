@@ -37,9 +37,9 @@ processResources
 
 // Below here is what you probably want to change.
 
-version = "1.0.0"
-group = "net.trentv.gases"
-archivesBaseName = "ACs-Gases"
+version = "2.0.0"
+group = "net.trentv"
+archivesBaseName = "ACsGases-1.12.2"
 
 minecraft {
     version = "1.12.2-14.23.5.2847"
