@@ -8,6 +8,7 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.*;
+import net.trentv.gasesframework.GasesFramework;
 import net.trentv.gasesframework.api.GFManipulationAPI;
 import net.trentv.gasesframework.api.gasworldgentype.GasWorldGenType;
 
@@ -35,7 +36,8 @@ public class WorldGeneratorGasesFramework implements IWorldGenerator
     {
         if (isGasWorldGenTypeRegistered(type, dimension))
         {
-            throw new RuntimeException("A gas world gen type was attempted registered to a dimension it was already registered to");
+            GasesFramework.logger.fatal("A gas world gen type was attempted registered to a dimension it was already registered to");
+            return;
         }
 
         if (type.generationFrequency > 0.0F)
