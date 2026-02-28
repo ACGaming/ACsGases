@@ -2,7 +2,6 @@ buildscript {
     repositories {
         mavenCentral()
         maven { url = "https://maven.minecraftforge.net" }
-        maven { url = "https://jitpack.io" }
     }
     dependencies {
         classpath 'com.anatawa12.forge:ForgeGradle:2.3-1.0.8'
@@ -10,18 +9,16 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = "1.8"
 compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
 }
 
 repositories {
-    maven { url = "https://modmaven.dev" }
-    maven { url = "https://jitpack.io" }
+
 }
 
-processResources
-{
+processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
@@ -34,8 +31,6 @@ processResources
         exclude 'mcmod.info'
     }
 }
-
-// Below here is what you probably want to change.
 
 version = "2.0.0"
 group = "net.trentv"
@@ -50,5 +45,21 @@ minecraft {
 }
 
 dependencies {
-    compile "com.github.ACGaming:ACsGasesFramework:master-SNAPSHOT"
+
+}
+
+jar {
+    from sourceSets.api.output
+    from sourceSets.main.output
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.api.allSource
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task apiJar(type: Jar) {
+    from sourceSets.api.output
+    classifier = 'api'
 }

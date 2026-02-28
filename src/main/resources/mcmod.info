@@ -1,11 +1,22 @@
 [
   {
+    "modid": "gasesframework",
+    "name": "AC's Gases Framework",
+    "description": "Once I had a love, and it was a gas framework...",
+    "version": "2.0.0",
+    "mcversion": "1.12.2",
+    "url": "https://github.com/ACGaming/ACsGasesFramework",
+    "authorList": ["ACGaming", "Trentv4", "Glenn/jamieswhiteshirt"],
+    "credits": "Glenn for creating the first version of Gases (up to 1.7.10). Trent for rewriting and updating to 1.10.2. Everyone in the MMD Discord for helping with the port to 1.10.2."
+  },
+  {
     "modid": "gases",
     "name": "AC's Gases",
     "description": "Once I had a love, and it was a gas...",
     "version": "2.0.0",
     "mcversion": "1.12.2",
     "url": "https://github.com/ACGaming/ACsGases",
-    "authorList": ["ACGaming", "Trentv4", "Glenn/jamieswhiteshirt"]
+    "authorList": ["ACGaming", "Trentv4", "Glenn/jamieswhiteshirt"],
+    "credits": "Glenn for creating the first version of Gases (up to 1.7.10). Trent for rewriting and updating to 1.10.2. Everyone in the MMD Discord for helping with the port to 1.10.2."
   }
 ]
