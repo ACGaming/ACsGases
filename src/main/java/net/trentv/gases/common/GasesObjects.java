@@ -36,19 +36,19 @@ public class GasesObjects
 	public static final DamageSource DAMAGE_SOURCE_VOID = new DamageSource("gas_void").setDamageBypassesArmor();
 
 	public static final GasType NATURAL_GAS = new GasType("natural", 0x6F7F6F, 8, 1, Combustibility.FLAMMABLE).setCreativeTab(Gases.CREATIVE_TAB);
-	public static final GasType RED_GAS = new GasType("red", 0x7F0000, 2, -1, Combustibility.EXPLOSIVE).setCreativeTab(Gases.CREATIVE_TAB);
-	public static final GasType COAL_DUST = new GasType("coal_dust", 0x000000, 2, 0, Combustibility.EXPLOSIVE).setCohesion(6).setDissipation(2, 4).setCreativeTab(Gases.CREATIVE_TAB);
+	public static final GasType RED_GAS = new GasType("red", 0x7F4F4F, 2, -1, Combustibility.EXPLOSIVE).setCreativeTab(Gases.CREATIVE_TAB);
+	public static final GasType COAL_DUST = new GasType("coal_dust", 0x2F2F2F, 2, 0, Combustibility.EXPLOSIVE).setCohesion(6).setDissipation(2, 4).setCreativeTab(Gases.CREATIVE_TAB);
 	public static final GasType STEAM = new GasType("steam", 0xFFFFFF, 12, 1, Combustibility.NONE).registerEntityReaction(new EntityReactionDamage(DAMAGE_SOURCE_STEAM, 4)).setCohesion(2).setDissipation(4, 2).setCreativeTab(Gases.CREATIVE_TAB);
 	public static final GasType IOCALFAEUS = new GasTypeLightSensitive("iocalfaeus", 0x5C2B77, 6, -1, Combustibility.NONE).setCreativeTab(Gases.CREATIVE_TAB);
 	public static final GasType BLACK_DAMP = new GasTypeBlackDamp("black_damp", 0x000000, 16, 0, Combustibility.NONE).setCreativeTab(Gases.CREATIVE_TAB);
-	public static final GasType VOID_GAS = new GasTypeVoid("void", 0x222222, 0, -1, Combustibility.NONE).registerEntityReaction(new EntityReactionDamage(DAMAGE_SOURCE_VOID, 8)).setCreativeTab(Gases.CREATIVE_TAB);
-	public static final GasType NITROUS = new GasType("nitrous", 0x6F0000, 4, -1, Combustibility.NONE).setCreativeTab(Gases.CREATIVE_TAB);
-	public static final GasType CHLORINE = new GasType("chlorine", 0xC2F29C9F, 1, 8, Combustibility.NONE).setCreativeTab(Gases.CREATIVE_TAB);
-	public static final GasType FININE = new GasType("finine", 0xFFFFFF, 0, 0, Combustibility.NONE).setCohesion(16).setCreativeTab(Gases.CREATIVE_TAB).setTexture(new ResourceLocation(Gases.MODID, "block/finine"), false).registerEntityReaction(new EntityReactionFinine());
-	public static final GasType HELIUM = new GasType("helium", 0x30E3FF, 14, 0, Combustibility.NONE).setCohesion(16).setCreativeTab(Gases.CREATIVE_TAB);
+	public static final GasType VOID_GAS = new GasTypeVoid("void", 0x1F1F1F, 0, -1, Combustibility.NONE).registerEntityReaction(new EntityReactionDamage(DAMAGE_SOURCE_VOID, 8)).setCreativeTab(Gases.CREATIVE_TAB);
+	public static final GasType NITROUS = new GasType("nitrous", 0x6F3F2F, 4, -1, Combustibility.NONE).setCreativeTab(Gases.CREATIVE_TAB);
+	public static final GasType CHLORINE = new GasType("chlorine", 0xC2F29C, 1, 8, Combustibility.NONE).setCreativeTab(Gases.CREATIVE_TAB);
+	public static final GasType FININE = new GasType("finine", 0xFFFEE8, 0, 0, Combustibility.NONE).setCohesion(16).setCreativeTab(Gases.CREATIVE_TAB).setTexture(new ResourceLocation(Gases.MODID, "block/finine"), false).registerEntityReaction(new EntityReactionFinine());
+	public static final GasType HELIUM = new GasType("helium", 0x00FFFF, 14, 0, Combustibility.NONE).setCohesion(16).setCreativeTab(Gases.CREATIVE_TAB);
 	public static final GasType WHISPERING_FOG = new GasType("whispering_fog", 0x000000, 15, -1, Combustibility.HIGHLY_EXPLOSIVE).setCreativeTab(Gases.CREATIVE_TAB);
-	public static final GasType ELECTRIC = new GasType("electric", 0x1F7F7F7F, 0, 0, Combustibility.NONE).setCohesion(16).setCreativeTab(Gases.CREATIVE_TAB);
-	public static final GasType CORROSIVE = new GasType("corrosive", 0x1F1FDF7F, 0, 0, Combustibility.NONE).setCohesion(16).setCreativeTab(Gases.CREATIVE_TAB);
+	public static final GasType ELECTRIC = new GasType("electric", 0x1F7F7F, 0, 0, Combustibility.NONE).setCohesion(16).setCreativeTab(Gases.CREATIVE_TAB);
+	public static final GasType CORROSIVE = new GasType("corrosive", 0x1F1FDF, 0, 0, Combustibility.NONE).setCohesion(16).setCreativeTab(Gases.CREATIVE_TAB);
 
 	private static final GasType[] IMPLEMENTED_GASES = new GasType[] { NATURAL_GAS, RED_GAS, COAL_DUST, STEAM, IOCALFAEUS, BLACK_DAMP, VOID_GAS, NITROUS, CHLORINE, FININE, HELIUM, WHISPERING_FOG, ELECTRIC, CORROSIVE };
 
