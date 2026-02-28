@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 import net.trentv.gases.Gases;
 import net.trentv.gases.GasesRegistry;
+import net.trentv.gases.common.block.BlockDiabalineOre;
 import net.trentv.gases.common.block.BlockHeated;
 import net.trentv.gases.common.block.BlockModifiedBedrock;
 import net.trentv.gases.common.gastype.GasTypeBlackDamp;
@@ -54,8 +55,9 @@ public class GasesObjects
 	private static final HashMap<Block, BlockHeated> HEATED_RECIPE_LIST = new HashMap<>();
 
 	public static final BlockModifiedBedrock MODIFIED_BEDROCK = new BlockModifiedBedrock(VOID_GAS, 4, 5, new ResourceLocation(Gases.MODID, "bedrock"));
-
 	public static final BlockModifiedBedrock WHISPERING_FOG_EMITTER = (BlockModifiedBedrock) new BlockModifiedBedrock(WHISPERING_FOG, 1, 16, new ResourceLocation(Gases.MODID, "whispering_fog_emitter")).setCreativeTab(Gases.CREATIVE_TAB);
+	public static final BlockDiabalineOre DIABALINE_ORE = (BlockDiabalineOre) new BlockDiabalineOre(false, new ResourceLocation(Gases.MODID, "diabaline_ore")).setCreativeTab(Gases.CREATIVE_TAB);
+	public static final BlockDiabalineOre DIABALINE_ORE_GLOWING = (BlockDiabalineOre) new BlockDiabalineOre(true, new ResourceLocation(Gases.MODID, "diabaline_ore_glowing")).setCreativeTab(Gases.CREATIVE_TAB);
 
 	public static final ItemDiabalineRefined DIABALINE_REFINED = new ItemDiabalineRefined();
 	public static final ItemRespirator PRIMITIVE_RESPIRATOR = new ItemRespirator(Arrays.asList(EntityReactionSlowness.class, EntityReactionSuffocation.class), EnumHelper.addArmorMaterial("primitive_respirator", Gases.MODID + ":primitive_respirator", 20, new int[] { 2, 0, 0, 0 }, 12, null, 5), "primitive_respirator", Items.COAL);
@@ -80,6 +82,8 @@ public class GasesObjects
 
 		GasesRegistry.registerItem(DIABALINE_REFINED, PRIMITIVE_RESPIRATOR, ADVANCED_RESPIRATOR);
 		GasesRegistry.registerBlockAndItem(MODIFIED_BEDROCK, WHISPERING_FOG_EMITTER);
+		GasesRegistry.registerBlockAndItem(DIABALINE_ORE);
+		GasesRegistry.registerBlockAndItem(DIABALINE_ORE_GLOWING);
 	}
 
 	@Nullable

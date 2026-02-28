@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.trentv.gases.common.CommonProxy;
 import net.trentv.gases.common.GasesObjects;
 import net.trentv.gases.common.configuration.GasesMainConfigurations;
+import net.trentv.gases.common.gasworldgentype.GasWorldGenDiabalinePocket;
 import net.trentv.gasesframework.GasesFramework;
 import net.trentv.gasesframework.api.gasworldgentype.GasWorldGenCloud;
 import net.trentv.gasesframework.api.gasworldgentype.GasWorldGenPocket;
@@ -49,7 +50,7 @@ public class Gases
 		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_redGas", GasesObjects.RED_GAS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.redGas, 48.0f, 0.5f, 4, 20, "stone"), "overworld");
 		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_nitrous", GasesObjects.NITROUS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.nitrousGas, 32.0f, 0.5f, 4, 20, "stone"), "overworld");
 		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_chlorine", GasesObjects.CHLORINE, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.chlorineGas, 32.0f, 0.5f, 32, 48, "stone"), "overworld");
-		//GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenDiabalinePocket("overworld_iocalfaeus", GasesObjects.IOCALFAEUS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.iocalfaeusGas, 24.0f, 0.5f, 4, 60, "stone"), "overworld");
+		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenDiabalinePocket("overworld_iocalfaeus", GasesObjects.IOCALFAEUS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.iocalfaeusGas, 24.0f, 0.5f, 4, 60, "stone"), "overworld");
 		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenCloud("overworld_blackDamp", GasesObjects.BLACK_DAMP, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.blackDamp, 80.0f, 0.5f, 4, 48), "overworld");
 		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_helium", GasesObjects.HELIUM, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.helium, 24.0f, 0.5f, 64, 96, "stone"), "overworld");
 
