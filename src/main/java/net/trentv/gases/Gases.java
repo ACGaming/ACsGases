@@ -55,11 +55,11 @@ public class Gases
 		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_helium", GasesObjects.HELIUM, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.helium, 24.0f, 0.5f, 64, 96, "stone"), "overworld");
 
 		// Nether
-		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenCloud("nether_electricGas", GasesObjects.ELECTRIC, GasesMainConfigurations.WORLD_GENERATION.NETHER.GASES.electricGas, 80.0f, 0.5f, 40, 128), "nether");
-		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenCloud("nether_corrosiveGas", GasesObjects.CORROSIVE, GasesMainConfigurations.WORLD_GENERATION.NETHER.GASES.corrosiveGas, 80.0f, 0.5f, 40, 128), "nether");
+		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenCloud("nether_electricGas", GasesObjects.ELECTRIC, GasesMainConfigurations.WORLD_GENERATION.NETHER.GASES.electricGas, 40.0f, 1.0f, 40, 128), "the_nether");
+		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenCloud("nether_corrosiveGas", GasesObjects.CORROSIVE, GasesMainConfigurations.WORLD_GENERATION.NETHER.GASES.corrosiveGas, 40.0f, 1.0f, 40, 128), "the_nether");
 
 		// End
-		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenCloud("end_finine", GasesObjects.FININE, GasesMainConfigurations.WORLD_GENERATION.END.GASES.finineGas, 80.0f, 0.5f, 40, 128), "the end");
+		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenCloud("end_finine", GasesObjects.FININE, GasesMainConfigurations.WORLD_GENERATION.END.GASES.finineGas, 40.0f, 1.0f, 40, 128), "the_end");
 	}
 
 	@EventHandler

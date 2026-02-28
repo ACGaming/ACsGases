@@ -45,6 +45,6 @@ public class GasWorldGenCloud extends GasWorldGenType
     @Override
     public int getPlacementVolume(World world, int x, int y, int z, float placementScore)
     {
-        return world.isAirBlock(new BlockPos(x, y, z)) ? (int) Math.ceil(placementScore * 4.0f) : 0;
+        return world.isAirBlock(new BlockPos(x, y, z)) ? 16 : 0;
     }
 }

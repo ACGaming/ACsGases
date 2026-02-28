@@ -105,12 +105,12 @@ public class GasesMainConfigurations
                 @Config.Comment("The frequency of electric gas clouds in the nether per 16x16x16 blocks")
                 @Config.Name("Electric Gas")
                 @Config.RangeDouble(min = 0.0, max = 10.0)
-                public float electricGas = 0.125f;
+                public float electricGas = 0.00125f;
 
                 @Config.Comment("The frequency of corrosive gas clouds in the nether per 16x16x16 blocks")
                 @Config.Name("Corrosive Gas")
                 @Config.RangeDouble(min = 0.0, max = 10.0)
-                public float corrosiveGas = 0.125f;
+                public float corrosiveGas = 0.00125f;
             }
         }
 
@@ -129,7 +129,7 @@ public class GasesMainConfigurations
                 @Config.Comment("The frequency of finine gas clouds in the end per 16x16x16 blocks")
                 @Config.Name("Finine")
                 @Config.RangeDouble(min = 0.0, max = 10.0)
-                public float finineGas = 0.03125f;
+                public float finineGas = 0.003125f;
             }
         }
 
