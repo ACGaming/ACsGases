@@ -73,26 +73,19 @@ public class WorldGeneratorGasesFramework implements IWorldGenerator
             int chunkMaxZ = chunkMinZ + 16;
 
             HashMap<ChunkPos, ChunkBlobs> chunkBlobsMap = chunkBlobsMapsByDimension.computeIfAbsent(world, w -> new HashMap<>());
-
-            for (int x = chunkX - 1; x < chunkX + 1; x++)
+            ChunkPos positionKey = new ChunkPos(chunkX, chunkZ);
+            ChunkBlobs chunkBlobs = chunkBlobsMap.get(positionKey);
+            if (chunkBlobs == null)
             {
-                for (int z = chunkZ - 1; z < chunkZ + 1; z++)
-                {
-                    ChunkPos positionKey = new ChunkPos(x, z);
-                    ChunkBlobs chunkBlobs = chunkBlobsMap.get(positionKey);
-                    if (chunkBlobs == null)
-                    {
-                        chunkBlobs = new ChunkBlobs(x, z, typeHandles);
-                        chunkBlobsMap.put(positionKey, chunkBlobs);
-                    }
+                chunkBlobs = new ChunkBlobs(chunkX, chunkZ, typeHandles);
+                chunkBlobsMap.put(positionKey, chunkBlobs);
+            }
 
-                    chunkBlobs.generate(chunkMinX, chunkMinZ, chunkMaxX, chunkMaxZ, typeHandles);
+            chunkBlobs.generate(chunkMinX, chunkMinZ, chunkMaxX, chunkMaxZ, typeHandles);
 
-                    if (areChunksAroundChunkLoaded(world.getChunkProvider(), x, z))
-                    {
-                        chunkBlobsMap.remove(positionKey);
-                    }
-                }
+            if (areChunksAroundChunkLoaded(world.getChunkProvider(), chunkX, chunkZ))
+            {
+                chunkBlobsMap.remove(positionKey);
             }
         }
     }
@@ -182,9 +175,12 @@ public class WorldGeneratorGasesFramework implements IWorldGenerator
 
             public Pocket(Random random, int absoluteChunkX, int absoluteChunkZ, TypeHandle type)
             {
-                float pocketX = absoluteChunkX + random.nextFloat() * 16.0f;
+                float offsetX = 8.0f + (random.nextFloat() - 0.5f) * 8.0f;
+                float offsetZ = 8.0f + (random.nextFloat() - 0.5f) * 8.0f;
+
+                float pocketX = absoluteChunkX + offsetX;
                 float pocketY = random.nextFloat() * (type.type.maxY - type.type.minY) + type.type.minY;
-                float pocketZ = absoluteChunkZ + random.nextFloat() * 16.0f;
+                float pocketZ = absoluteChunkZ + offsetZ;
 
                 int numBlobs = randomRound(type.averageBlobFrequency, random);
 

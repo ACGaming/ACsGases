@@ -32,37 +32,37 @@ public class GasesMainConfigurations
                 @Config.Comment("The frequency of natural gas pockets per 16x16x16 blocks")
                 @Config.Name("Natural Gas")
                 @Config.RangeDouble(min = 0.0, max = 10.0)
-                public float naturalGas = 1.0f;
+                public float naturalGas = 0.5f;
 
                 @Config.Comment("The frequency of red gas pockets per 16x16x16 blocks")
                 @Config.Name("Red Gas")
                 @Config.RangeDouble(min = 0.0, max = 10.0)
-                public float redGas = 0.5f;
+                public float redGas = 0.25f;
 
                 @Config.Comment("The frequency of nitrous gas pockets per 16x16x16 blocks")
                 @Config.Name("Nitrous Gas")
                 @Config.RangeDouble(min = 0.0, max = 10.0)
-                public float nitrousGas = 0.5f;
+                public float nitrousGas = 0.25f;
 
                 @Config.Comment("The frequency of chlorine gas pockets per 16x16x16 blocks")
                 @Config.Name("Chlorine Gas")
                 @Config.RangeDouble(min = 0.0, max = 10.0)
-                public float chlorineGas = 0.25f;
+                public float chlorineGas = 0.125f;
 
                 @Config.Comment("The frequency of iocalfaeus gas pockets per 16x16x16 blocks")
                 @Config.Name("Iocalfaeus Gas")
                 @Config.RangeDouble(min = 0.0, max = 10.0)
-                public float iocalfaeusGas = 0.125f;
+                public float iocalfaeusGas = 0.075f;
 
                 @Config.Comment("The frequency of helium pockets per 16x16x16 blocks")
                 @Config.Name("Helium")
                 @Config.RangeDouble(min = 0.0, max = 10.0)
-                public float helium = 0.5f;
+                public float helium = 0.25f;
 
                 @Config.Comment("The frequency of black damp clouds per 16x16x16 blocks")
                 @Config.Name("Black Damp")
                 @Config.RangeDouble(min = 0.0, max = 10.0)
-                public float blackDamp = 0.25f;
+                public float blackDamp = 0.125f;
             }
 
             @Config.Comment("Underground gas pipe generation")

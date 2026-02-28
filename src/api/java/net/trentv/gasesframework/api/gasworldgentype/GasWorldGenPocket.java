@@ -70,25 +70,24 @@ public class GasWorldGenPocket extends GasWorldGenType
     }
 
     /**
-     * Get the volume of gas placed at this location, if any. Must be a number
-     * between 0 and 16
+     * Get the volume of gas placed at this location, if any. Must be a number between 0 and 16
      *
      * @param world          The world object
      * @param x              X coordinate
      * @param y              Y coordinate
      * @param z              Z coordinate
-     * @param placementScore The greater this value is, the more central this block of gas
-     *                       is.
+     * @param placementScore The greater this value is, the more central this block of gas is.
      * @return The volume of gas to place
      */
     @Override
     public int getPlacementVolume(World world, int x, int y, int z, float placementScore)
     {
-        if (this.replaceBlocks.contains(world.getBlockState(new BlockPos(x, y, z)).getBlock()))
+        BlockPos pos = new BlockPos(x, y, z);
+        if (this.replaceBlocks.contains(world.getBlockState(pos).getBlock()))
         {
             for (EnumFacing direction : EnumFacing.VALUES)
             {
-                if (GFManipulationAPI.getGasType(new BlockPos(x, y, z), world) != gasType)
+                if (GFManipulationAPI.getGasType(pos, world) != gasType)
                 {
                     IBlockState blockState = world.getBlockState(new BlockPos(x + direction.getXOffset(), y + direction.getYOffset(), z + direction.getZOffset()));
                     if (blockState.getBlock() instanceof BlockFalling || !blockState.isOpaqueCube())
