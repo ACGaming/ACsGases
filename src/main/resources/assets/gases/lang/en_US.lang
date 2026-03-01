@@ -14,6 +14,8 @@ tile.gas_finine.name=Finine
 tile.gas_chlorine.name=Chlorine Gas
 tile.gas_electric.name=Electric Gas
 tile.gas_corrosive.name=Corrosive Gas
+tile.gas_acid_vapour.name=Acidic Vapour
+tile.gas_stone_dust.name=Dust
 
 tile.heated_iron.name=Heated Iron Ore
 tile.heated_diamond.name=Heated Diamond Ore

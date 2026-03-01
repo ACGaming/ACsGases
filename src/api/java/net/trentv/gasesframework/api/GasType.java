@@ -1,10 +1,6 @@
 package net.trentv.gasesframework.api;
 
-import java.util.ArrayList;
-import java.util.IdentityHashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -153,9 +149,9 @@ public class GasType
 		}
 	}
 
-	public GasType registerEntityReaction(IEntityReaction a)
+	public GasType registerEntityReaction(IEntityReaction... a)
 	{
-		entityReactions.add(a);
+		entityReactions.addAll(Arrays.asList(a));
 		return this;
 	}
 
