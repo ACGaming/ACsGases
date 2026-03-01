@@ -1,10 +1,15 @@
 package net.trentv.gases.common;
 
 import net.minecraft.block.BlockStone;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
+import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -13,6 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.trentv.gases.common.configuration.GasesConfigLists;
 import net.trentv.gases.common.configuration.GasesMainConfigurations;
 import net.trentv.gasesframework.api.GFManipulationAPI;
+import net.trentv.gasesframework.api.GasType;
 
 public class CommonEvents
 {
@@ -73,5 +79,27 @@ public class CommonEvents
 			}
 		}
 		chunk.setModified(true);
+	}
+
+
+	// Helium -> Pitch Sounds
+	@SubscribeEvent
+	public void onPlaySoundAtEntityEvent(PlaySoundAtEntityEvent event)
+	{
+		if (event.getEntity() instanceof EntityLivingBase)
+		{
+			EntityLivingBase entity = (EntityLivingBase) event.getEntity();
+			World world = event.getEntity().getEntityWorld();
+
+			int x = MathHelper.floor(entity.posX);
+			int y = MathHelper.floor(entity.posY + entity.getEyeHeight());
+			int z = MathHelper.floor(entity.posZ);
+
+			GasType type = GFManipulationAPI.getGasType(new BlockPos(x, y, z), world);
+			if (type == GasesObjects.HELIUM)
+			{
+				event.setPitch(event.getPitch() * 5.0f);
+			}
+		}
 	}
 }
