@@ -38,7 +38,7 @@ public class GasesObjects
 	public static final GasType STEAM = new GasType("steam", 0xFFFFFF, 12, 1, Combustibility.NONE).setCohesion(2).setDissipation(4, 2);
 	public static final GasType NATURAL_GAS = new GasType("natural", 0x6F7F6F, 8, 1, Combustibility.FLAMMABLE);
 	public static final GasType RED_GAS = new GasType("red", 0x7F4F4F, 2, -1, Combustibility.EXPLOSIVE);
-	public static final GasType VOID_GAS = new GasTypeVoid("void", 0x1F1F1F, 0, -1, Combustibility.NONE).registerEntityReaction(new EntityReactionDamage(DAMAGE_SOURCE_VOID, 8));
+	public static final GasType VOID_GAS = new GasTypeVoid("void", 0x1F1F1F, 0, -1, Combustibility.NONE);
 	public static final GasType ELECTRIC = new GasType("electric", 0x1F7F7F, 0, 0, Combustibility.NONE).setCohesion(16);
 	public static final GasType CORROSIVE = new GasType("corrosive", 0x1F1FDF, 0, 0, Combustibility.NONE).setCohesion(16);
 	public static final GasType NITROUS = new GasType("nitrous", 0x6F3F2F, 4, -1, Combustibility.NONE);
@@ -49,7 +49,7 @@ public class GasesObjects
 	public static final GasType STONE_DUST = new GasType("stone_dust", 0x7F7F7F, 0, -1, Combustibility.NONE).setDissipation(8, 4);
 	public static final GasType IOCALFAEUS = new GasTypeLightSensitive("iocalfaeus", 0x5C2B77, 6, -1, Combustibility.NONE);
 	public static final GasType HELIUM = new GasType("helium", 0x00FFFF, 14, 0, Combustibility.NONE).setCohesion(16);
-	public static final GasType FININE = new GasType("finine", 0xFFFEE8, 0, 0, Combustibility.NONE).setCohesion(16).setTexture(new ResourceLocation(Gases.MODID, "block/finine"), false).registerEntityReaction(new EntityReactionFinine());
+	public static final GasType FININE = new GasType("finine", 0xFFFEE8, 0, 0, Combustibility.NONE).setCohesion(16).setTexture(new ResourceLocation(Gases.MODID, "block/finine"), false);
 	public static final GasType WHISPERING_FOG = new GasType("whispering_fog", 0x000000, 15, -1, Combustibility.HIGHLY_EXPLOSIVE);
 
 	private static final GasType[] IMPLEMENTED_GASES = new GasType[] { STEAM, NATURAL_GAS, RED_GAS, VOID_GAS, ELECTRIC, CORROSIVE, NITROUS, ACID_VAPOUR, COAL_DUST, BLACK_DAMP, CHLORINE, STONE_DUST, IOCALFAEUS, HELIUM, FININE, WHISPERING_FOG };
@@ -92,7 +92,7 @@ public class GasesObjects
 		STEAM.registerEntityReaction(new EntityReactionDamage(DAMAGE_SOURCE_STEAM, 4));
 		NATURAL_GAS.registerEntityReaction(new EntityReactionBlindness(2), new EntityReactionSuffocation(2, 3), new EntityReactionSlowness(8));
 		RED_GAS.registerEntityReaction(new EntityReactionBlindness(1), new EntityReactionSuffocation(2, 3), new EntityReactionSlowness(8));
-		VOID_GAS.registerEntityReaction(new EntityReactionBlindness(20), new EntityReactionSuffocation(40, 3));
+		VOID_GAS.registerEntityReaction(new EntityReactionDamage(DAMAGE_SOURCE_VOID, 8), new EntityReactionBlindness(20), new EntityReactionSuffocation(40, 3));
 		ELECTRIC.registerEntityReaction(new EntityReactionBlindness(4), new EntityReactionSuffocation(2, 3));
 		CORROSIVE.registerEntityReaction(new EntityReactionBlindness(4), new EntityReactionSuffocation(2, 3));
 		NITROUS.registerEntityReaction(new EntityReactionBlindness(1), new EntityReactionSuffocation(2, 3), new EntityReactionSlowness(16));
@@ -102,6 +102,7 @@ public class GasesObjects
 		CHLORINE.registerEntityReaction(new EntityReactionBlindness(4), new EntityReactionSuffocation(6, 3));
 		STONE_DUST.registerEntityReaction(new EntityReactionSuffocation(8, 3), new EntityReactionSlowness(16));
 		HELIUM.registerEntityReaction(new EntityReactionSuffocation(14, 3));
+		FININE.registerEntityReaction(new EntityReactionFinine());
 		WHISPERING_FOG.registerEntityReaction(new EntityReactionSuffocation(6, 3), new EntityReactionSlowness(24));
 	}
 
