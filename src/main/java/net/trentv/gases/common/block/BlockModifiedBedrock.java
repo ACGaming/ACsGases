@@ -10,6 +10,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import net.trentv.gases.common.configuration.GasesMainConfigurations;
 import net.trentv.gasesframework.api.GFManipulationAPI;
 import net.trentv.gasesframework.api.GasType;
 
@@ -37,6 +39,7 @@ public class BlockModifiedBedrock extends BlockEmptyDrops
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
 	{
+		if (pos.getY() > GasesMainConfigurations.GASES.VOID_GAS.maxHeight) return;
 		BlockPos newPos = pos.offset(EnumFacing.values()[rand.nextInt(6)]);
 		if (GFManipulationAPI.canPlaceGas(newPos, world, producedGas))
 		{
