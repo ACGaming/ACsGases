@@ -1,5 +1,7 @@
 package net.trentv.gases.common;
 
+import net.minecraft.block.BlockFire;
+import net.minecraft.block.BlockObsidian;
 import net.minecraft.block.BlockStone;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
@@ -19,21 +21,24 @@ import net.trentv.gases.common.configuration.GasesConfigLists;
 import net.trentv.gases.common.configuration.GasesMainConfigurations;
 import net.trentv.gasesframework.api.GFManipulationAPI;
 import net.trentv.gasesframework.api.GasType;
+import net.trentv.gasesframework.common.GasesFrameworkObjects;
 
 public class CommonEvents
 {
-	// Water + Lava -> Obsidian + Steam
 	@SubscribeEvent
 	public void onBlockEvent(BlockEvent event)
 	{
-		if (event.getState().getBlock() == Blocks.OBSIDIAN)
+		if (event instanceof BlockEvent.NeighborNotifyEvent)
 		{
-			if (event instanceof BlockEvent.NeighborNotifyEvent)
+			// Water + Lava -> Obsidian + Steam
+			if (event.getState().getBlock() instanceof BlockObsidian && event.getWorld().getBlockState(event.getPos().up()).getMaterial().isLiquid())
 			{
-				if (event.getWorld().getBlockState(event.getPos().up()).getMaterial().isLiquid())
-				{
-					GFManipulationAPI.addGasLevel(event.getPos().up(2), event.getWorld(), GasesObjects.STEAM, GasesMainConfigurations.GASES.STEAM.amountOnReaction);
-				}
+				GFManipulationAPI.addGasLevel(event.getPos().up(2), event.getWorld(), GasesObjects.STEAM, GasesMainConfigurations.GASES.STEAM.amountOnReaction);
+			}
+			// Fire -> Smoke
+			if (event.getState().getBlock() instanceof BlockFire)
+			{
+				GFManipulationAPI.addGasLevel(event.getPos().up(), event.getWorld(), GasesFrameworkObjects.SMOKE, GasesMainConfigurations.GASES.SMOKE.fireSmokeAmount);
 			}
 		}
 	}
