@@ -86,7 +86,6 @@ public class CommonEvents
 		chunk.setModified(true);
 	}
 
-
 	// Helium -> Pitch Sounds
 	@SubscribeEvent
 	public void onPlaySoundAtEntityEvent(PlaySoundAtEntityEvent event)

@@ -1,0 +1,9 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "gasesframework:lantern_gas_2"
+      }
+    }
+  ]
+}

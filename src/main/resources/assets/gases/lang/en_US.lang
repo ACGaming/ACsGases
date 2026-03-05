@@ -17,6 +17,9 @@ tile.gas_corrosive.name=Corrosive Gas
 tile.gas_acid_vapour.name=Acidic Vapour
 tile.gas_stone_dust.name=Dust
 
+tile.gf_lantern.torch.name=Torch Lantern
+tile.gf_lantern.glowstone.name=Glowstone Lantern
+
 tile.heated_iron.name=Heated Iron Ore
 tile.heated_diamond.name=Heated Diamond Ore
 tile.heated_gold.name=Heated Gold Ore

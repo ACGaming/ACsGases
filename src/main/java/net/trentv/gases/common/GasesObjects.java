@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
@@ -23,12 +24,15 @@ import net.trentv.gases.common.item.ItemDiabalineRefined;
 import net.trentv.gases.common.item.ItemRespirator;
 import net.trentv.gases.common.reaction.EntityReactionDamage;
 import net.trentv.gases.common.reaction.EntityReactionFinine;
+import net.trentv.gasesframework.GasesFrameworkRegistry;
 import net.trentv.gasesframework.api.Combustibility;
 import net.trentv.gasesframework.api.GFRegistrationAPI;
 import net.trentv.gasesframework.api.GasType;
+import net.trentv.gasesframework.api.lanterntype.LanternType;
 import net.trentv.gasesframework.api.reaction.entity.EntityReactionBlindness;
 import net.trentv.gasesframework.api.reaction.entity.EntityReactionSlowness;
 import net.trentv.gasesframework.api.reaction.entity.EntityReactionSuffocation;
+import net.trentv.gasesframework.common.block.BlockLantern;
 
 public class GasesObjects
 {
@@ -65,6 +69,11 @@ public class GasesObjects
 	public static final ItemRespirator PRIMITIVE_RESPIRATOR = new ItemRespirator(Arrays.asList(EntityReactionSlowness.class, EntityReactionSuffocation.class), EnumHelper.addArmorMaterial("primitive_respirator", Gases.MODID + ":primitive_respirator", 20, new int[] { 2, 0, 0, 0 }, 12, null, 5), "primitive_respirator", Items.COAL);
 	public static final ItemRespirator ADVANCED_RESPIRATOR = new ItemRespirator(Arrays.asList(EntityReactionSlowness.class, EntityReactionSuffocation.class, EntityReactionBlindness.class), EnumHelper.addArmorMaterial("advanced_respirator", Gases.MODID + ":advanced_respirator", 50, new int[] { 2, 0, 0, 0 }, 12, null, 5), "advanced_respirator", Items.IRON_INGOT);
 
+	public static final LanternType LANTERN_TYPE_TORCH = new LanternType("torch", 15.0f / 16.0f, "gases:lantern_torch", Item.getItemFromBlock(Blocks.TORCH), null, 0).setCreativeTab(Gases.CREATIVE_TAB);
+	public static final LanternType LANTERN_TYPE_GLOWSTONE = new LanternType("glowstone", 1.0f, "gases:lantern_glowstone", Items.GLOWSTONE_DUST, null, 0).setCreativeTab(Gases.CREATIVE_TAB);
+	public static final BlockLantern LANTERN_TORCH = new BlockLantern(LANTERN_TYPE_TORCH);
+	public static final BlockLantern LANTERN_GLOWSTONE = new BlockLantern(LANTERN_TYPE_GLOWSTONE);
+
 	public static void init()
 	{
 		registerEntityReactions();
@@ -83,8 +92,10 @@ public class GasesObjects
 
 		GasesRegistry.registerItem(DIABALINE_REFINED, PRIMITIVE_RESPIRATOR, ADVANCED_RESPIRATOR);
 		GasesRegistry.registerBlockAndItem(MODIFIED_BEDROCK, WHISPERING_FOG_EMITTER);
-		GasesRegistry.registerBlockAndItem(DIABALINE_ORE);
-		GasesRegistry.registerBlockAndItem(DIABALINE_ORE_GLOWING);
+		GasesRegistry.registerBlockAndItem(DIABALINE_ORE, DIABALINE_ORE_GLOWING);
+
+		GasesFrameworkRegistry.registerLantern(LANTERN_TORCH);
+		GasesFrameworkRegistry.registerLantern(LANTERN_GLOWSTONE);
 	}
 
 	public static void registerEntityReactions()

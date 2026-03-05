@@ -1,0 +1,15 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "gasesframework:lantern_empty"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "torch"
+    }
+  ],
+  "result": {
+    "item": "gases:lantern_torch"
+  }
+}
