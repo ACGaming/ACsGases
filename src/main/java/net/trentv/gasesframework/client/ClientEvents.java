@@ -1,7 +1,6 @@
 package net.trentv.gasesframework.client;
 
-import org.lwjgl.opengl.GL11;
-
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
@@ -25,9 +24,13 @@ public class ClientEvents
 
 			if (f > 0.0f)
 			{
+				GlStateManager.setFog(GlStateManager.FogMode.EXP);
 				event.setDensity(f * f);
-				GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
 				event.setCanceled(true);
+			}
+			else
+			{
+				GlStateManager.setFog(GlStateManager.FogMode.LINEAR);
 			}
 		}
 	}
