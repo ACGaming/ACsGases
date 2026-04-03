@@ -242,6 +242,12 @@ public class BlockGas extends Block implements ISample
 	}
 
 	@Override
+	public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
+	{
+		return false;
+	}
+
+	@Override
 	public void onBlockExploded(World world, BlockPos pos, Explosion explosion)
 	{
 		ignite(pos, world);
