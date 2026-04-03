@@ -1,8 +1,8 @@
 package net.trentv.gases.common;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.BlockObsidian;
-import net.minecraft.block.BlockStone;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -14,6 +14,7 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -55,6 +56,25 @@ public class CommonEvents
 		else if (GasesConfigLists.DUST_EMISSION_BLOCKS.contains(event.getState().getBlock()))
 		{
 			GFManipulationAPI.addGasLevel(event.getPos(), event.getWorld(), GasesObjects.STONE_DUST, GasesMainConfigurations.GASES.DUST.amountOnMine);
+		}
+	}
+
+	@SubscribeEvent
+	public void onExplosionEventDetonate(ExplosionEvent.Detonate event)
+	{
+		for (BlockPos pos : event.getAffectedBlocks())
+		{
+			Block block = event.getWorld().getBlockState(pos).getBlock();
+			// Exploding Coal Ore -> Coal Dust
+			if (GasesConfigLists.COAL_DUST_EMISSION_BLOCKS.contains(block))
+			{
+				GFManipulationAPI.addGasLevel(pos, event.getWorld(), GasesObjects.COAL_DUST, GasesMainConfigurations.GASES.COAL_DUST.amountOnMine);
+			}
+			// Exploding Stone -> Stone Dust
+			else if (GasesConfigLists.DUST_EMISSION_BLOCKS.contains(block))
+			{
+				GFManipulationAPI.addGasLevel(pos, event.getWorld(), GasesObjects.STONE_DUST, GasesMainConfigurations.GASES.DUST.amountOnMine);
+			}
 		}
 	}
 
