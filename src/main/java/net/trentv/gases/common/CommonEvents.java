@@ -52,7 +52,7 @@ public class CommonEvents
 			GFManipulationAPI.addGasLevel(event.getPos(), event.getWorld(), GasesObjects.COAL_DUST, GasesMainConfigurations.GASES.COAL_DUST.amountOnMine);
 		}
 		// Mining Stone -> Stone Dust
-		else if (event.getState().getBlock() instanceof BlockStone)
+		else if (GasesConfigLists.DUST_EMISSION_BLOCKS.contains(event.getState().getBlock()))
 		{
 			GFManipulationAPI.addGasLevel(event.getPos(), event.getWorld(), GasesObjects.STONE_DUST, GasesMainConfigurations.GASES.DUST.amountOnMine);
 		}

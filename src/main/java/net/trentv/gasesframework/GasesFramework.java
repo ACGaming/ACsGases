@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import net.trentv.gases.common.configuration.GasesConfigLists;
 import net.trentv.gasesframework.api.capability.IGasEffects;
 import net.trentv.gasesframework.common.CommonProxy;
 import net.trentv.gasesframework.common.GasesFrameworkObjects;
@@ -65,6 +66,7 @@ public class GasesFramework
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
+		GasesConfigLists.init();
 		logger.info("'Gases Framework' initialized");
 	}
 

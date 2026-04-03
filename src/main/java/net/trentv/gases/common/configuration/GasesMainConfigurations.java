@@ -226,6 +226,10 @@ public class GasesMainConfigurations
 			@Config.Name("Amount on Mine")
 			@Config.RangeInt(min = 0, max = 16)
 			public int amountOnMine = 3;
+
+			@Config.Comment("Blocks that can emit dust when mined")
+			@Config.Name("Blocks")
+			public String[] blocks = new String[] {"minecraft:stone", "minecraft:cobblestone"};
 		}
 
 		@Config.Comment("Chlorine gas effects")
