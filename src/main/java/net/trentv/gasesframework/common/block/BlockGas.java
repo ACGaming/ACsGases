@@ -60,7 +60,7 @@ public class BlockGas extends Block implements ISample
 	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
 	{
-		worldIn.scheduleBlockUpdate(pos, this, tickRate, 1);
+		worldIn.scheduleBlockUpdate(pos, this, tickRate + RANDOM.nextInt(6), 1);
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public class BlockGas extends Block implements ISample
 
 		if (gasType.requiresNewTick(world, state, currentPosition))
 		{
-			world.scheduleBlockUpdate(currentPosition, this, tickRate, 1);
+			world.scheduleBlockUpdate(currentPosition, this, tickRate + RANDOM.nextInt(6), 1);
 		}
 	}
 
