@@ -3,6 +3,8 @@ package net.trentv.gases.common.gastype;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import net.trentv.gases.common.configuration.GasesMainConfigurations;
 import net.trentv.gasesframework.api.Combustibility;
 import net.trentv.gasesframework.api.GFManipulationAPI;
 import net.trentv.gasesframework.api.GasType;
@@ -17,7 +19,7 @@ public class GasTypeVoid extends GasType
 	@Override
 	public boolean preTick(World world, IBlockState state, BlockPos pos)
 	{
-		if (world.getLight(pos) > 5)
+		if (world.getLight(pos) > GasesMainConfigurations.GASES.VOID_GAS.lightLevel)
 		{
 			GFManipulationAPI.removeGasLevel(pos, world, 16);
 		}

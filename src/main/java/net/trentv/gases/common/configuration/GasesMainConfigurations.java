@@ -174,6 +174,11 @@ public class GasesMainConfigurations
 			@Config.Name("Max Height")
 			@Config.RangeInt(min = 0, max = 255)
 			public int maxHeight = 64;
+
+			@Config.Comment("The light level over which void gas will disappear")
+			@Config.Name("Light Level")
+			@Config.RangeInt(min = 0, max = 15)
+			public int lightLevel = 5;
 		}
 
 		@Config.Comment("Corrosive gas settings")
