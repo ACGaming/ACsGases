@@ -12,6 +12,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -308,6 +309,11 @@ public class BlockGas extends Block implements ISample
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
+		if (entity instanceof EntityPlayer)
+		{
+			EntityPlayer player = (EntityPlayer) entity;
+			if (player.isCreative() || player.isSpectator()) return;
+		}
 		IEntityReaction[] s = gasType.getEntityReactions();
 		for (IEntityReaction a : s)
 		{
