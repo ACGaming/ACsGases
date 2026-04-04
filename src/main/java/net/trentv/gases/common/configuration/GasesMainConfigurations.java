@@ -23,7 +23,7 @@ public class GasesMainConfigurations
 
 		public static class Overworld
 		{
-			@Config.Comment("Gas pocket generation frequencies (chance per 16×16×16 chunk section)")
+			@Config.Comment("Gas pocket generation settings")
 			@Config.Name("Gases")
 			public final Gases GASES = new Gases();
 
@@ -63,6 +63,10 @@ public class GasesMainConfigurations
 				@Config.Name("Black Damp")
 				@Config.RangeDouble(min = 0.0, max = 10.0)
 				public float blackDamp = 0.125f;
+
+				@Config.Comment("Ore dictionary names of blocks to be replaced with gas pockets during world generation")
+				@Config.Name("Replace Blocks")
+				public String[] replaceBlocks = new String[] {"stone"};
 			}
 
 			@Config.Comment("Cracked bedrock generation in the bedrock layer")

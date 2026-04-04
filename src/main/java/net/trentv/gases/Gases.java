@@ -46,13 +46,13 @@ public class Gases
 	public void init(FMLInitializationEvent event)
 	{
 		// Overworld
-		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_naturalGas", GasesObjects.NATURAL_GAS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.naturalGas, 48.0f, 0.5f, 16, 48, "stone"), "overworld");
-		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_redGas", GasesObjects.RED_GAS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.redGas, 48.0f, 0.5f, 4, 20, "stone"), "overworld");
-		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_nitrous", GasesObjects.NITROUS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.nitrousGas, 32.0f, 0.5f, 4, 20, "stone"), "overworld");
-		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_chlorine", GasesObjects.CHLORINE, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.chlorineGas, 32.0f, 0.5f, 32, 48, "stone"), "overworld");
-		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenDiabalinePocket("overworld_iocalfaeus", GasesObjects.IOCALFAEUS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.iocalfaeusGas, 24.0f, 0.5f, 4, 60, "stone"), "overworld");
+		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_naturalGas", GasesObjects.NATURAL_GAS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.naturalGas, 48.0f, 0.5f, 16, 48, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.replaceBlocks), "overworld");
+		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_redGas", GasesObjects.RED_GAS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.redGas, 48.0f, 0.5f, 4, 20, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.replaceBlocks), "overworld");
+		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_nitrous", GasesObjects.NITROUS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.nitrousGas, 32.0f, 0.5f, 4, 20, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.replaceBlocks), "overworld");
+		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_chlorine", GasesObjects.CHLORINE, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.chlorineGas, 32.0f, 0.5f, 32, 48, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.replaceBlocks), "overworld");
+		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenDiabalinePocket("overworld_iocalfaeus", GasesObjects.IOCALFAEUS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.iocalfaeusGas, 24.0f, 0.5f, 4, 60, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.replaceBlocks), "overworld");
 		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenCloud("overworld_blackDamp", GasesObjects.BLACK_DAMP, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.blackDamp, 80.0f, 0.5f, 4, 48), "overworld");
-		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_helium", GasesObjects.HELIUM, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.helium, 24.0f, 0.5f, 64, 96, "stone"), "overworld");
+		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_helium", GasesObjects.HELIUM, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.helium, 24.0f, 0.5f, 64, 96, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.replaceBlocks), "overworld");
 
 		// Nether
 		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenCloud("nether_electricGas", GasesObjects.ELECTRIC, GasesMainConfigurations.WORLD_GENERATION.NETHER.GASES.electricGas, 40.0f, 1.0f, 40, 128), "the_nether");

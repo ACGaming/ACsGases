@@ -43,7 +43,7 @@ public class GasWorldGenPocket extends GasWorldGenType
      * @param replaceBlocks       Blocks replaceable by this gas pocket. Strings will be
      *                            interpreted as ore dictionary strings
      */
-    public GasWorldGenPocket(String name, GasType gasType, float generationFrequency, float averageVolume, float evenness, int minY, int maxY, Object... replaceBlocks)
+    public GasWorldGenPocket(String name, GasType gasType, float generationFrequency, float averageVolume, float evenness, int minY, int maxY, Object[] replaceBlocks)
     {
         super(name, gasType, generationFrequency, averageVolume, evenness, minY, maxY);
 

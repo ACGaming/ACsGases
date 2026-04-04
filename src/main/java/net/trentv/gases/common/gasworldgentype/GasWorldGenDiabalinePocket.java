@@ -13,7 +13,7 @@ public class GasWorldGenDiabalinePocket extends GasWorldGenPocket
 {
     private static final Random random = new Random();
 
-    public GasWorldGenDiabalinePocket(String name, GasType gasType, float generationFrequency, float averageVolume, float evenness, int minY, int maxY, Object... replaceBlocks)
+    public GasWorldGenDiabalinePocket(String name, GasType gasType, float generationFrequency, float averageVolume, float evenness, int minY, int maxY, Object[] replaceBlocks)
     {
         super(name, gasType, generationFrequency, averageVolume, evenness, minY, maxY, replaceBlocks);
     }
