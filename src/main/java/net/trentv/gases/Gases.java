@@ -10,10 +10,13 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
 import net.trentv.gases.common.CommonProxy;
 import net.trentv.gases.common.GasesObjects;
 import net.trentv.gases.common.configuration.GasesMainConfigurations;
 import net.trentv.gases.common.gasworldgentype.GasWorldGenDiabalinePocket;
+import net.trentv.gases.common.worldgen.WorldGeneratorFogEmitter;
 import net.trentv.gasesframework.GasesFramework;
 import net.trentv.gasesframework.api.gasworldgentype.GasWorldGenCloud;
 import net.trentv.gasesframework.api.gasworldgentype.GasWorldGenPocket;
@@ -25,6 +28,7 @@ public class Gases
 	public static final String VERSION = "2.0.0";
 
 	public static final GasesCreativeTab CREATIVE_TAB = new GasesCreativeTab("gases");
+	public static final WorldGeneratorFogEmitter worldGenerator = new WorldGeneratorFogEmitter();
 
 	public static Logger logger;
 
@@ -46,6 +50,8 @@ public class Gases
 	public void init(FMLInitializationEvent event)
 	{
 		// Overworld
+		GameRegistry.registerWorldGenerator(worldGenerator, 10000);
+
 		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_naturalGas", GasesObjects.NATURAL_GAS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.naturalGas, 48.0f, 0.5f, 16, 48, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.replaceBlocks), "overworld");
 		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_redGas", GasesObjects.RED_GAS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.redGas, 48.0f, 0.5f, 4, 20, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.replaceBlocks), "overworld");
 		GasesFramework.worldGenerator.registerGasWorldGenType(new GasWorldGenPocket("overworld_nitrous", GasesObjects.NITROUS, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.nitrousGas, 32.0f, 0.5f, 4, 20, GasesMainConfigurations.WORLD_GENERATION.OVERWORLD.GASES.replaceBlocks), "overworld");
