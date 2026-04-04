@@ -1,10 +1,11 @@
 package net.trentv.gasesframework.common;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
+import net.trentv.gases.common.configuration.GasesConfigLists;
 import net.trentv.gasesframework.GasesFramework;
 import net.trentv.gasesframework.GasesFrameworkRegistry;
 import net.trentv.gasesframework.api.Combustibility;
@@ -51,11 +52,10 @@ public class GasesFrameworkObjects
 			type.registerEntityReaction(new EntityReactionHrrm());
 		}
 
-		GFRegistrationAPI.registerIgnitionSource(Blocks.FIRE.getDefaultState());
-		GFRegistrationAPI.registerIgnitionSource(Blocks.LAVA.getDefaultState());
-		GFRegistrationAPI.registerIgnitionSource(Blocks.FLOWING_LAVA.getDefaultState());
-		GFRegistrationAPI.registerIgnitionSource(Blocks.TORCH.getDefaultState());
-		GFRegistrationAPI.registerIgnitionSource(Blocks.LIT_FURNACE.getDefaultState());
+		for (Block b : GasesConfigLists.IGNITION_SOURCES)
+		{
+			GFRegistrationAPI.registerIgnitionSource(b.getDefaultState());
+		}
 
 		for (int i = 1; i <= 16; i++)
 		{
