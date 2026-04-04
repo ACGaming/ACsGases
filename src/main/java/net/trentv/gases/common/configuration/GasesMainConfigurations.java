@@ -65,18 +65,6 @@ public class GasesMainConfigurations
 				public float blackDamp = 0.125f;
 			}
 
-			@Config.Comment("Underground gas pipe generation")
-			@Config.Name("Gas Pipe")
-			public final GasPipe GAS_PIPE = new GasPipe();
-
-			public static class GasPipe
-			{
-				@Config.Comment("The amount of times pipes will be attempted generated underground")
-				@Config.Name("Generation Checks")
-				@Config.RangeInt(min = 0, max = 256)
-				public int generationChecks = 32;
-			}
-
 			@Config.Comment("Cracked bedrock generation in the bedrock layer")
 			@Config.Name("Cracked Bedrock")
 			public final CrackedBedrock CRACKED_BEDROCK = new CrackedBedrock();
