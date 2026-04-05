@@ -76,8 +76,20 @@ public class BlockGas extends Block implements ISample
 
 		for (int i = 0; i < EnumFacing.VALUES.length; i++)
 		{
-			BlockPos scanBlock = currentPosition.offset(EnumFacing.VALUES[i]);
-			if (gasType.combustability != Combustibility.NONE && GFRegistrationAPI.isIgnitionSource(world.getBlockState(scanBlock)))
+			BlockPos scanPos = currentPosition.offset(EnumFacing.VALUES[i]);
+			IBlockState scanState = world.getBlockState(scanPos);
+			for (IBlockReaction r : this.gasType.getBlockReactions())
+			{
+				r.react(scanState.getBlock(), world, this.gasType, currentPosition);
+			}
+			if (scanState.getBlock() instanceof BlockGas neighborGas)
+			{
+				for (IGasReaction r : this.gasType.getGasReactions())
+				{
+					r.react(this.gasType, world, neighborGas.gasType, currentPosition);
+				}
+			}
+			if (gasType.combustability != Combustibility.NONE && GFRegistrationAPI.isIgnitionSource(scanState))
 			{
 				ignite(currentPosition, world);
 				return;
@@ -96,7 +108,7 @@ public class BlockGas extends Block implements ISample
 		// If density is 0, we're going to be spreading out in a cloud
 		if (gasType.density == 0)
 		{
-			EnumFacing newDir = EnumFacing.SOUTH;
+			EnumFacing newDir;
 			// Iterate through all directions (up/down/left/right/front/back)
 			for (int i = 0; i < EnumFacing.VALUES.length; i++)
 			{
@@ -121,14 +133,13 @@ public class BlockGas extends Block implements ISample
 		{
 			// Decide which direction we're going
 			EnumFacing direction = EnumFacing.DOWN;
-			if (gasType.density > 0)
-				direction = EnumFacing.UP;
+			if (gasType.density > 0) direction = EnumFacing.UP;
 
 			BlockPos nextPosition = scanForOpenBlock(world, this, currentPosition, direction);
 			int thisValue = state.getValue(CAPACITY);
 			if (!nextPosition.equals(currentPosition)) // In this case, we'll be
-														// flowing somewhere
-														// above or below.
+			// flowing somewhere
+			// above or below.
 			{
 				int remaining = GFManipulationAPI.addGasLevel(nextPosition, world, this.gasType, thisValue);
 				if (state.getValue(CAPACITY) != remaining)
@@ -137,7 +148,7 @@ public class BlockGas extends Block implements ISample
 				}
 			}
 			else // Can't flow above or below, so time to spill out on the
-					// ground
+			// ground
 			{
 				if (thisValue > 1)
 				{
@@ -269,7 +280,7 @@ public class BlockGas extends Block implements ISample
 
 	public void ignite(BlockPos pos, World access)
 	{
-		if (!gasType.ignite(access, access.getBlockState(pos), pos))
+		if (!(access.getBlockState(pos).getBlock() instanceof BlockGas))
 		{
 			return;
 		}
@@ -300,22 +311,6 @@ public class BlockGas extends Block implements ISample
 	{
 		List<ItemStack> ret = new ArrayList<ItemStack>();
 		return ret;
-	}
-
-	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighborPos)
-	{
-		for (IBlockReaction r : this.gasType.getBlockReactions())
-		{
-			r.react(neighborBlock, world, this.gasType, pos);
-		}
-		if (neighborBlock instanceof BlockGas neighborGas)
-		{
-			for (IGasReaction r : this.gasType.getGasReactions())
-			{
-				r.react(this.gasType, world, neighborGas.gasType, pos);
-			}
-		}
 	}
 
 	@Override

@@ -16,7 +16,7 @@ public class EntityReactionSparkIgnition implements IEntityReaction
 	{
 		if (access instanceof World world && e instanceof EntityFlashSparkFX)
 		{
-			gas.ignite(world, access.getBlockState(pos), pos);
+			gas.ignite(world, pos);
 		}
 	}
 }

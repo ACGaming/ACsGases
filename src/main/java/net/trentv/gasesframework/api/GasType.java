@@ -18,6 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.trentv.gasesframework.api.reaction.block.IBlockReaction;
 import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
 import net.trentv.gasesframework.api.reaction.gas.IGasReaction;
+import net.trentv.gasesframework.common.block.BlockGas;
 
 public class GasType
 {
@@ -204,8 +205,13 @@ public class GasType
 
 	}
 
-	public boolean ignite(World world, IBlockState state, BlockPos pos)
+	public boolean ignite(World world, BlockPos pos)
 	{
-		return true;
+		if (this.combustability.isFlammable() && this.block instanceof BlockGas blockGas)
+		{
+			blockGas.ignite(pos, world);
+			return true;
+		}
+		return false;
 	}
 }

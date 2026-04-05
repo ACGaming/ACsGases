@@ -16,7 +16,7 @@ public class BlockReactionWaterIgnition implements IBlockReaction
 	{
 		if (access instanceof World world && (blockReactive == Blocks.WATER || blockReactive == Blocks.FLOWING_WATER))
 		{
-			gas.ignite(world, access.getBlockState(pos), pos);
+			gas.ignite(world, pos);
 		}
 	}
 }
