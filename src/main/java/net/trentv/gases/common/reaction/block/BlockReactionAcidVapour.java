@@ -1,0 +1,25 @@
+package net.trentv.gases.common.reaction.block;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+
+import net.trentv.gases.common.GasesObjects;
+import net.trentv.gasesframework.api.GFManipulationAPI;
+import net.trentv.gasesframework.api.GasType;
+import net.trentv.gasesframework.api.reaction.block.IBlockReaction;
+
+public class BlockReactionAcidVapour implements IBlockReaction
+{
+	@Override
+	public void react(Block blockReactive, IBlockAccess access, GasType gas, BlockPos pos)
+	{
+		if (access instanceof World world && (blockReactive == Blocks.WATER || blockReactive == Blocks.FLOWING_WATER))
+		{
+			int level = GFManipulationAPI.getGasLevel(pos, world);
+			GFManipulationAPI.setGasLevel(pos, world, GasesObjects.ACID_VAPOUR, level);
+		}
+	}
+}

@@ -25,6 +25,17 @@ public class EntityDelayedExplosion extends Entity
 		this.isSmoking = isSmoking;
 	}
 
+	protected void explode()
+	{
+		this.getEntityWorld().newExplosion(this, this.posX, this.posY, this.posZ, this.explosionPower, this.isFlaming, this.isSmoking);
+	}
+
+	@Override
+	protected void entityInit()
+	{
+
+	}
+
 	@Override
 	public void onUpdate()
 	{
@@ -37,17 +48,6 @@ public class EntityDelayedExplosion extends Entity
 				this.explode();
 			}
 		}
-	}
-
-	protected void explode()
-	{
-		this.getEntityWorld().newExplosion(this, this.posX, this.posY, this.posZ, this.explosionPower, this.isFlaming, this.isSmoking);
-	}
-
-	@Override
-	protected void entityInit()
-	{
-
 	}
 
 	@Override

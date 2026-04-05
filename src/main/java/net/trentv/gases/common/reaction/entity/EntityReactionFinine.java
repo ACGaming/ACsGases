@@ -1,6 +1,4 @@
-package net.trentv.gases.common.reaction;
-
-import java.util.Random;
+package net.trentv.gases.common.reaction.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
@@ -12,8 +10,6 @@ import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
 
 public class EntityReactionFinine implements IEntityReaction
 {
-	private Random random = new Random();
-
 	@Override
 	public void react(Entity e, IBlockAccess access, GasType gas, BlockPos pos)
 	{
@@ -25,13 +21,13 @@ public class EntityReactionFinine implements IEntityReaction
 			iterations++;
 			newPosition = new BlockPos(originalPosition);
 
-			int newX = random.nextInt(16) - 8;
-			int newY = random.nextInt(16) - 8;
-			int newZ = random.nextInt(16) - 8;
+			int newX = e.world.rand.nextInt(16) - 8;
+			int newY = e.world.rand.nextInt(16) - 8;
+			int newZ = e.world.rand.nextInt(16) - 8;
 			newPosition = newPosition.add(newX, newY, newZ);
 
 		} while (iterations < GasesMainConfigurations.GASES.FININE.maxTeleportSearches & (access.isAirBlock(pos) & access.isAirBlock(pos.up())));
 
-		e.setPositionAndRotation(newPosition.getX(), newPosition.getY(), newPosition.getZ(), random.nextInt(360), random.nextInt(180) - 90);
+		e.setPositionAndRotation(newPosition.getX(), newPosition.getY(), newPosition.getZ(), e.world.rand.nextInt(360), e.world.rand.nextInt(180) - 90);
 	}
 }

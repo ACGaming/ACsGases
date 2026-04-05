@@ -1,9 +1,5 @@
 package net.trentv.gasesframework.common.block;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -24,14 +20,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.trentv.gasesframework.api.Combustibility;
-import net.trentv.gasesframework.api.GFManipulationAPI;
-import net.trentv.gasesframework.api.GFRegistrationAPI;
-import net.trentv.gasesframework.api.GasType;
-import net.trentv.gasesframework.api.GasesFrameworkAPI;
-import net.trentv.gasesframework.api.IGasEffectProtector;
-import net.trentv.gasesframework.api.MaterialGas;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import net.trentv.gasesframework.api.*;
+import net.trentv.gasesframework.api.reaction.block.IBlockReaction;
 import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
+import net.trentv.gasesframework.api.reaction.gas.IGasReaction;
 import net.trentv.gasesframework.api.sample.ISample;
 import net.trentv.gasesframework.common.GasesFrameworkObjects;
 import net.trentv.gasesframework.common.entity.EntityDelayedExplosion;
@@ -307,36 +303,53 @@ public class BlockGas extends Block implements ISample
 	}
 
 	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos neighborPos)
+	{
+		for (IBlockReaction r : this.gasType.getBlockReactions())
+		{
+			r.react(neighborBlock, world, this.gasType, pos);
+		}
+		if (neighborBlock instanceof BlockGas neighborGas)
+		{
+			for (IGasReaction r : this.gasType.getGasReactions())
+			{
+				r.react(this.gasType, world, neighborGas.gasType, pos);
+			}
+		}
+	}
+
+	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
-		if (entity instanceof EntityPlayer)
+		if (!(entity instanceof EntityLivingBase living))
 		{
-			EntityPlayer player = (EntityPlayer) entity;
-			if (player.isCreative() || player.isSpectator()) return;
+			return;
 		}
-		IEntityReaction[] s = gasType.getEntityReactions();
-		for (IEntityReaction a : s)
+		if (living instanceof EntityPlayer player)
+		{
+			if (player.isCreative() || player.isSpectator())
+			{
+				return;
+			}
+		}
+		IEntityReaction[] reactions = this.gasType.getEntityReactions();
+		for (IEntityReaction r : reactions)
 		{
 			boolean hasProtected = false;
-			if (entity instanceof EntityLivingBase)
+			for (ItemStack stack : living.getArmorInventoryList())
 			{
-				Iterable<ItemStack> armor = entity.getArmorInventoryList();
-				for (ItemStack stack : armor)
+				if (!stack.isEmpty() && stack.getItem() instanceof IGasEffectProtector prot)
 				{
-					if (stack.getItem() instanceof IGasEffectProtector)
+					if (prot.apply(living, r, this.gasType, stack))
 					{
-						IGasEffectProtector prot = (IGasEffectProtector) stack.getItem();
-						if (prot.apply((EntityLivingBase) entity, a, gasType, stack))
-						{
-							hasProtected = true;
-							break;
-						}
+						hasProtected = true;
+						break;
 					}
 				}
 			}
 			if (!hasProtected)
 			{
-				a.react(entity, world, this.gasType, pos);
+				r.react(entity, world, this.gasType, pos);
 			}
 		}
 	}

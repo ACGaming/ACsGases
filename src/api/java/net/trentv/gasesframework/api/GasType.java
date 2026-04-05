@@ -48,9 +48,9 @@ public class GasType
 	public ResourceLocation texture;
 	public boolean tintindex = true;
 
-	public ArrayList<IEntityReaction> entityReactions = new ArrayList<IEntityReaction>();
-	public Map<GasType, Set<IGasReaction>> gasReactions = new IdentityHashMap<GasType, Set<IGasReaction>>();
-	public Map<Block, Set<IBlockReaction>> blockReactions = new IdentityHashMap<Block, Set<IBlockReaction>>();
+	public List<IBlockReaction> blockReactions = new ArrayList<>();
+	public List<IEntityReaction> entityReactions = new ArrayList<>();
+	public List<IGasReaction> gasReactions = new ArrayList<>();
 
 	public GasType(String name, int color, int opacity, int density, Combustibility combustability)
 	{
@@ -149,6 +149,17 @@ public class GasType
 		}
 	}
 
+	public GasType registerBlockReaction(IBlockReaction... a)
+	{
+		blockReactions.addAll(Arrays.asList(a));
+		return this;
+	}
+
+	public IBlockReaction[] getBlockReactions()
+	{
+		return blockReactions.toArray(new IBlockReaction[blockReactions.size()]);
+	}
+
 	public GasType registerEntityReaction(IEntityReaction... a)
 	{
 		entityReactions.addAll(Arrays.asList(a));
@@ -160,16 +171,15 @@ public class GasType
 		return entityReactions.toArray(new IEntityReaction[entityReactions.size()]);
 	}
 
-	public IGasReaction[] getGasReaction(GasType in)
+	public GasType registerGasReaction(IGasReaction... a)
 	{
-		Set<IGasReaction> set = gasReactions.get(in);
-		return set.toArray(new IGasReaction[set.size()]);
+		gasReactions.addAll(Arrays.asList(a));
+		return this;
 	}
 
-	public IBlockReaction[] getBlockReaction(Block in)
+	public IGasReaction[] getGasReactions()
 	{
-		Set<IBlockReaction> set = blockReactions.get(in);
-		return set.toArray(new IBlockReaction[set.size()]);
+		return gasReactions.toArray(new IGasReaction[gasReactions.size()]);
 	}
 
 	// Return false if you want to stop the rest of the tick processing.

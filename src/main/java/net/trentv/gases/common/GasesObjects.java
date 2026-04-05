@@ -1,8 +1,5 @@
 package net.trentv.gases.common;
 
-import java.util.Arrays;
-import java.util.HashMap;
-
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -12,6 +9,9 @@ import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
+
+import java.util.Arrays;
+import java.util.HashMap;
 import net.trentv.gases.Gases;
 import net.trentv.gases.GasesRegistry;
 import net.trentv.gases.common.block.BlockDiabalineOre;
@@ -22,8 +22,11 @@ import net.trentv.gases.common.gastype.GasTypeLightSensitive;
 import net.trentv.gases.common.gastype.GasTypeVoid;
 import net.trentv.gases.common.item.ItemDiabalineRefined;
 import net.trentv.gases.common.item.ItemRespirator;
-import net.trentv.gases.common.reaction.EntityReactionDamage;
-import net.trentv.gases.common.reaction.EntityReactionFinine;
+import net.trentv.gases.common.reaction.block.*;
+import net.trentv.gases.common.reaction.entity.EntityReactionDamage;
+import net.trentv.gases.common.reaction.entity.EntityReactionFinine;
+import net.trentv.gases.common.reaction.entity.EntityReactionRustItems;
+import net.trentv.gases.common.reaction.entity.EntityReactionSparkIgnition;
 import net.trentv.gasesframework.GasesFrameworkRegistry;
 import net.trentv.gasesframework.api.Combustibility;
 import net.trentv.gasesframework.api.GFRegistrationAPI;
@@ -56,7 +59,7 @@ public class GasesObjects
 	public static final GasType FININE = new GasType("finine", 0xFFFEE8, 2, 0, Combustibility.NONE).setCohesion(16).setTexture(new ResourceLocation(Gases.MODID, "block/finine"), false);
 	public static final GasType WHISPERING_FOG = new GasType("whispering_fog", 0x000000, 15, -1, Combustibility.HIGHLY_EXPLOSIVE);
 
-	private static final GasType[] IMPLEMENTED_GASES = new GasType[] { STEAM, NATURAL_GAS, RED_GAS, VOID_GAS, ELECTRIC, CORROSIVE, NITROUS, ACID_VAPOUR, COAL_DUST, BLACK_DAMP, CHLORINE, STONE_DUST, IOCALFAEUS, HELIUM, FININE, WHISPERING_FOG };
+	private static final GasType[] IMPLEMENTED_GASES = new GasType[] {STEAM, NATURAL_GAS, RED_GAS, VOID_GAS, ELECTRIC, CORROSIVE, NITROUS, ACID_VAPOUR, COAL_DUST, BLACK_DAMP, CHLORINE, STONE_DUST, IOCALFAEUS, HELIUM, FININE, WHISPERING_FOG};
 
 	private static final HashMap<Block, BlockHeated> HEATED_RECIPE_LIST = new HashMap<>();
 
@@ -66,8 +69,8 @@ public class GasesObjects
 	public static final BlockDiabalineOre DIABALINE_ORE_GLOWING = (BlockDiabalineOre) new BlockDiabalineOre(true, new ResourceLocation(Gases.MODID, "diabaline_ore_glowing")).setCreativeTab(Gases.CREATIVE_TAB);
 
 	public static final ItemDiabalineRefined DIABALINE_REFINED = new ItemDiabalineRefined();
-	public static final ItemRespirator PRIMITIVE_RESPIRATOR = new ItemRespirator(Arrays.asList(EntityReactionSlowness.class, EntityReactionSuffocation.class), EnumHelper.addArmorMaterial("primitive_respirator", Gases.MODID + ":primitive_respirator", 20, new int[] { 2, 0, 0, 0 }, 12, null, 5), "primitive_respirator", Items.COAL);
-	public static final ItemRespirator ADVANCED_RESPIRATOR = new ItemRespirator(Arrays.asList(EntityReactionSlowness.class, EntityReactionSuffocation.class, EntityReactionBlindness.class), EnumHelper.addArmorMaterial("advanced_respirator", Gases.MODID + ":advanced_respirator", 50, new int[] { 2, 0, 0, 0 }, 12, null, 5), "advanced_respirator", Items.IRON_INGOT);
+	public static final ItemRespirator PRIMITIVE_RESPIRATOR = new ItemRespirator(Arrays.asList(EntityReactionSlowness.class, EntityReactionSuffocation.class), EnumHelper.addArmorMaterial("primitive_respirator", Gases.MODID + ":primitive_respirator", 20, new int[] {2, 0, 0, 0}, 12, null, 5), "primitive_respirator", Items.COAL);
+	public static final ItemRespirator ADVANCED_RESPIRATOR = new ItemRespirator(Arrays.asList(EntityReactionSlowness.class, EntityReactionSuffocation.class, EntityReactionBlindness.class), EnumHelper.addArmorMaterial("advanced_respirator", Gases.MODID + ":advanced_respirator", 50, new int[] {2, 0, 0, 0}, 12, null, 5), "advanced_respirator", Items.IRON_INGOT);
 
 	public static final LanternType LANTERN_TYPE_TORCH = new LanternType("torch", 15.0f / 16.0f, "gases:lantern_torch", Item.getItemFromBlock(Blocks.TORCH), null, 0).setCreativeTab(Gases.CREATIVE_TAB);
 	public static final LanternType LANTERN_TYPE_GLOWSTONE = new LanternType("glowstone", 1.0f, "gases:lantern_glowstone", Items.GLOWSTONE_DUST, null, 0).setCreativeTab(Gases.CREATIVE_TAB);
@@ -98,6 +101,15 @@ public class GasesObjects
 		GasesFrameworkRegistry.registerLantern(LANTERN_GLOWSTONE);
 	}
 
+	public static void registerBlockReactions()
+	{
+		RED_GAS.registerBlockReaction(new BlockReactionWaterIgnition());
+		CORROSIVE.registerBlockReaction(new BlockReactionCorrosion());
+		NITROUS.registerBlockReaction(new BlockReactionAcidVapour());
+		BLACK_DAMP.registerBlockReaction(new BlockReactionExtinguish());
+		CHLORINE.registerBlockReaction(new BlockReactionRustBlocks());
+	}
+
 	public static void registerEntityReactions()
 	{
 		STEAM.registerEntityReaction(new EntityReactionDamage(DAMAGE_SOURCE_STEAM, 4));
@@ -105,16 +117,29 @@ public class GasesObjects
 		RED_GAS.registerEntityReaction(new EntityReactionBlindness(1), new EntityReactionSuffocation(2, 3), new EntityReactionSlowness(8));
 		VOID_GAS.registerEntityReaction(new EntityReactionDamage(DAMAGE_SOURCE_VOID, 8), new EntityReactionBlindness(20), new EntityReactionSuffocation(40, 3));
 		ELECTRIC.registerEntityReaction(new EntityReactionBlindness(4), new EntityReactionSuffocation(2, 3));
-		CORROSIVE.registerEntityReaction(new EntityReactionBlindness(4), new EntityReactionSuffocation(2, 3));
+		CORROSIVE.registerEntityReaction(new EntityReactionDamage(DamageSource.GENERIC, 2), new EntityReactionBlindness(4), new EntityReactionSuffocation(2, 3));
 		NITROUS.registerEntityReaction(new EntityReactionBlindness(1), new EntityReactionSuffocation(2, 3), new EntityReactionSlowness(16));
-		ACID_VAPOUR.registerEntityReaction(new EntityReactionBlindness(20), new EntityReactionSuffocation(1, 3));
+		ACID_VAPOUR.registerEntityReaction(new EntityReactionDamage(DamageSource.GENERIC, 4), new EntityReactionBlindness(20), new EntityReactionSuffocation(1, 3));
 		COAL_DUST.registerEntityReaction(new EntityReactionSuffocation(6, 3), new EntityReactionSlowness(16));
 		BLACK_DAMP.registerEntityReaction(new EntityReactionSuffocation(6, 3), new EntityReactionSlowness(24));
-		CHLORINE.registerEntityReaction(new EntityReactionBlindness(4), new EntityReactionSuffocation(6, 3));
+		CHLORINE.registerEntityReaction(new EntityReactionRustItems(), new EntityReactionBlindness(4), new EntityReactionSuffocation(6, 3));
 		STONE_DUST.registerEntityReaction(new EntityReactionSuffocation(8, 3), new EntityReactionSlowness(16));
 		HELIUM.registerEntityReaction(new EntityReactionSuffocation(14, 3));
 		FININE.registerEntityReaction(new EntityReactionFinine());
 		WHISPERING_FOG.registerEntityReaction(new EntityReactionSuffocation(6, 3), new EntityReactionSlowness(24));
+
+		for (GasType gasType : IMPLEMENTED_GASES)
+		{
+			if (gasType.combustability.burnRate >= Combustibility.FLAMMABLE.burnRate)
+			{
+				gasType.registerEntityReaction(new EntityReactionSparkIgnition());
+			}
+		}
+	}
+
+	public static void registerGasReactions()
+	{
+
 	}
 
 	@Nullable
