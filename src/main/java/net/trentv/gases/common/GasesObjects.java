@@ -79,7 +79,10 @@ public class GasesObjects
 
 	public static void init()
 	{
+		registerBlockReactions();
 		registerEntityReactions();
+		registerGasReactions();
+
 		for (GasType type : IMPLEMENTED_GASES)
 		{
 			type.setCreativeTab(Gases.CREATIVE_TAB);
