@@ -24,6 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import net.trentv.gases.common.configuration.GasesMainConfigurations;
 import net.trentv.gasesframework.api.*;
 import net.trentv.gasesframework.api.reaction.block.IBlockReaction;
 import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
@@ -34,10 +35,8 @@ import net.trentv.gasesframework.common.entity.EntityDelayedExplosion;
 
 public class BlockGas extends Block implements ISample
 {
-	public GasType gasType;
-
-	private static final int tickRate = 10;
 	public static final PropertyInteger CAPACITY = PropertyInteger.create("capacity", 1, 16);
+	public GasType gasType;
 
 	public BlockGas(GasType type)
 	{
@@ -57,7 +56,7 @@ public class BlockGas extends Block implements ISample
 	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
 	{
-		worldIn.scheduleBlockUpdate(pos, this, tickRate + RANDOM.nextInt(6), 1);
+		worldIn.scheduleBlockUpdate(pos, this, GasesMainConfigurations.GASES.tickRate + RANDOM.nextInt(6), 1);
 	}
 
 	@Override
@@ -175,7 +174,7 @@ public class BlockGas extends Block implements ISample
 
 		if (gasType.requiresNewTick(world, state, currentPosition))
 		{
-			world.scheduleBlockUpdate(currentPosition, this, tickRate + RANDOM.nextInt(6), 1);
+			world.scheduleBlockUpdate(currentPosition, this, GasesMainConfigurations.GASES.tickRate + RANDOM.nextInt(6), 1);
 		}
 	}
 

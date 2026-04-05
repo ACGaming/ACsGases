@@ -255,6 +255,10 @@ public class GasesMainConfigurations
 		@Config.Comment("Blocks that cause flammable gas to ignite")
 		@Config.Name("Ignition Sources")
 		public String[] ignitionSources = new String[] {"minecraft:fire", "minecraft:lava", "minecraft:flowing_lava", "minecraft:torch", "minecraft:lit_furnace"};
+
+		@Config.Comment({"Update interval for gas blocks in ticks (block update delay)", "Performance sensitive!"})
+		@Config.Name("Tick Rate")
+		public int tickRate = 15;
 	}
 
 	@Config.Comment("Gas furnace recipe tweaks")
