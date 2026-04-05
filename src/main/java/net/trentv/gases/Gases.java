@@ -24,10 +24,10 @@ import net.trentv.gasesframework.api.gasworldgentype.GasWorldGenPocket;
 @Mod(modid = Gases.MODID, version = Gases.VERSION, acceptedMinecraftVersions = "1.12.2", dependencies = "required-after:gasesframework")
 public class Gases
 {
-	public static final String MODID = "gases";
-	public static final String VERSION = "2.0.0";
+	public static final String MODID = Tags.MOD_ID;
+	public static final String VERSION = Tags.VERSION;
 
-	public static final GasesCreativeTab CREATIVE_TAB = new GasesCreativeTab("gases");
+	public static final GasesCreativeTab CREATIVE_TAB = new GasesCreativeTab(MODID);
 	public static final WorldGeneratorFogEmitter worldGenerator = new WorldGeneratorFogEmitter();
 
 	public static Logger logger;

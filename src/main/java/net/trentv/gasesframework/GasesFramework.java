@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import net.trentv.gases.Tags;
 import net.trentv.gases.common.configuration.GasesConfigLists;
 import net.trentv.gasesframework.api.capability.IGasEffects;
 import net.trentv.gasesframework.common.CommonProxy;
@@ -31,7 +32,7 @@ public class GasesFramework
 	public static GasesFramework INSTANCE;
 
 	public static final String MODID = "gasesframework";
-	public static final String VERSION = "2.0.0";
+	public static final String VERSION = Tags.VERSION;
 	public static final GasesFrameworkCreativeTab CREATIVE_TAB = new GasesFrameworkCreativeTab("gasesframework");
 	public static final WorldGeneratorGasesFramework worldGenerator = new WorldGeneratorGasesFramework();
 

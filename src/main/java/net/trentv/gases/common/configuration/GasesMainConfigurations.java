@@ -268,15 +268,15 @@ public class GasesMainConfigurations
 		public boolean coalToDiamond = true;
 	}
 
-	@Mod.EventBusSubscriber(modid = "gases")
+	@Mod.EventBusSubscriber(modid = net.trentv.gases.Gases.MODID)
 	public static class ConfigEventHandler
 	{
 		@SubscribeEvent
 		public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event)
 		{
-			if (event.getModID().equals("gases"))
+			if (event.getModID().equals(net.trentv.gases.Gases.MODID))
 			{
-				ConfigManager.sync("gases", Config.Type.INSTANCE);
+				ConfigManager.sync(net.trentv.gases.Gases.MODID, Config.Type.INSTANCE);
 			}
 		}
 	}
