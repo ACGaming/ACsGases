@@ -1,7 +1,5 @@
 package net.trentv.gases.common.block;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -14,12 +12,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import java.util.Random;
 import net.trentv.gases.Gases;
 import net.trentv.gases.common.RefinedState;
+import net.trentv.gases.common.configuration.GasesMainConfigurations;
 
 public class BlockHeated extends Block
 {
-	private static final int tickRate = 80;
 	public static final PropertyInteger HEAT = PropertyInteger.create("heat", 0, 9);
 	public static final PropertyEnum<RefinedState> REFINED = PropertyEnum.create("refined", RefinedState.class);
 
@@ -44,7 +44,7 @@ public class BlockHeated extends Block
 	@Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
 	{
-		world.scheduleBlockUpdate(pos, this, tickRate, 1);
+		world.scheduleBlockUpdate(pos, this, GasesMainConfigurations.GASES.IOCALFAEUS.tickRate, 1);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class BlockHeated extends Block
 					break;
 			}
 		}
-		world.scheduleBlockUpdate(pos, this, tickRate, 1);
+		world.scheduleBlockUpdate(pos, this, GasesMainConfigurations.GASES.IOCALFAEUS.tickRate, 1);
 	}
 
 	public void heat(World world, IBlockState state, BlockPos p, BlockHeated r)

@@ -270,6 +270,10 @@ public class GasesMainConfigurations
 					"minecraft:emerald_ore;minecraft:emerald_block;minecraft:stone;emerald",
 					"minecraft:stone;minecraft:stone;minecraft:stone;stone"
 				};
+
+			@Config.Comment({"Update interval for heated blocks in ticks (block update delay)", "Performance sensitive!"})
+			@Config.Name("Heated Block Tick Rate")
+			public int tickRate = 80;
 		}
 
 		@Config.Comment({"Custom items to act as respirators to prevent gas entity reactions", "Syntax: item;primitive/advanced"})
@@ -285,8 +289,8 @@ public class GasesMainConfigurations
 		public int respiratorDamageRate = 30;
 
 		@Config.Comment({"Update interval for gas blocks in ticks (block update delay)", "Performance sensitive!"})
-		@Config.Name("Tick Rate")
-		public int tickRate = 15;
+		@Config.Name("Gas Block Tick Rate")
+		public int tickRate = 20;
 	}
 
 	@Mod.EventBusSubscriber(modid = net.trentv.gases.Gases.MODID)
