@@ -268,7 +268,7 @@ public class GasesMainConfigurations
 					"minecraft:redstone_ore;minecraft:redstone_block;minecraft:stone;redstone",
 					"minecraft:lapis_ore;minecraft:lapis_block;minecraft:stone;lapis",
 					"minecraft:emerald_ore;minecraft:emerald_block;minecraft:stone;emerald",
-					"minecraft:stone;minecraft:cobblestone;minecraft:lava;stone"
+					"minecraft:stone;minecraft:stone;minecraft:stone;stone"
 				};
 		}
 

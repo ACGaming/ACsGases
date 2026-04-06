@@ -15,12 +15,16 @@ public class GasesConfigLists
 	public static final List<Block> DUST_EMISSION_BLOCKS = new ArrayList<>();
 	public static final List<Block> IGNITION_SOURCES = new ArrayList<>();
 
-	public static void init()
+	public static void preInit()
+	{
+		registerHeatedRecipes();
+	}
+
+	public static void postInit()
 	{
 		addBlocksToList(GasesMainConfigurations.GASES.COAL_DUST.blocks, COAL_DUST_EMISSION_BLOCKS);
 		addBlocksToList(GasesMainConfigurations.GASES.DUST.blocks, DUST_EMISSION_BLOCKS);
 		addBlocksToList(GasesMainConfigurations.GASES.ignitionSources, IGNITION_SOURCES);
-		registerHeatedRecipes();
 		registerRustableMaterials();
 	}
 
@@ -40,13 +44,13 @@ public class GasesConfigLists
 	{
 		for (String s : GasesMainConfigurations.GASES.IOCALFAEUS.heatedRecipes)
 		{
-			String[] parts = s.split(";", -1);
+			String[] parts = s.split(";");
 			if (parts.length != 4) return;
 
-			String original = parts[0].strip();
-			String refined = parts[1].strip();
-			String ruined = parts[2].strip();
-			String id = parts[3].strip();
+			String original = parts[0];
+			String refined = parts[1];
+			String ruined = parts[2];
+			String id = parts[3];
 
 			Block blockOriginal = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(original));
 			Block blockRefined = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(refined));

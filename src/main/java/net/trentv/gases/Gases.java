@@ -1,7 +1,6 @@
 package net.trentv.gases;
 
 import org.apache.logging.log4j.Logger;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
@@ -14,6 +13,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.trentv.gases.common.CommonProxy;
 import net.trentv.gases.common.GasesObjects;
+import net.trentv.gases.common.configuration.GasesConfigLists;
 import net.trentv.gases.common.configuration.GasesMainConfigurations;
 import net.trentv.gases.common.gasworldgentype.GasWorldGenDiabalinePocket;
 import net.trentv.gases.common.worldgen.WorldGeneratorFogEmitter;
@@ -41,6 +41,7 @@ public class Gases
 		logger = event.getModLog();
 
 		GasesObjects.init();
+		GasesConfigLists.preInit();
 
 		proxy.registerEventHandlers();
 		proxy.registerRenderers();
@@ -71,6 +72,7 @@ public class Gases
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
+		GasesConfigLists.postInit();
 		logger.info("'AC's Gases' initialized");
 	}
 
