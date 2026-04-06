@@ -281,17 +281,6 @@ public class GasesMainConfigurations
 		public int tickRate = 15;
 	}
 
-	@Config.Comment("Gas furnace recipe tweaks")
-	@Config.Name("Gas Furnace Recipes")
-	public static final GasFurnaceRecipes GAS_FURNACE_RECIPES = new GasFurnaceRecipes();
-
-	public static class GasFurnaceRecipes
-	{
-		@Config.Comment("If true, a full stack of coal can be smelted into a diamond in a gas furnace")
-		@Config.Name("Coal to Diamond")
-		public boolean coalToDiamond = true;
-	}
-
 	@Mod.EventBusSubscriber(modid = net.trentv.gases.Gases.MODID)
 	public static class ConfigEventHandler
 	{
