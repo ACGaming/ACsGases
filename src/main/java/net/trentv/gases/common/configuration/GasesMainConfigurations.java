@@ -276,6 +276,10 @@ public class GasesMainConfigurations
 		@Config.Name("Ignition Sources")
 		public String[] ignitionSources = new String[] {"minecraft:fire", "minecraft:lava", "minecraft:flowing_lava", "minecraft:torch", "minecraft:lit_furnace"};
 
+		@Config.Comment("Damage interval for respirators in ticks")
+		@Config.Name("Respirator Damage Rate")
+		public int respiratorDamageRate = 30;
+
 		@Config.Comment({"Update interval for gas blocks in ticks (block update delay)", "Performance sensitive!"})
 		@Config.Name("Tick Rate")
 		public int tickRate = 15;

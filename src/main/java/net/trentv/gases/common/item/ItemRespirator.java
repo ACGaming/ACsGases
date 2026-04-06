@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.trentv.gases.Gases;
+import net.trentv.gases.common.configuration.GasesMainConfigurations;
 import net.trentv.gasesframework.api.GasType;
 import net.trentv.gasesframework.api.IGasEffectProtector;
 import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
@@ -37,7 +38,7 @@ public class ItemRespirator extends ItemArmor implements IGasEffectProtector
 			if (damageDelay-- == 0)
 			{
 				itemstack.damageItem(1, entity);
-				damageDelay = 30;
+				damageDelay = GasesMainConfigurations.GASES.respiratorDamageRate;
 			}
 			return true;
 		}

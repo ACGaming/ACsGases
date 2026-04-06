@@ -77,7 +77,8 @@ public class GasesObjects
 		GasesRegistry.registerEntityReactions();
 		GasesRegistry.registerGasReactions();
 
-		GasesRegistry.registerItem(DIABALINE_REFINED, PRIMITIVE_RESPIRATOR, ADVANCED_RESPIRATOR);
+		GasesRegistry.registerItem(DIABALINE_REFINED);
+		GasesRegistry.registerItem(PRIMITIVE_RESPIRATOR, ADVANCED_RESPIRATOR);
 		GasesRegistry.registerBlockAndItem(MODIFIED_BEDROCK, WHISPERING_FOG_EMITTER);
 		GasesRegistry.registerBlockAndItem(DIABALINE_ORE, DIABALINE_ORE_GLOWING);
 
