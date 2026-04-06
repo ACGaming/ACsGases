@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import java.util.ArrayList;
 import java.util.List;
 import net.trentv.gases.GasesRegistry;
+import net.trentv.gases.common.block.BlockHeated;
 
 public class GasesConfigLists
 {
@@ -19,6 +20,7 @@ public class GasesConfigLists
 		addBlocksToList(GasesMainConfigurations.GASES.COAL_DUST.blocks, COAL_DUST_EMISSION_BLOCKS);
 		addBlocksToList(GasesMainConfigurations.GASES.DUST.blocks, DUST_EMISSION_BLOCKS);
 		addBlocksToList(GasesMainConfigurations.GASES.ignitionSources, IGNITION_SOURCES);
+		registerHeatedRecipes();
 		registerRustableMaterials();
 	}
 
@@ -31,6 +33,28 @@ public class GasesConfigLists
 			{
 				list.add(b);
 			}
+		}
+	}
+
+	private static void registerHeatedRecipes()
+	{
+		for (String s : GasesMainConfigurations.GASES.IOCALFAEUS.heatedRecipes)
+		{
+			String[] parts = s.split(";", -1);
+			if (parts.length != 4) return;
+
+			String original = parts[0].strip();
+			String refined = parts[1].strip();
+			String ruined = parts[2].strip();
+			String id = parts[3].strip();
+
+			Block blockOriginal = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(original));
+			Block blockRefined = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(refined));
+			Block blockRuined = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(ruined));
+
+			if (blockOriginal == null || blockRefined == null || blockRuined == null || id.isEmpty()) return;
+
+			GasesRegistry.registerHeatedRecipe(new BlockHeated(blockOriginal.getDefaultState(), blockRefined.getDefaultState(), blockRuined.getDefaultState(), id));
 		}
 	}
 

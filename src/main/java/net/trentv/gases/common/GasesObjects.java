@@ -11,7 +11,6 @@ import java.util.Arrays;
 import net.trentv.gases.Gases;
 import net.trentv.gases.GasesRegistry;
 import net.trentv.gases.common.block.BlockDiabalineOre;
-import net.trentv.gases.common.block.BlockHeated;
 import net.trentv.gases.common.block.BlockModifiedBedrock;
 import net.trentv.gases.common.gastype.GasTypeBlackDamp;
 import net.trentv.gases.common.gastype.GasTypeLightSensitive;
@@ -77,13 +76,6 @@ public class GasesObjects
 		GasesRegistry.registerBlockReactions();
 		GasesRegistry.registerEntityReactions();
 		GasesRegistry.registerGasReactions();
-
-		GasesRegistry.registerHeatedRecipe(new BlockHeated(Blocks.IRON_ORE.getDefaultState(), Blocks.IRON_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "iron"));
-		GasesRegistry.registerHeatedRecipe(new BlockHeated(Blocks.DIAMOND_ORE.getDefaultState(), Blocks.DIAMOND_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "diamond"));
-		GasesRegistry.registerHeatedRecipe(new BlockHeated(Blocks.GOLD_ORE.getDefaultState(), Blocks.GOLD_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "gold"));
-		GasesRegistry.registerHeatedRecipe(new BlockHeated(Blocks.REDSTONE_ORE.getDefaultState(), Blocks.REDSTONE_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "redstone"));
-		GasesRegistry.registerHeatedRecipe(new BlockHeated(Blocks.LAPIS_ORE.getDefaultState(), Blocks.LAPIS_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "lapis"));
-		GasesRegistry.registerHeatedRecipe(new BlockHeated(Blocks.STONE.getDefaultState(), Blocks.STONE.getDefaultState(), Blocks.STONE.getDefaultState(), "stone"));
 
 		GasesRegistry.registerItem(DIABALINE_REFINED, PRIMITIVE_RESPIRATOR, ADVANCED_RESPIRATOR);
 		GasesRegistry.registerBlockAndItem(MODIFIED_BEDROCK, WHISPERING_FOG_EMITTER);

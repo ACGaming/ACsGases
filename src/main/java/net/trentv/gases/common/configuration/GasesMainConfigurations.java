@@ -252,6 +252,26 @@ public class GasesMainConfigurations
 			public int maxTeleportSearches = 20;
 		}
 
+		@Config.Comment("Iocalfaeus gas behavior")
+		@Config.Name("Iocalfaeus")
+		public final Iocalfaeus IOCALFAEUS = new Iocalfaeus();
+
+		public static class Iocalfaeus
+		{
+			@Config.Comment({"Blocks that will convert to others when exposed to Iocalfaeus gas", "Syntax: original;refined;ruined;id"})
+			@Config.Name("Heated Recipes")
+			public String[] heatedRecipes = new String[]
+				{
+					"minecraft:iron_ore;minecraft:iron_block;minecraft:stone;iron",
+					"minecraft:diamond_ore;minecraft:diamond_block;minecraft:stone;diamond",
+					"minecraft:gold_ore;minecraft:gold_block;minecraft:stone;gold",
+					"minecraft:redstone_ore;minecraft:redstone_block;minecraft:stone;redstone",
+					"minecraft:lapis_ore;minecraft:lapis_block;minecraft:stone;lapis",
+					"minecraft:emerald_ore;minecraft:emerald_block;minecraft:stone;emerald",
+					"minecraft:stone;minecraft:cobblestone;minecraft:lava;stone"
+				};
+		}
+
 		@Config.Comment("Blocks that cause flammable gas to ignite")
 		@Config.Name("Ignition Sources")
 		public String[] ignitionSources = new String[] {"minecraft:fire", "minecraft:lava", "minecraft:flowing_lava", "minecraft:torch", "minecraft:lit_furnace"};
