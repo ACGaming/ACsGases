@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,9 +31,11 @@ import net.trentv.gasesframework.api.reaction.block.IBlockReaction;
 import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
 import net.trentv.gasesframework.api.reaction.gas.IGasReaction;
 import net.trentv.gasesframework.api.sample.ISample;
+import net.trentv.gasesframework.client.ClientEvents;
 import net.trentv.gasesframework.common.CommonEvents;
 import net.trentv.gasesframework.common.GasesFrameworkObjects;
 import net.trentv.gasesframework.common.entity.EntityDelayedExplosion;
+import net.trentv.gasesframework.common.sound.SoundGasLoop;
 
 public class BlockGas extends Block implements ISample
 {
@@ -49,15 +52,15 @@ public class BlockGas extends Block implements ISample
 		setCreativeTab(type.creativeTab);
 		setResistance(0);
 		setTranslationKey("gas_" + type.name);
-		this.setDefaultState(blockState.getBaseState().withProperty(CAPACITY, 16));
+		setDefaultState(blockState.getBaseState().withProperty(CAPACITY, 16));
 	}
 
 	// Block & block state
 
 	@Override
-	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
 	{
-		worldIn.scheduleBlockUpdate(pos, this, GasesMainConfigurations.GASES.tickRate + RANDOM.nextInt(6), 1);
+		world.scheduleBlockUpdate(pos, this, GasesMainConfigurations.GASES.tickRate + RANDOM.nextInt(6), 1);
 	}
 
 	@Override
@@ -65,8 +68,7 @@ public class BlockGas extends Block implements ISample
 	{
 		// Considerations:
 		//
-		// Optimize to only run when the block next to it updates (after coming
-		// to rest)
+		// Optimize to only run when the block next to it updates (after coming to rest)
 		// Look into MutableBlockPos to reduce GC overhead
 
 		if (!gasType.preTick(world, state, currentPosition))
@@ -115,8 +117,7 @@ public class BlockGas extends Block implements ISample
 				newDir = EnumFacing.VALUES[i];
 				BlockPos flowToBlock = currentPosition.offset(newDir);
 				int thisValue = state.getValue(CAPACITY);
-				// Checks if it can flow into the block AND the current gas
-				// capacity is over the cohesion level
+				// Checks if it can flow into the block AND the current gas capacity is over the cohesion level
 				if (GFManipulationAPI.canPlaceGas(flowToBlock, world, this.gasType) & thisValue > gasType.cohesion)
 				{
 					int flowValue = GFManipulationAPI.getGasLevel(flowToBlock, world);
@@ -137,9 +138,7 @@ public class BlockGas extends Block implements ISample
 
 			BlockPos nextPosition = scanForOpenBlock(world, this, currentPosition, direction);
 			int thisValue = state.getValue(CAPACITY);
-			if (!nextPosition.equals(currentPosition)) // In this case, we'll be
-			// flowing somewhere
-			// above or below.
+			if (!nextPosition.equals(currentPosition)) // In this case, we'll be flowing somewhere above or below.
 			{
 				int remaining = GFManipulationAPI.addGasLevel(nextPosition, world, this.gasType, thisValue);
 				if (state.getValue(CAPACITY) != remaining)
@@ -147,8 +146,7 @@ public class BlockGas extends Block implements ISample
 					GFManipulationAPI.setGasLevel(currentPosition, world, this.gasType, remaining);
 				}
 			}
-			else // Can't flow above or below, so time to spill out on the
-			// ground
+			else // Can't flow above or below, so time to spill out on the ground
 			{
 				if (thisValue > 1)
 				{
@@ -231,7 +229,7 @@ public class BlockGas extends Block implements ISample
 
 	@Override
 	@Nullable
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos)
 	{
 		return NULL_AABB;
 	}
@@ -359,13 +357,25 @@ public class BlockGas extends Block implements ISample
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)
 	{
-		gasType.randomDisplayTick(stateIn, worldIn, pos, rand);
+		gasType.randomDisplayTick(state, world, pos, rand);
+		playSound(world, pos, state);
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void playSound(World world, BlockPos pos, IBlockState state)
+	{
+		long key = pos.toLong();
+		if (!ClientEvents.GAS_SOUNDS.contains(key))
+		{
+			ClientEvents.GAS_SOUNDS.add(key);
+			Minecraft.getMinecraft().getSoundHandler().playSound(new SoundGasLoop(world, pos.toImmutable(), state));
+		}
 	}
 
 	@Override
-	public GasType onSample(IBlockAccess access, BlockPos pos, GasType in, EnumFacing side)
+	public GasType onSample(IBlockAccess access, BlockPos pos, GasType gas, EnumFacing side)
 	{
 		return this.gasType;
 	}

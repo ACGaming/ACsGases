@@ -1,12 +1,16 @@
 {
-	"effect.duct_tape":
-	{
-		"category":"master",
-		"sounds":
-		[
-			{
-				"name":"gasesframework:effect/duct_tape"
-			}
-		]
-	}
+  "block.gas_loop": {
+    "sounds": [
+      {
+        "name": "gasesframework:block/gas_loop"
+      }
+    ]
+  },
+  "effect.duct_tape": {
+    "sounds": [
+      {
+        "name": "gasesframework:effect/duct_tape"
+      }
+    ]
+  }
 }

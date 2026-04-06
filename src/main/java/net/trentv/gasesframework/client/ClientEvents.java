@@ -7,11 +7,16 @@ import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.HashSet;
+import java.util.Set;
 import net.trentv.gasesframework.api.capability.IGasEffects;
 import net.trentv.gasesframework.common.capability.GasEffectsProvider;
 
 public class ClientEvents
 {
+	public static final Set<Long> GAS_SOUNDS = new HashSet<>();
+
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onFogDensity(FogDensity event)
