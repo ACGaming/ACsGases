@@ -19,16 +19,8 @@ public class BlockReactionCorrosion implements IBlockReaction
 		{
 			if (blockReactive != Blocks.AIR && world.getBlockState(pos).getBlockHardness(world, pos) <= GasesMainConfigurations.GASES.CORROSIVE_GAS.corrosivePower)
 			{
-				if (world.rand.nextInt(10) == 0)
-				{
-					world.destroyBlock(pos, true);
-				}
-				else
-				{
-					world.setBlockToAir(pos);
-				}
+				world.destroyBlock(pos, world.rand.nextInt(10) == 0);
 			}
 		}
-
 	}
 }
