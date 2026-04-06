@@ -30,6 +30,7 @@ import net.trentv.gasesframework.api.reaction.block.IBlockReaction;
 import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
 import net.trentv.gasesframework.api.reaction.gas.IGasReaction;
 import net.trentv.gasesframework.api.sample.ISample;
+import net.trentv.gasesframework.common.CommonEvents;
 import net.trentv.gasesframework.common.GasesFrameworkObjects;
 import net.trentv.gasesframework.common.entity.EntityDelayedExplosion;
 
@@ -332,9 +333,17 @@ public class BlockGas extends Block implements ISample
 			boolean hasProtected = false;
 			for (ItemStack stack : living.getArmorInventoryList())
 			{
-				if (!stack.isEmpty() && stack.getItem() instanceof IGasEffectProtector prot)
+				if (!stack.isEmpty())
 				{
-					if (prot.apply(living, r, this.gasType, stack))
+					if (stack.getItem() instanceof IGasEffectProtector prot)
+					{
+						if (prot.apply(living, r, this.gasType, stack))
+						{
+							hasProtected = true;
+							break;
+						}
+					}
+					else if (CommonEvents.applyGasEffectProtection(living, r, stack))
 					{
 						hasProtected = true;
 						break;

@@ -8,6 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 
 import java.util.Arrays;
+import java.util.List;
 import net.trentv.gases.Gases;
 import net.trentv.gases.GasesRegistry;
 import net.trentv.gases.common.block.BlockDiabalineOre;
@@ -25,6 +26,7 @@ import net.trentv.gasesframework.api.lanterntype.LanternType;
 import net.trentv.gasesframework.api.reaction.entity.EntityReactionBlindness;
 import net.trentv.gasesframework.api.reaction.entity.EntityReactionSlowness;
 import net.trentv.gasesframework.api.reaction.entity.EntityReactionSuffocation;
+import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
 import net.trentv.gasesframework.common.block.BlockLantern;
 
 public class GasesObjects
@@ -57,8 +59,11 @@ public class GasesObjects
 	public static final BlockDiabalineOre DIABALINE_ORE_GLOWING = (BlockDiabalineOre) new BlockDiabalineOre(true, new ResourceLocation(Gases.MODID, "diabaline_ore_glowing")).setCreativeTab(Gases.CREATIVE_TAB);
 
 	public static final ItemDiabalineRefined DIABALINE_REFINED = new ItemDiabalineRefined();
-	public static final ItemRespirator PRIMITIVE_RESPIRATOR = new ItemRespirator(Arrays.asList(EntityReactionSlowness.class, EntityReactionSuffocation.class), EnumHelper.addArmorMaterial("primitive_respirator", Gases.MODID + ":primitive_respirator", 20, new int[] {2, 0, 0, 0}, 12, null, 5), "primitive_respirator", Items.COAL);
-	public static final ItemRespirator ADVANCED_RESPIRATOR = new ItemRespirator(Arrays.asList(EntityReactionSlowness.class, EntityReactionSuffocation.class, EntityReactionBlindness.class), EnumHelper.addArmorMaterial("advanced_respirator", Gases.MODID + ":advanced_respirator", 50, new int[] {2, 0, 0, 0}, 12, null, 5), "advanced_respirator", Items.IRON_INGOT);
+
+	public static final List<Class<? extends IEntityReaction>> BLOCKED_REACTIONS_PRIMITIVE = Arrays.asList(EntityReactionSlowness.class, EntityReactionSuffocation.class);
+	public static final List<Class<? extends IEntityReaction>> BLOCKED_REACTIONS_ADVANCED = Arrays.asList(EntityReactionSlowness.class, EntityReactionSuffocation.class, EntityReactionBlindness.class);
+	public static final ItemRespirator PRIMITIVE_RESPIRATOR = new ItemRespirator(BLOCKED_REACTIONS_PRIMITIVE, EnumHelper.addArmorMaterial("primitive_respirator", Gases.MODID + ":primitive_respirator", 20, new int[] {2, 0, 0, 0}, 12, null, 5), "primitive_respirator", Items.COAL);
+	public static final ItemRespirator ADVANCED_RESPIRATOR = new ItemRespirator(BLOCKED_REACTIONS_ADVANCED, EnumHelper.addArmorMaterial("advanced_respirator", Gases.MODID + ":advanced_respirator", 50, new int[] {2, 0, 0, 0}, 12, null, 5), "advanced_respirator", Items.IRON_INGOT);
 
 	public static final LanternType LANTERN_TYPE_TORCH = new LanternType("torch", 15.0f / 16.0f, "gases:lantern_torch", Item.getItemFromBlock(Blocks.TORCH), null, 0).setCreativeTab(Gases.CREATIVE_TAB);
 	public static final LanternType LANTERN_TYPE_GLOWSTONE = new LanternType("glowstone", 1.0f, "gases:lantern_glowstone", Items.GLOWSTONE_DUST, null, 0).setCreativeTab(Gases.CREATIVE_TAB);

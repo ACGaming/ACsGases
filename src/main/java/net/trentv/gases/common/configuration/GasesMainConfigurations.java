@@ -272,6 +272,10 @@ public class GasesMainConfigurations
 				};
 		}
 
+		@Config.Comment({"Custom items to act as respirators to prevent gas entity reactions", "Syntax: item;primitive/advanced"})
+		@Config.Name("Custom Respirators")
+		public String[] customRespirators = new String[] {};
+
 		@Config.Comment("Blocks that cause flammable gas to ignite")
 		@Config.Name("Ignition Sources")
 		public String[] ignitionSources = new String[] {"minecraft:fire", "minecraft:lava", "minecraft:flowing_lava", "minecraft:torch", "minecraft:lit_furnace"};

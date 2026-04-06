@@ -6,5 +6,5 @@ import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
 
 public interface IGasEffectProtector
 {
-	public boolean apply(EntityLivingBase entity, IEntityReaction reaction, GasType type, ItemStack itemstack);
+	boolean apply(EntityLivingBase entity, IEntityReaction reaction, GasType type, ItemStack itemstack);
 }

@@ -1,12 +1,12 @@
 package net.trentv.gases.common.item;
 
-import java.util.List;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+
+import java.util.List;
 import net.trentv.gases.Gases;
 import net.trentv.gases.common.configuration.GasesMainConfigurations;
 import net.trentv.gasesframework.api.GasType;
@@ -28,17 +28,14 @@ public class ItemRespirator extends ItemArmor implements IGasEffectProtector
 		setTranslationKey(name);
 	}
 
-	private int damageDelay = 0;
-
 	@Override
 	public boolean apply(EntityLivingBase entity, IEntityReaction reaction, GasType type, ItemStack itemstack)
 	{
 		if (blockedReactions.contains(reaction.getClass()))
 		{
-			if (damageDelay-- == 0)
+			if (itemstack.isItemStackDamageable() && entity.world.getWorldTime() % GasesMainConfigurations.GASES.respiratorDamageRate == 0)
 			{
 				itemstack.damageItem(1, entity);
-				damageDelay = GasesMainConfigurations.GASES.respiratorDamageRate;
 			}
 			return true;
 		}

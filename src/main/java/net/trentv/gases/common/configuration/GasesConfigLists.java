@@ -1,6 +1,7 @@
 package net.trentv.gases.common.configuration;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -14,6 +15,8 @@ public class GasesConfigLists
 	public static final List<Block> COAL_DUST_EMISSION_BLOCKS = new ArrayList<>();
 	public static final List<Block> DUST_EMISSION_BLOCKS = new ArrayList<>();
 	public static final List<Block> IGNITION_SOURCES = new ArrayList<>();
+	public static final List<Item> RESPIRATORS_PRIMITIVE = new ArrayList<>();
+	public static final List<Item> RESPIRATORS_ADVANCED = new ArrayList<>();
 
 	public static void preInit()
 	{
@@ -25,6 +28,7 @@ public class GasesConfigLists
 		addBlocksToList(GasesMainConfigurations.GASES.COAL_DUST.blocks, COAL_DUST_EMISSION_BLOCKS);
 		addBlocksToList(GasesMainConfigurations.GASES.DUST.blocks, DUST_EMISSION_BLOCKS);
 		addBlocksToList(GasesMainConfigurations.GASES.ignitionSources, IGNITION_SOURCES);
+		registerCustomRespirators();
 		registerRustableMaterials();
 	}
 
@@ -36,6 +40,30 @@ public class GasesConfigLists
 			if (b != null)
 			{
 				list.add(b);
+			}
+		}
+	}
+
+	private static void registerCustomRespirators()
+	{
+		for (String s : GasesMainConfigurations.GASES.customRespirators)
+		{
+			String[] parts = s.split(";");
+			if (parts.length != 2) return;
+
+			String item = parts[0];
+			String edition = parts[1];
+
+			Item respirator = ForgeRegistries.ITEMS.getValue(new ResourceLocation(item));
+			if (respirator == null) return;
+
+			if (edition.equals("primitive"))
+			{
+				RESPIRATORS_PRIMITIVE.add(respirator);
+			}
+			else if (edition.equals("advanced"))
+			{
+				RESPIRATORS_ADVANCED.add(respirator);
 			}
 		}
 	}
