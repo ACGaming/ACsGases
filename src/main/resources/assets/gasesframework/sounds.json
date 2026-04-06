@@ -5,7 +5,7 @@
 		"sounds":
 		[
 			{
-				"name":"effect/duct_tape"
+				"name":"gasesframework:effect/duct_tape"
 			}
 		]
 	}
