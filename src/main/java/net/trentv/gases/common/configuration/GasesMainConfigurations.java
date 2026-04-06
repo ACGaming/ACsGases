@@ -235,9 +235,9 @@ public class GasesMainConfigurations
 
 		public static class ChlorineGas
 		{
-			@Config.Comment("Tool/armor materials that can be destroyed by chlorine gas (one per line)")
-			@Config.Name("Destroyable Materials")
-			public String[] destroyableMaterials = new String[] {"IRON", "CHAIN"};
+			@Config.Comment("Tool/armor materials that can be damaged by chlorine gas")
+			@Config.Name("Rustable Materials")
+			public String[] rustableMaterials = new String[] {"iron", "chain", "chainmail"};
 		}
 
 		@Config.Comment("Finine gas behavior")

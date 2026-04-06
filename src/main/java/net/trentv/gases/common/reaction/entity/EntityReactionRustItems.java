@@ -98,7 +98,7 @@ public class EntityReactionRustItems implements IEntityReaction
 
 		if (material != null)
 		{
-			return GasesRegistry.isRustableMaterial(material);
+			return GasesRegistry.isRustableMaterial(material.toLowerCase());
 		}
 		else
 		{

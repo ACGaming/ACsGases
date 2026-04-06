@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.trentv.gases.GasesRegistry;
 
 public class GasesConfigLists
 {
@@ -18,6 +19,7 @@ public class GasesConfigLists
 		addBlocksToList(GasesMainConfigurations.GASES.COAL_DUST.blocks, COAL_DUST_EMISSION_BLOCKS);
 		addBlocksToList(GasesMainConfigurations.GASES.DUST.blocks, DUST_EMISSION_BLOCKS);
 		addBlocksToList(GasesMainConfigurations.GASES.ignitionSources, IGNITION_SOURCES);
+		registerRustableMaterials();
 	}
 
 	private static void addBlocksToList(String[] blocks, List<Block> list)
@@ -29,6 +31,14 @@ public class GasesConfigLists
 			{
 				list.add(b);
 			}
+		}
+	}
+
+	private static void registerRustableMaterials()
+	{
+		for (String s : GasesMainConfigurations.GASES.CHLORINE_GAS.rustableMaterials)
+		{
+			GasesRegistry.registerRustableMaterial(s);
 		}
 	}
 }
