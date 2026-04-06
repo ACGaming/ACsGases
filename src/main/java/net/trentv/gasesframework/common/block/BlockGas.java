@@ -40,7 +40,7 @@ import net.trentv.gasesframework.common.sound.SoundGasLoop;
 public class BlockGas extends Block implements ISample
 {
 	public static final PropertyInteger CAPACITY = PropertyInteger.create("capacity", 1, 16);
-	public GasType gasType;
+	public final GasType gasType;
 
 	public BlockGas(GasType type)
 	{
@@ -66,29 +66,24 @@ public class BlockGas extends Block implements ISample
 	@Override
 	public void updateTick(World world, BlockPos currentPosition, IBlockState state, Random rand)
 	{
-		// Considerations:
-		//
-		// Optimize to only run when the block next to it updates (after coming to rest)
-		// Look into MutableBlockPos to reduce GC overhead
+		if (!gasType.preTick(world, state, currentPosition)) return;
 
-		if (!gasType.preTick(world, state, currentPosition))
+		// Reaction scan and ignition check
+		for (EnumFacing facing : EnumFacing.VALUES)
 		{
-			return;
-		}
-
-		for (int i = 0; i < EnumFacing.VALUES.length; i++)
-		{
-			BlockPos scanPos = currentPosition.offset(EnumFacing.VALUES[i]);
+			BlockPos scanPos = currentPosition.offset(facing);
 			IBlockState scanState = world.getBlockState(scanPos);
-			for (IBlockReaction r : this.gasType.getBlockReactions())
+			Block scanBlock = scanState.getBlock();
+
+			for (IBlockReaction r : gasType.getBlockReactions())
 			{
-				r.react(scanState.getBlock(), world, this.gasType, currentPosition);
+				r.react(scanBlock, world, gasType, currentPosition);
 			}
-			if (scanState.getBlock() instanceof BlockGas neighborGas)
+			if (scanBlock instanceof BlockGas neighborGas)
 			{
-				for (IGasReaction r : this.gasType.getGasReactions())
+				for (IGasReaction r : gasType.getGasReactions())
 				{
-					r.react(this.gasType, world, neighborGas.gasType, currentPosition);
+					r.react(gasType, world, neighborGas.gasType, currentPosition);
 				}
 			}
 			if (gasType.combustability != Combustibility.NONE && GFRegistrationAPI.isIgnitionSource(scanState))
@@ -98,33 +93,33 @@ public class BlockGas extends Block implements ISample
 			}
 		}
 
-		if (gasType.dissipationRate > 0)
+		// Dissipation, re-read state afterward so thisValue is current
+		if (gasType.dissipationRate > 0 && rand.nextInt(16) < gasType.dissipationRate)
 		{
-			if (rand.nextInt(16) < gasType.dissipationRate)
-			{
-				int newAmount = state.getValue(CAPACITY) - gasType.dissipationAmount;
-				GFManipulationAPI.setGasLevel(currentPosition, world, gasType, newAmount);
-			}
+			int newAmount = state.getValue(CAPACITY) - gasType.dissipationAmount;
+			GFManipulationAPI.setGasLevel(currentPosition, world, gasType, newAmount);
+			state = world.getBlockState(currentPosition);
+			if (!(state.getBlock() instanceof BlockGas)) return;
 		}
+
+		int thisValue = state.getValue(CAPACITY);
 
 		// If density is 0, we're going to be spreading out in a cloud
 		if (gasType.density == 0)
 		{
-			EnumFacing newDir;
 			// Iterate through all directions (up/down/left/right/front/back)
-			for (int i = 0; i < EnumFacing.VALUES.length; i++)
+			for (EnumFacing facing : EnumFacing.VALUES)
 			{
-				newDir = EnumFacing.VALUES[i];
-				BlockPos flowToBlock = currentPosition.offset(newDir);
-				int thisValue = state.getValue(CAPACITY);
+				BlockPos flowToBlock = currentPosition.offset(facing);
 				// Checks if it can flow into the block AND the current gas capacity is over the cohesion level
-				if (GFManipulationAPI.canPlaceGas(flowToBlock, world, this.gasType) & thisValue > gasType.cohesion)
+				if (GFManipulationAPI.canPlaceGas(flowToBlock, world, gasType) && thisValue > gasType.cohesion)
 				{
 					int flowValue = GFManipulationAPI.getGasLevel(flowToBlock, world);
 					if (flowValue + 1 < thisValue)
 					{
-						GFManipulationAPI.addGasLevel(flowToBlock, world, this.gasType, 1);
-						GFManipulationAPI.setGasLevel(currentPosition, world, this.gasType, GFManipulationAPI.getGasLevel(currentPosition, world) - 1);
+						GFManipulationAPI.addGasLevel(flowToBlock, world, gasType, 1);
+						thisValue--;
+						GFManipulationAPI.setGasLevel(currentPosition, world, gasType, thisValue);
 					}
 				}
 			}
@@ -133,36 +128,32 @@ public class BlockGas extends Block implements ISample
 		else
 		{
 			// Decide which direction we're going
-			EnumFacing direction = EnumFacing.DOWN;
-			if (gasType.density > 0) direction = EnumFacing.UP;
-
+			EnumFacing direction = gasType.density > 0 ? EnumFacing.UP : EnumFacing.DOWN;
 			BlockPos nextPosition = scanForOpenBlock(world, this, currentPosition, direction);
-			int thisValue = state.getValue(CAPACITY);
+
 			if (!nextPosition.equals(currentPosition)) // In this case, we'll be flowing somewhere above or below.
 			{
-				int remaining = GFManipulationAPI.addGasLevel(nextPosition, world, this.gasType, thisValue);
-				if (state.getValue(CAPACITY) != remaining)
+				int remaining = GFManipulationAPI.addGasLevel(nextPosition, world, gasType, thisValue);
+				if (thisValue != remaining)
 				{
-					GFManipulationAPI.setGasLevel(currentPosition, world, this.gasType, remaining);
+					GFManipulationAPI.setGasLevel(currentPosition, world, gasType, remaining);
 				}
 			}
-			else // Can't flow above or below, so time to spill out on the ground
+			else if (thisValue > 1) // Can't flow above or below, so time to spill out on the ground
 			{
-				if (thisValue > 1)
+				EnumFacing newDir = EnumFacing.SOUTH;
+				for (int i = 0; i < 4; i++)
 				{
-					EnumFacing newDir = EnumFacing.SOUTH;
-					for (int i = 0; i < 4; i++)
+					newDir = newDir.rotateY();
+					BlockPos flowToBlock = nextPosition.offset(newDir);
+					if (GFManipulationAPI.canPlaceGas(flowToBlock, world, gasType))
 					{
-						newDir = newDir.rotateY();
-						BlockPos flowToBlock = nextPosition.offset(newDir);
-						if (GFManipulationAPI.canPlaceGas(flowToBlock, world, this.gasType))
+						int flowValue = GFManipulationAPI.getGasLevel(flowToBlock, world);
+						if (flowValue + 1 < thisValue)
 						{
-							int flowValue = GFManipulationAPI.getGasLevel(flowToBlock, world);
-							if (flowValue + 1 < thisValue)
-							{
-								GFManipulationAPI.addGasLevel(flowToBlock, world, this.gasType, 1);
-								GFManipulationAPI.setGasLevel(nextPosition, world, this.gasType, GFManipulationAPI.getGasLevel(nextPosition, world) - 1);
-							}
+							GFManipulationAPI.addGasLevel(flowToBlock, world, gasType, 1);
+							thisValue--;
+							GFManipulationAPI.setGasLevel(nextPosition, world, gasType, thisValue);
 						}
 					}
 				}
@@ -276,24 +267,23 @@ public class BlockGas extends Block implements ISample
 
 	// Gases relevant
 
-	public void ignite(BlockPos pos, World access)
+	public void ignite(BlockPos pos, World world)
 	{
-		if (!(access.getBlockState(pos).getBlock() instanceof BlockGas))
-		{
-			return;
-		}
+		IBlockState state = world.getBlockState(pos);
+		if (!(state.getBlock() instanceof BlockGas)) return;
+
+		int capacity = state.getValue(CAPACITY);
 		if (gasType.combustability.explosionPower > 0)
 		{
-			float capacity = access.getBlockState(pos).getValue(CAPACITY);
-			float explosionPower = (capacity / 16) * gasType.combustability.explosionPower * 3;
-			EntityDelayedExplosion exploder = new EntityDelayedExplosion(access, 5, explosionPower, true, true);
+			float explosionPower = (capacity / 16.0f) * gasType.combustability.explosionPower * 3;
+			EntityDelayedExplosion exploder = new EntityDelayedExplosion(world, 5, explosionPower, true, true);
 			exploder.setPosition(pos.getX(), pos.getY(), pos.getZ());
-			access.spawnEntity(exploder);
-			GFManipulationAPI.setGasLevel(pos, access, GasesFrameworkAPI.AIR, 16);
+			world.spawnEntity(exploder);
+			GFManipulationAPI.setGasLevel(pos, world, GasesFrameworkAPI.AIR, 16);
 		}
 		if (gasType.combustability.fireSpreadRate > 0)
 		{
-			GFManipulationAPI.setGasLevel(pos, access, GasesFrameworkObjects.FIRE, access.getBlockState(pos).getValue(CAPACITY));
+			GFManipulationAPI.setGasLevel(pos, world, GasesFrameworkObjects.FIRE, capacity);
 		}
 	}
 
@@ -307,8 +297,7 @@ public class BlockGas extends Block implements ISample
 	@Override
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
 	{
-		List<ItemStack> ret = new ArrayList<ItemStack>();
-		return ret;
+		return new ArrayList<>();
 	}
 
 	@Override
