@@ -1,12 +1,12 @@
 package net.trentv.gases.client;
 
-import java.util.HashMap;
-
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
+
+import java.util.Map;
 import net.trentv.gases.GasesRegistry;
 import net.trentv.gases.common.block.BlockHeated;
 
@@ -31,7 +31,7 @@ public class GasesModelLoader implements ICustomModelLoader
 	@Override
 	public IModel loadModel(ResourceLocation modelLocation) throws Exception
 	{
-		HashMap<ResourceLocation, BlockHeated> registeredLocations = GasesRegistry.getRegisteredHeatedLocations();
+		Map<ResourceLocation, BlockHeated> registeredLocations = GasesRegistry.getRegisteredHeatedLocations();
 		ModelResourceLocation res = (ModelResourceLocation) modelLocation;
 		BlockHeated a = registeredLocations.get(convert(res));
 		if ((res.getVariant().equals("inventory")))

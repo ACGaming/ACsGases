@@ -1,12 +1,12 @@
 package net.trentv.gases.common.gastype;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.trentv.gases.common.GasesObjects;
+
+import java.util.Random;
+import net.trentv.gases.GasesRegistry;
 import net.trentv.gases.common.block.BlockHeated;
 import net.trentv.gasesframework.api.Combustibility;
 import net.trentv.gasesframework.api.GFManipulationAPI;
@@ -28,7 +28,7 @@ public class GasTypeLightSensitive extends GasType
 		if (tickDelay-- == 0)
 		{
 			int currentGasLevel = GFManipulationAPI.getGasLevel(p, world);
-			tickDelay = 0 + (16 - currentGasLevel) + rand.nextInt(8);
+			tickDelay = (16 - currentGasLevel) + rand.nextInt(8);
 			if (!world.isRemote)
 			{
 				int brightness = world.getLight(p);
@@ -44,7 +44,7 @@ public class GasTypeLightSensitive extends GasType
 								BlockPos pos = new BlockPos(p.getX() + x, p.getY() + y, p.getZ() + z);
 								IBlockState s = world.getBlockState(pos);
 								Block a = s.getBlock();
-								BlockHeated r = GasesObjects.getHeated(a);
+								BlockHeated r = GasesRegistry.getHeated(a);
 								if (a instanceof BlockHeated)
 								{
 									((BlockHeated) a).heat(world, world.getBlockState(pos), pos, (BlockHeated) a);

@@ -1,8 +1,5 @@
 package net.trentv.gases.common;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -11,7 +8,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.EnumHelper;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import net.trentv.gases.Gases;
 import net.trentv.gases.GasesRegistry;
 import net.trentv.gases.common.block.BlockDiabalineOre;
@@ -22,11 +18,6 @@ import net.trentv.gases.common.gastype.GasTypeLightSensitive;
 import net.trentv.gases.common.gastype.GasTypeVoid;
 import net.trentv.gases.common.item.ItemDiabalineRefined;
 import net.trentv.gases.common.item.ItemRespirator;
-import net.trentv.gases.common.reaction.block.*;
-import net.trentv.gases.common.reaction.entity.EntityReactionDamage;
-import net.trentv.gases.common.reaction.entity.EntityReactionFinine;
-import net.trentv.gases.common.reaction.entity.EntityReactionRustItems;
-import net.trentv.gases.common.reaction.entity.EntityReactionSparkIgnition;
 import net.trentv.gasesframework.GasesFrameworkRegistry;
 import net.trentv.gasesframework.api.Combustibility;
 import net.trentv.gasesframework.api.GFRegistrationAPI;
@@ -59,9 +50,7 @@ public class GasesObjects
 	public static final GasType FININE = new GasType("finine", 0xFFFEE8, 2, 0, Combustibility.NONE).setCohesion(16).setTexture(new ResourceLocation(Gases.MODID, "block/finine"), false);
 	public static final GasType WHISPERING_FOG = new GasType("whispering_fog", 0x000000, 15, -1, Combustibility.HIGHLY_EXPLOSIVE);
 
-	private static final GasType[] IMPLEMENTED_GASES = new GasType[] {STEAM, NATURAL_GAS, RED_GAS, VOID_GAS, ELECTRIC, CORROSIVE, NITROUS, ACID_VAPOUR, COAL_DUST, BLACK_DAMP, CHLORINE, STONE_DUST, IOCALFAEUS, HELIUM, FININE, WHISPERING_FOG};
-
-	private static final HashMap<Block, BlockHeated> HEATED_RECIPE_LIST = new HashMap<>();
+	public static final GasType[] IMPLEMENTED_GASES = new GasType[] {STEAM, NATURAL_GAS, RED_GAS, VOID_GAS, ELECTRIC, CORROSIVE, NITROUS, ACID_VAPOUR, COAL_DUST, BLACK_DAMP, CHLORINE, STONE_DUST, IOCALFAEUS, HELIUM, FININE, WHISPERING_FOG};
 
 	public static final BlockModifiedBedrock MODIFIED_BEDROCK = new BlockModifiedBedrock(VOID_GAS, 4, 5, new ResourceLocation(Gases.MODID, "bedrock"));
 	public static final BlockModifiedBedrock WHISPERING_FOG_EMITTER = (BlockModifiedBedrock) new BlockModifiedBedrock(WHISPERING_FOG, 1, 16, new ResourceLocation(Gases.MODID, "whispering_fog_emitter")).setCreativeTab(Gases.CREATIVE_TAB);
@@ -79,22 +68,22 @@ public class GasesObjects
 
 	public static void init()
 	{
-		registerBlockReactions();
-		registerEntityReactions();
-		registerGasReactions();
-
 		for (GasType type : IMPLEMENTED_GASES)
 		{
 			type.setCreativeTab(Gases.CREATIVE_TAB);
 			GFRegistrationAPI.registerGasType(type, new ResourceLocation(Gases.MODID, "gas_" + type.name));
 		}
 
-		registerHeatedRecipe(new BlockHeated(Blocks.IRON_ORE.getDefaultState(), Blocks.IRON_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "iron"));
-		registerHeatedRecipe(new BlockHeated(Blocks.DIAMOND_ORE.getDefaultState(), Blocks.DIAMOND_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "diamond"));
-		registerHeatedRecipe(new BlockHeated(Blocks.GOLD_ORE.getDefaultState(), Blocks.GOLD_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "gold"));
-		registerHeatedRecipe(new BlockHeated(Blocks.REDSTONE_ORE.getDefaultState(), Blocks.REDSTONE_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "redstone"));
-		registerHeatedRecipe(new BlockHeated(Blocks.LAPIS_ORE.getDefaultState(), Blocks.LAPIS_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "lapis"));
-		registerHeatedRecipe(new BlockHeated(Blocks.STONE.getDefaultState(), Blocks.STONE.getDefaultState(), Blocks.STONE.getDefaultState(), "stone"));
+		GasesRegistry.registerBlockReactions();
+		GasesRegistry.registerEntityReactions();
+		GasesRegistry.registerGasReactions();
+
+		GasesRegistry.registerHeatedRecipe(new BlockHeated(Blocks.IRON_ORE.getDefaultState(), Blocks.IRON_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "iron"));
+		GasesRegistry.registerHeatedRecipe(new BlockHeated(Blocks.DIAMOND_ORE.getDefaultState(), Blocks.DIAMOND_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "diamond"));
+		GasesRegistry.registerHeatedRecipe(new BlockHeated(Blocks.GOLD_ORE.getDefaultState(), Blocks.GOLD_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "gold"));
+		GasesRegistry.registerHeatedRecipe(new BlockHeated(Blocks.REDSTONE_ORE.getDefaultState(), Blocks.REDSTONE_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "redstone"));
+		GasesRegistry.registerHeatedRecipe(new BlockHeated(Blocks.LAPIS_ORE.getDefaultState(), Blocks.LAPIS_BLOCK.getDefaultState(), Blocks.STONE.getDefaultState(), "lapis"));
+		GasesRegistry.registerHeatedRecipe(new BlockHeated(Blocks.STONE.getDefaultState(), Blocks.STONE.getDefaultState(), Blocks.STONE.getDefaultState(), "stone"));
 
 		GasesRegistry.registerItem(DIABALINE_REFINED, PRIMITIVE_RESPIRATOR, ADVANCED_RESPIRATOR);
 		GasesRegistry.registerBlockAndItem(MODIFIED_BEDROCK, WHISPERING_FOG_EMITTER);
@@ -102,64 +91,5 @@ public class GasesObjects
 
 		GasesFrameworkRegistry.registerLantern(LANTERN_TORCH);
 		GasesFrameworkRegistry.registerLantern(LANTERN_GLOWSTONE);
-	}
-
-	public static void registerBlockReactions()
-	{
-		RED_GAS.registerBlockReaction(new BlockReactionWaterIgnition());
-		CORROSIVE.registerBlockReaction(new BlockReactionCorrosion());
-		NITROUS.registerBlockReaction(new BlockReactionAcidVapour());
-		BLACK_DAMP.registerBlockReaction(new BlockReactionExtinguish());
-		CHLORINE.registerBlockReaction(new BlockReactionRustBlocks());
-	}
-
-	public static void registerEntityReactions()
-	{
-		STEAM.registerEntityReaction(new EntityReactionDamage(DAMAGE_SOURCE_STEAM, 4));
-		NATURAL_GAS.registerEntityReaction(new EntityReactionBlindness(2), new EntityReactionSuffocation(2, 3), new EntityReactionSlowness(8));
-		RED_GAS.registerEntityReaction(new EntityReactionBlindness(1), new EntityReactionSuffocation(2, 3), new EntityReactionSlowness(8));
-		VOID_GAS.registerEntityReaction(new EntityReactionDamage(DAMAGE_SOURCE_VOID, 8), new EntityReactionBlindness(20), new EntityReactionSuffocation(40, 3));
-		ELECTRIC.registerEntityReaction(new EntityReactionBlindness(4), new EntityReactionSuffocation(2, 3));
-		CORROSIVE.registerEntityReaction(new EntityReactionDamage(DamageSource.GENERIC, 2), new EntityReactionBlindness(4), new EntityReactionSuffocation(2, 3));
-		NITROUS.registerEntityReaction(new EntityReactionBlindness(1), new EntityReactionSuffocation(2, 3), new EntityReactionSlowness(16));
-		ACID_VAPOUR.registerEntityReaction(new EntityReactionDamage(DamageSource.GENERIC, 4), new EntityReactionBlindness(20), new EntityReactionSuffocation(1, 3));
-		COAL_DUST.registerEntityReaction(new EntityReactionSuffocation(6, 3), new EntityReactionSlowness(16));
-		BLACK_DAMP.registerEntityReaction(new EntityReactionSuffocation(6, 3), new EntityReactionSlowness(24));
-		CHLORINE.registerEntityReaction(new EntityReactionRustItems(), new EntityReactionBlindness(4), new EntityReactionSuffocation(6, 3));
-		STONE_DUST.registerEntityReaction(new EntityReactionSuffocation(8, 3), new EntityReactionSlowness(16));
-		HELIUM.registerEntityReaction(new EntityReactionSuffocation(14, 3));
-		FININE.registerEntityReaction(new EntityReactionFinine());
-		WHISPERING_FOG.registerEntityReaction(new EntityReactionSuffocation(6, 3), new EntityReactionSlowness(24));
-
-		for (GasType gasType : IMPLEMENTED_GASES)
-		{
-			if (gasType.combustability.burnRate >= Combustibility.FLAMMABLE.burnRate)
-			{
-				gasType.registerEntityReaction(new EntityReactionSparkIgnition());
-			}
-		}
-	}
-
-	public static void registerGasReactions()
-	{
-
-	}
-
-	@Nullable
-	public static BlockHeated getHeated(Block block)
-	{
-		return HEATED_RECIPE_LIST.get(block);
-	}
-
-	public static BlockHeated[] getAllHeated()
-	{
-		return HEATED_RECIPE_LIST.values().toArray(new BlockHeated[HEATED_RECIPE_LIST.size()]);
-	}
-
-	public static void registerHeatedRecipe(BlockHeated block)
-	{
-		GasesRegistry.registerBlockAndItem(block);
-		GasesRegistry.registerHeatedModel(block);
-		HEATED_RECIPE_LIST.put(block.original.getBlock(), block);
 	}
 }
