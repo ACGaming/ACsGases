@@ -77,7 +77,7 @@ public class BlockGas extends Block implements ISample
 
 			for (IBlockReaction r : gasType.getBlockReactions())
 			{
-				r.react(scanBlock, world, gasType, currentPosition);
+				r.react(scanBlock, world, gasType, currentPosition, scanPos);
 			}
 			if (scanBlock instanceof BlockGas neighborGas)
 			{

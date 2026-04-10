@@ -14,12 +14,12 @@ import net.trentv.gasesframework.api.reaction.block.IBlockReaction;
 public class BlockReactionAcidVapour implements IBlockReaction
 {
 	@Override
-	public void react(Block blockReactive, IBlockAccess access, GasType gas, BlockPos pos)
+	public void react(Block blockReactive, IBlockAccess access, GasType gasType, BlockPos gasPos, BlockPos scanPos)
 	{
 		if (access instanceof World world && (blockReactive == Blocks.WATER || blockReactive == Blocks.FLOWING_WATER))
 		{
-			int level = GFManipulationAPI.getGasLevel(pos, world);
-			GFManipulationAPI.setGasLevel(pos, world, GasesObjects.ACID_VAPOUR, level);
+			int level = GFManipulationAPI.getGasLevel(gasPos, world);
+			GFManipulationAPI.setGasLevel(gasPos, world, GasesObjects.ACID_VAPOUR, level);
 		}
 	}
 }

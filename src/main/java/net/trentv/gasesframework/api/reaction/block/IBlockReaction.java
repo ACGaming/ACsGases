@@ -8,5 +8,5 @@ import net.trentv.gasesframework.api.GasType;
 
 public interface IBlockReaction
 {
-	void react(Block blockReactive, IBlockAccess access, GasType gas, BlockPos pos);
+	void react(Block blockReactive, IBlockAccess access, GasType gasType, BlockPos gasPos, BlockPos scanPos);
 }

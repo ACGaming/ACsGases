@@ -12,11 +12,11 @@ import net.trentv.gasesframework.api.reaction.block.IBlockReaction;
 public class BlockReactionWaterIgnition implements IBlockReaction
 {
 	@Override
-	public void react(Block blockReactive, IBlockAccess access, GasType gas, BlockPos pos)
+	public void react(Block blockReactive, IBlockAccess access, GasType gasType, BlockPos gasPos, BlockPos scanPos)
 	{
 		if (access instanceof World world && (blockReactive == Blocks.WATER || blockReactive == Blocks.FLOWING_WATER))
 		{
-			gas.ignite(world, pos);
+			gasType.ignite(world, gasPos);
 		}
 	}
 }

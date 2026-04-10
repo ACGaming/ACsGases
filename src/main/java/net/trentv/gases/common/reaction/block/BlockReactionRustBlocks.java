@@ -12,14 +12,14 @@ import net.trentv.gasesframework.api.reaction.block.IBlockReaction;
 public class BlockReactionRustBlocks implements IBlockReaction
 {
 	@Override
-	public void react(Block blockReactive, IBlockAccess access, GasType gas, BlockPos pos)
+	public void react(Block blockReactive, IBlockAccess access, GasType gasType, BlockPos gasPos, BlockPos scanPos)
 	{
 		if (access instanceof World world)
 		{
 			Block replacement = GasesRegistry.getRustedBlock(blockReactive);
 			if (replacement != null)
 			{
-				world.setBlockState(pos, replacement.getDefaultState());
+				world.setBlockState(scanPos, replacement.getDefaultState());
 			}
 		}
 	}

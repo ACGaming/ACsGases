@@ -13,18 +13,18 @@ import net.trentv.gasesframework.api.reaction.block.IBlockReaction;
 public class BlockReactionExtinguish implements IBlockReaction
 {
 	@Override
-	public void react(Block blockReactive, IBlockAccess access, GasType gas, BlockPos pos)
+	public void react(Block blockReactive, IBlockAccess access, GasType gasType, BlockPos gasPos, BlockPos scanPos)
 	{
 		if (access instanceof World world)
 		{
 			if (blockReactive instanceof BlockTorch)
 			{
-				world.destroyBlock(pos, true);
+				world.destroyBlock(scanPos, true);
 			}
 			else if (blockReactive instanceof BlockFire)
 			{
-				world.playEvent(null, 1009, pos, 0);
-				world.setBlockToAir(pos);
+				world.playEvent(null, 1009, scanPos, 0);
+				world.setBlockToAir(scanPos);
 			}
 		}
 	}
