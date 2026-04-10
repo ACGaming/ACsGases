@@ -1,0 +1,28 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "gasesframework:gas_base",
+    "textures": {
+      "all": "gasesframework:block/gas_15"
+    }
+  },
+  "variants": {
+    "capacity=1": {"model": "gasesframework:gas_capacity_1"},
+    "capacity=2": {"model": "gasesframework:gas_capacity_2"},
+    "capacity=3": {"model": "gasesframework:gas_capacity_3"},
+    "capacity=4": {"model": "gasesframework:gas_capacity_4"},
+    "capacity=5": {"model": "gasesframework:gas_capacity_5"},
+    "capacity=6": {"model": "gasesframework:gas_capacity_6"},
+    "capacity=7": {"model": "gasesframework:gas_capacity_7"},
+    "capacity=8": {"model": "gasesframework:gas_capacity_8"},
+    "capacity=9": {"model": "gasesframework:gas_capacity_9"},
+    "capacity=10": {"model": "gasesframework:gas_capacity_10"},
+    "capacity=11": {"model": "gasesframework:gas_capacity_11"},
+    "capacity=12": {"model": "gasesframework:gas_capacity_12"},
+    "capacity=13": {"model": "gasesframework:gas_capacity_13"},
+    "capacity=14": {"model": "gasesframework:gas_capacity_14"},
+    "capacity=15": {"model": "gasesframework:gas_capacity_15"},
+    "capacity=16": {"model": "gasesframework:gas_capacity_16"},
+    "inventory": {"model": "gasesframework:gas_capacity_16"}
+  }
+}
