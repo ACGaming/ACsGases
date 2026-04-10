@@ -52,11 +52,6 @@ public class GasesFrameworkObjects
 			type.registerEntityReaction(new EntityReactionHrrm());
 		}
 
-		for (Block b : GasesConfigLists.IGNITION_SOURCES)
-		{
-			GFRegistrationAPI.registerIgnitionSource(b.getDefaultState());
-		}
-
 		for (int i = 1; i <= 16; i++)
 		{
 			// The actual ignited gas

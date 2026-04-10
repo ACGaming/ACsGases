@@ -86,7 +86,7 @@ public class BlockGas extends Block implements ISample
 					r.react(gasType, world, neighborGas.gasType, currentPosition);
 				}
 			}
-			if (gasType.combustability != Combustibility.NONE && GFRegistrationAPI.isIgnitionSource(scanState))
+			if (gasType.combustability != Combustibility.NONE && GFRegistrationAPI.isIgnitionSource(scanBlock.getDefaultState()))
 			{
 				ignite(currentPosition, world);
 				return;

@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import net.trentv.gases.GasesRegistry;
 import net.trentv.gases.common.block.BlockHeated;
+import net.trentv.gasesframework.api.GFRegistrationAPI;
 
 public class GasesConfigLists
 {
 	public static final List<Block> COAL_DUST_EMISSION_BLOCKS = new ArrayList<>();
 	public static final List<Block> DUST_EMISSION_BLOCKS = new ArrayList<>();
-	public static final List<Block> IGNITION_SOURCES = new ArrayList<>();
 	public static final List<Item> RESPIRATORS_PRIMITIVE = new ArrayList<>();
 	public static final List<Item> RESPIRATORS_ADVANCED = new ArrayList<>();
 
@@ -27,8 +27,8 @@ public class GasesConfigLists
 	{
 		addBlocksToList(GasesMainConfigurations.GASES.COAL_DUST.blocks, COAL_DUST_EMISSION_BLOCKS);
 		addBlocksToList(GasesMainConfigurations.GASES.DUST.blocks, DUST_EMISSION_BLOCKS);
-		addBlocksToList(GasesMainConfigurations.GASES.ignitionSources, IGNITION_SOURCES);
 		registerCustomRespirators();
+		registerIgnitionSources();
 		registerRustableMaterials();
 	}
 
@@ -87,6 +87,18 @@ public class GasesConfigLists
 			if (blockOriginal == null || blockRefined == null || blockRuined == null || id.isEmpty()) return;
 
 			GasesRegistry.registerHeatedRecipe(new BlockHeated(blockOriginal.getDefaultState(), blockRefined.getDefaultState(), blockRuined.getDefaultState(), id));
+		}
+	}
+
+	private static void registerIgnitionSources()
+	{
+		for (String s : GasesMainConfigurations.GASES.ignitionSources)
+		{
+			Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s));
+			if (b != null)
+			{
+				GFRegistrationAPI.registerIgnitionSource(b.getDefaultState());
+			}
 		}
 	}
 
