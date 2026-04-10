@@ -41,29 +41,26 @@ public class CommonEvents
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event)
 	{
-		if (!event.getEntity().getEntityWorld().isRemote)
+		Entity b = event.getEntity();
+		if (b.hasCapability(GasEffectsProvider.GAS_EFFECTS, null))
 		{
-			Entity b = event.getEntity();
-			if (b.hasCapability(GasEffectsProvider.GAS_EFFECTS, null))
+			IGasEffects q = b.getCapability(GasEffectsProvider.GAS_EFFECTS, null);
+
+			if (q.getSuffocation() == 200)
 			{
-				IGasEffects q = b.getCapability(GasEffectsProvider.GAS_EFFECTS, null);
+				b.attackEntityFrom(GasesFrameworkAPI.damageSourceAsphyxiation, 2);
+			}
 
-				if (q.getSuffocation() == 200)
-				{
-					b.attackEntityFrom(GasesFrameworkAPI.damageSourceAsphyxiation, 2);
-				}
+			if (q.getSuffocation() > 0) q.setSuffocation(q.getSuffocation() - 1);
+			if (q.getBlindness() > 0) q.setBlindness(q.getBlindness() - 1);
 
-				if (q.getSuffocation() > 0) q.setSuffocation(q.getSuffocation() - 1);
-				if (q.getBlindness() > 0) q.setBlindness(q.getBlindness() - 1);
-
-				if (q.getSlowness() > 0)
-				{
-					q.setSlowness(q.getSlowness() - 1);
-					float multiply = 1 - (q.getSlowness() / 100);
-					if (multiply < 0.05f) multiply = 0.05f;
-					b.motionX *= multiply;
-					b.motionZ *= multiply;
-				}
+			if (q.getSlowness() > 0)
+			{
+				q.setSlowness(q.getSlowness() - 1);
+				float multiply = 1 - (q.getSlowness() / 100);
+				if (multiply < 0.05f) multiply = 0.05f;
+				b.motionX *= multiply;
+				b.motionZ *= multiply;
 			}
 		}
 	}
