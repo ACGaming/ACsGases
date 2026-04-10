@@ -33,10 +33,6 @@ public class ClientEvents
 				event.setDensity(f * f);
 				event.setCanceled(true);
 			}
-			else
-			{
-				GlStateManager.setFog(GlStateManager.FogMode.LINEAR);
-			}
 		}
 	}
 
