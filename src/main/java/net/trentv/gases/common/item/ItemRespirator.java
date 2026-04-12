@@ -15,8 +15,8 @@ import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
 
 public class ItemRespirator extends ItemArmor implements IGasEffectProtector
 {
-	private List<Class<? extends IEntityReaction>> blockedReactions;
-	private Item repairMaterial;
+	private final List<Class<? extends IEntityReaction>> blockedReactions;
+	private final Item repairMaterial;
 
 	public ItemRespirator(List<Class<? extends IEntityReaction>> list, ArmorMaterial material, String name, Item repairMaterial)
 	{
@@ -35,7 +35,7 @@ public class ItemRespirator extends ItemArmor implements IGasEffectProtector
 		{
 			if (itemstack.isItemStackDamageable() && entity.world.getWorldTime() % GasesMainConfigurations.GASES.respiratorDamageRate == 0)
 			{
-				itemstack.damageItem(1, entity);
+				itemstack.damageItem(GasesMainConfigurations.GASES.respiratorDamageAmount, entity);
 			}
 			return true;
 		}

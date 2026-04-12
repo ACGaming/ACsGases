@@ -288,6 +288,10 @@ public class GasesMainConfigurations
 		@Config.Name("Respirator Damage Rate")
 		public int respiratorDamageRate = 30;
 
+		@Config.Comment("Damage amount for respirators each interval")
+		@Config.Name("Respirator Damage Amount")
+		public int respiratorDamageAmount = 1;
+
 		@Config.Comment({"Update interval for gas blocks in ticks (block update delay)", "Performance sensitive!"})
 		@Config.Name("Gas Block Tick Rate")
 		public int tickRate = 20;
