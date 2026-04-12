@@ -6,21 +6,16 @@ import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 import net.trentv.gasesframework.api.GFRegistrationAPI;
 import net.trentv.gasesframework.api.GasType;
-import net.trentv.gasesframework.client.renderer.RenderFlashSparkFX;
-import net.trentv.gasesframework.client.sound.GasSoundHandler;
 import net.trentv.gasesframework.common.CommonProxy;
-import net.trentv.gasesframework.common.entity.EntityFlashSparkFX;
 
 public class ClientProxy extends CommonProxy
 {
 	@Override
 	public void registerRenderers()
 	{
-		RenderingRegistry.registerEntityRenderingHandler(EntityFlashSparkFX.class, RenderFlashSparkFX::new);
 	}
 
 	@Override

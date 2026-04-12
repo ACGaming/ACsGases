@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -32,7 +33,6 @@ import net.trentv.gasesframework.api.reaction.gas.IGasReaction;
 import net.trentv.gasesframework.api.sample.ISample;
 import net.trentv.gasesframework.common.CommonEvents;
 import net.trentv.gasesframework.common.GasesFrameworkObjects;
-import net.trentv.gasesframework.common.entity.EntityDelayedExplosion;
 
 public class BlockGas extends Block implements ISample
 {
@@ -260,6 +260,7 @@ public class BlockGas extends Block implements ISample
 
 	public void ignite(BlockPos pos, World world)
 	{
+		if (!(world instanceof WorldServer worldServer)) return;
 		IBlockState state = world.getBlockState(pos);
 		if (!(state.getBlock() instanceof BlockGas)) return;
 
@@ -267,9 +268,7 @@ public class BlockGas extends Block implements ISample
 		if (gasType.combustability.explosionPower > 0)
 		{
 			float explosionPower = (capacity / 16.0f) * gasType.combustability.explosionPower * 3;
-			EntityDelayedExplosion exploder = new EntityDelayedExplosion(world, 5, explosionPower, true, true);
-			exploder.setPosition(pos.getX(), pos.getY(), pos.getZ());
-			world.spawnEntity(exploder);
+			CommonEvents.scheduleExplosion(worldServer, pos, explosionPower, 5);
 			GFManipulationAPI.setGasLevel(pos, world, GasesFrameworkAPI.AIR, 16);
 		}
 		if (gasType.combustability.fireSpreadRate > 0)

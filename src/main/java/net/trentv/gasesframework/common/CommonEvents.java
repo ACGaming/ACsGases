@@ -4,10 +4,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import com.github.bsideup.jabel.Desugar;
+import java.util.Iterator;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import net.trentv.gases.common.GasesObjects;
 import net.trentv.gases.common.configuration.GasesConfigLists;
 import net.trentv.gases.common.configuration.GasesMainConfigurations;
@@ -19,6 +26,8 @@ import net.trentv.gasesframework.common.capability.GasEffectsProvider;
 
 public class CommonEvents
 {
+	private static final Queue<PendingExplosion> EXPLOSION_QUEUE = new ConcurrentLinkedDeque<>();
+
 	public static boolean applyGasEffectProtection(EntityLivingBase entity, IEntityReaction reaction, ItemStack itemstack)
 	{
 		if (isValidCustomRespirator(reaction, itemstack))
@@ -30,6 +39,11 @@ public class CommonEvents
 			return true;
 		}
 		return false;
+	}
+
+	public static void scheduleExplosion(WorldServer world, BlockPos pos, float power, int delayTicks)
+	{
+		EXPLOSION_QUEUE.add(new PendingExplosion(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, power, world.getTotalWorldTime() + delayTicks));
 	}
 
 	private static boolean isValidCustomRespirator(IEntityReaction reaction, ItemStack itemstack)
@@ -73,4 +87,26 @@ public class CommonEvents
 			e.addCapability(new ResourceLocation(GasesFramework.MODID, "gas_effects"), new GasEffectsProvider());
 		}
 	}
+
+	@SubscribeEvent
+	public void onWorldTick(TickEvent.WorldTickEvent event)
+	{
+		if (event.phase != TickEvent.Phase.END) return;
+		if (!(event.world instanceof WorldServer server)) return;
+
+		long time = server.getTotalWorldTime();
+		Iterator<PendingExplosion> it = EXPLOSION_QUEUE.iterator();
+		while (it.hasNext())
+		{
+			PendingExplosion exp = it.next();
+			if (exp.world == server && time >= exp.time)
+			{
+				server.newExplosion(null, exp.x, exp.y, exp.z, exp.power, true, true);
+				it.remove();
+			}
+		}
+	}
+
+	@Desugar
+	private record PendingExplosion(WorldServer world, double x, double y, double z, float power, long time) {}
 }
