@@ -24,8 +24,8 @@ import net.trentv.gases.common.block.BlockHeated;
 import net.trentv.gases.common.reaction.block.*;
 import net.trentv.gases.common.reaction.entity.EntityReactionDamage;
 import net.trentv.gases.common.reaction.entity.EntityReactionFinine;
+import net.trentv.gases.common.reaction.entity.EntityReactionIgnition;
 import net.trentv.gases.common.reaction.entity.EntityReactionRustItems;
-import net.trentv.gases.common.reaction.entity.EntityReactionSparkIgnition;
 import net.trentv.gasesframework.api.Combustibility;
 import net.trentv.gasesframework.api.GasType;
 import net.trentv.gasesframework.api.reaction.entity.EntityReactionBlindness;
@@ -175,7 +175,7 @@ public class GasesRegistry
 		{
 			if (gasType.combustability.burnRate >= Combustibility.FLAMMABLE.burnRate)
 			{
-				gasType.registerEntityReaction(new EntityReactionSparkIgnition());
+				gasType.registerEntityReaction(new EntityReactionIgnition());
 			}
 		}
 	}

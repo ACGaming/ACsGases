@@ -7,14 +7,13 @@ import net.minecraft.world.World;
 
 import net.trentv.gasesframework.api.GasType;
 import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
-import net.trentv.gasesframework.common.entity.EntityFlashSparkFX;
 
-public class EntityReactionSparkIgnition implements IEntityReaction
+public class EntityReactionIgnition implements IEntityReaction
 {
 	@Override
 	public void react(Entity e, IBlockAccess access, GasType gas, BlockPos pos)
 	{
-		if (access instanceof World world && e instanceof EntityFlashSparkFX)
+		if (access instanceof World world && e.isBurning())
 		{
 			gas.ignite(world, pos);
 		}
