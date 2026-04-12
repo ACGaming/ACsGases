@@ -55,7 +55,7 @@ public class GasesMainConfigurations
 				public float iocalfaeusGas = 0.075f;
 
 				@Config.Comment("The frequency of helium pockets per 16x16x16 blocks")
-				@Config.Name("Helium")
+				@Config.Name("Helium Gas")
 				@Config.RangeDouble(min = 0.0, max = 10.0)
 				public float helium = 0.25f;
 
@@ -119,7 +119,7 @@ public class GasesMainConfigurations
 			public static class Gases
 			{
 				@Config.Comment("The frequency of finine gas clouds in the end per 16x16x16 blocks")
-				@Config.Name("Finine")
+				@Config.Name("Finine Gas")
 				@Config.RangeDouble(min = 0.0, max = 10.0)
 				public float finineGas = 0.003125f;
 			}
@@ -241,22 +241,22 @@ public class GasesMainConfigurations
 		}
 
 		@Config.Comment("Finine gas behavior")
-		@Config.Name("Finine")
-		public final Finine FININE = new Finine();
+		@Config.Name("Finine Gas")
+		public final FinineGas FININE_GAS = new FinineGas();
 
-		public static class Finine
+		public static class FinineGas
 		{
-			@Config.Comment("Maximum searches Finine will conduct to find a suitable teleportation location")
+			@Config.Comment("Maximum searches Finine gas will conduct to find a suitable teleportation location")
 			@Config.Name("Max Teleportation Searches")
 			@Config.RangeInt(min = 1, max = 100)
 			public int maxTeleportSearches = 20;
 		}
 
 		@Config.Comment("Iocalfaeus gas behavior")
-		@Config.Name("Iocalfaeus")
-		public final Iocalfaeus IOCALFAEUS = new Iocalfaeus();
+		@Config.Name("Iocalfaeus Gas")
+		public final IocalfaeusGas IOCALFAEUS_GAS = new IocalfaeusGas();
 
-		public static class Iocalfaeus
+		public static class IocalfaeusGas
 		{
 			@Config.Comment({"Blocks that will convert to others when exposed to Iocalfaeus gas", "Syntax: original;refined;ruined;id"})
 			@Config.Name("Heated Recipes")

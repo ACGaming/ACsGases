@@ -70,7 +70,7 @@ public class GasesConfigLists
 
 	private static void registerHeatedRecipes()
 	{
-		for (String s : GasesMainConfigurations.GASES.IOCALFAEUS.heatedRecipes)
+		for (String s : GasesMainConfigurations.GASES.IOCALFAEUS_GAS.heatedRecipes)
 		{
 			String[] parts = s.split(";");
 			if (parts.length != 4) return;

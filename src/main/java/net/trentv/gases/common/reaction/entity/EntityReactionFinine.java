@@ -26,7 +26,7 @@ public class EntityReactionFinine implements IEntityReaction
 			int newZ = e.world.rand.nextInt(16) - 8;
 			newPosition = newPosition.add(newX, newY, newZ);
 
-		} while (iterations < GasesMainConfigurations.GASES.FININE.maxTeleportSearches & (access.isAirBlock(pos) & access.isAirBlock(pos.up())));
+		} while (iterations < GasesMainConfigurations.GASES.FININE_GAS.maxTeleportSearches & (access.isAirBlock(pos) & access.isAirBlock(pos.up())));
 
 		e.setPositionAndRotation(newPosition.getX(), newPosition.getY(), newPosition.getZ(), e.world.rand.nextInt(360), e.world.rand.nextInt(180) - 90);
 	}

@@ -44,7 +44,7 @@ public class BlockHeated extends Block
 	@Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
 	{
-		world.scheduleBlockUpdate(pos, this, GasesMainConfigurations.GASES.IOCALFAEUS.tickRate, 1);
+		world.scheduleBlockUpdate(pos, this, GasesMainConfigurations.GASES.IOCALFAEUS_GAS.tickRate, 1);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class BlockHeated extends Block
 					break;
 			}
 		}
-		world.scheduleBlockUpdate(pos, this, GasesMainConfigurations.GASES.IOCALFAEUS.tickRate, 1);
+		world.scheduleBlockUpdate(pos, this, GasesMainConfigurations.GASES.IOCALFAEUS_GAS.tickRate, 1);
 	}
 
 	public void heat(World world, IBlockState state, BlockPos p, BlockHeated r)
