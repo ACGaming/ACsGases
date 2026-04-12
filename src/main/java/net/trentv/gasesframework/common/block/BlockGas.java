@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,11 +30,9 @@ import net.trentv.gasesframework.api.reaction.block.IBlockReaction;
 import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
 import net.trentv.gasesframework.api.reaction.gas.IGasReaction;
 import net.trentv.gasesframework.api.sample.ISample;
-import net.trentv.gasesframework.client.ClientEvents;
 import net.trentv.gasesframework.common.CommonEvents;
 import net.trentv.gasesframework.common.GasesFrameworkObjects;
 import net.trentv.gasesframework.common.entity.EntityDelayedExplosion;
-import net.trentv.gasesframework.common.sound.SoundGasLoop;
 
 public class BlockGas extends Block implements ISample
 {
@@ -343,18 +340,6 @@ public class BlockGas extends Block implements ISample
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)
 	{
 		gasType.randomDisplayTick(state, world, pos, rand);
-		playSound(world, pos, state);
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void playSound(World world, BlockPos pos, IBlockState state)
-	{
-		long key = pos.toLong();
-		if (!ClientEvents.GAS_SOUNDS.contains(key))
-		{
-			ClientEvents.GAS_SOUNDS.add(key);
-			Minecraft.getMinecraft().getSoundHandler().playSound(new SoundGasLoop(world, pos.toImmutable(), state));
-		}
 	}
 
 	@Override

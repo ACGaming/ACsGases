@@ -11,6 +11,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.trentv.gasesframework.api.GFRegistrationAPI;
 import net.trentv.gasesframework.api.GasType;
 import net.trentv.gasesframework.client.renderer.RenderFlashSparkFX;
+import net.trentv.gasesframework.client.sound.GasSoundHandler;
 import net.trentv.gasesframework.common.CommonProxy;
 import net.trentv.gasesframework.common.entity.EntityFlashSparkFX;
 
@@ -46,5 +47,6 @@ public class ClientProxy extends CommonProxy
 	{
 		super.registerEventHandlers();
 		MinecraftForge.EVENT_BUS.register(new ClientEvents());
+		//MinecraftForge.EVENT_BUS.register(new GasSoundHandler());
 	}
 }
