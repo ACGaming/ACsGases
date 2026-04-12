@@ -7,5 +7,5 @@ import net.trentv.gasesframework.api.GasType;
 
 public interface IGasReaction
 {
-	void react(GasType gasA, IBlockAccess access, GasType gasB, BlockPos pos);
+	void react(GasType gasA, IBlockAccess access, GasType gasB, BlockPos gasAPos, BlockPos gasBPos);
 }

@@ -80,7 +80,7 @@ public class BlockGas extends Block implements ISample
 			{
 				for (IGasReaction r : gasType.getGasReactions())
 				{
-					r.react(gasType, world, neighborGas.gasType, currentPosition);
+					r.react(gasType, world, neighborGas.gasType, currentPosition, scanPos);
 				}
 			}
 			if (gasType.combustability != Combustibility.NONE && GFRegistrationAPI.isIgnitionSource(scanBlock.getDefaultState()))
