@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import java.util.Random;
 import net.trentv.gases.GasesRegistry;
@@ -16,7 +16,7 @@ import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
 public class EntityReactionRustItems implements IEntityReaction
 {
 	@Override
-	public void react(Entity e, IBlockAccess access, GasType gas, BlockPos pos)
+	public void react(Entity e, World world, GasType gas, BlockPos pos)
 	{
 		if (!e.world.isRemote)
 		{

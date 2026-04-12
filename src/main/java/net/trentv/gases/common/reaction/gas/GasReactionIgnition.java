@@ -1,25 +1,19 @@
 package net.trentv.gases.common.reaction.gas;
 
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.github.bsideup.jabel.Desugar;
 import net.trentv.gasesframework.api.GasType;
 import net.trentv.gasesframework.api.reaction.gas.IGasReaction;
 
-public class GasReactionIgnition implements IGasReaction
+@Desugar
+public record GasReactionIgnition(GasType match) implements IGasReaction
 {
-	public final GasType match;
-
-	public GasReactionIgnition(GasType match)
-	{
-		this.match = match;
-	}
-
 	@Override
-	public void react(GasType gasA, IBlockAccess access, GasType gasB, BlockPos gasAPos, BlockPos gasBPos)
+	public void react(GasType gasA, World world, GasType gasB, BlockPos gasAPos, BlockPos gasBPos)
 	{
-		if (access instanceof World world && gasB == match)
+		if (gasB == match)
 		{
 			gasA.ignite(world, gasAPos);
 		}

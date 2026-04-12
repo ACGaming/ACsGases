@@ -4,7 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import java.util.UUID;
 import net.trentv.gasesframework.api.GasType;
@@ -30,7 +30,7 @@ public class EntityReactionHrrm implements IEntityReaction
 	};
 
 	@Override
-	public void react(Entity e, IBlockAccess access, GasType gas, BlockPos pos)
+	public void react(Entity e, World world, GasType gas, BlockPos pos)
 	{
 		if (e instanceof EntityPlayer)
 		{
