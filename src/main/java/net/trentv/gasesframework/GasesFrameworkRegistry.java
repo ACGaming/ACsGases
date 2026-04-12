@@ -2,16 +2,21 @@ package net.trentv.gasesframework;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import java.util.*;
 import net.trentv.gasesframework.api.lanterntype.LanternType;
 import net.trentv.gasesframework.common.block.BlockLantern;
+import net.trentv.gasesframework.common.entity.EntityDelayedExplosion;
 
 public class GasesFrameworkRegistry
 {
@@ -21,6 +26,7 @@ public class GasesFrameworkRegistry
 	public static final Map<String, LanternType> LANTERN_TYPES_BY_NAME = new HashMap<>();
 	public static final Map<Item, LanternType> LANTERN_TYPES_BY_ITEM = new HashMap<>();
 	public static final Map<LanternType, BlockLantern> LANTERN_TYPE_LANTERN_BLOCKS = new IdentityHashMap<>();
+	private static int entityID = 1;
 
 	// Utility methods
 
@@ -54,6 +60,11 @@ public class GasesFrameworkRegistry
 		LANTERN_TYPE_LANTERN_BLOCKS.put(block.type, block);
 	}
 
+	public static void registerEntity(String name, Class<? extends Entity> clazz, int trackingRange, int updateFrequency, boolean velocityUpdates)
+	{
+		EntityRegistry.registerModEntity(new ResourceLocation(GasesFramework.MODID, name), clazz, GasesFramework.MODID + "." + name, entityID++, GasesFramework.INSTANCE, trackingRange, updateFrequency, velocityUpdates);
+	}
+
 	// Events
 
 	@SubscribeEvent
@@ -75,5 +86,11 @@ public class GasesFrameworkRegistry
 	public void registerItems(RegistryEvent.Register<Item> event)
 	{
 		for (Item item : ITEMS) event.getRegistry().register(item);
+	}
+
+	@SubscribeEvent
+	public static void registerEntities(RegistryEvent.Register<EntityEntry> event)
+	{
+		registerEntity("delayed_explosion", EntityDelayedExplosion.class, 20, 1, false);
 	}
 }
