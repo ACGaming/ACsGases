@@ -305,25 +305,31 @@ public class BlockGas extends Block implements ISample
 			}
 		}
 		IEntityReaction[] reactions = this.gasType.getEntityReactions();
+		int protectedCount = 0;
 		for (IEntityReaction r : reactions)
 		{
 			boolean hasProtected = false;
-			for (ItemStack stack : living.getArmorInventoryList())
+			if (protectedCount == 0)
 			{
-				if (!stack.isEmpty())
+				for (ItemStack stack : living.getArmorInventoryList())
 				{
-					if (stack.getItem() instanceof IGasEffectProtector prot)
+					if (!stack.isEmpty())
 					{
-						if (prot.apply(living, r, this.gasType, stack))
+						if (stack.getItem() instanceof IGasEffectProtector prot)
+						{
+							if (prot.apply(living, r, this.gasType, pos, stack))
+							{
+								hasProtected = true;
+								++protectedCount;
+								break;
+							}
+						}
+						else if (CommonEvents.applyGasEffectProtection(living, r, pos, stack))
 						{
 							hasProtected = true;
+							++protectedCount;
 							break;
 						}
-					}
-					else if (CommonEvents.applyGasEffectProtection(living, r, stack))
-					{
-						hasProtected = true;
-						break;
 					}
 				}
 			}

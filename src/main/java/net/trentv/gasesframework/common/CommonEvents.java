@@ -28,11 +28,12 @@ public class CommonEvents
 {
 	private static final Queue<PendingExplosion> EXPLOSION_QUEUE = new ConcurrentLinkedDeque<>();
 
-	public static boolean applyGasEffectProtection(EntityLivingBase entity, IEntityReaction reaction, ItemStack itemstack)
+	public static boolean applyGasEffectProtection(EntityLivingBase entity, IEntityReaction reaction, BlockPos pos, ItemStack itemstack)
 	{
-		if (isValidCustomRespirator(reaction, itemstack))
+		int headY = (int) (entity.posY + entity.getEyeHeight());
+		if (pos.getY() == headY && isValidCustomRespirator(reaction, itemstack))
 		{
-			if (itemstack.isItemStackDamageable() && entity.world.getWorldTime() % GasesMainConfigurations.GASES.respiratorDamageRate == 0)
+			if (!entity.world.isRemote && itemstack.isItemStackDamageable() && entity.world.getWorldTime() % GasesMainConfigurations.GASES.respiratorDamageRate == 0)
 			{
 				itemstack.damageItem(1, entity);
 			}

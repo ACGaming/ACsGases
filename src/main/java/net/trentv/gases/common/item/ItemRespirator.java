@@ -5,6 +5,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 import net.trentv.gases.Gases;
@@ -29,11 +30,12 @@ public class ItemRespirator extends ItemArmor implements IGasEffectProtector
 	}
 
 	@Override
-	public boolean apply(EntityLivingBase entity, IEntityReaction reaction, GasType type, ItemStack itemstack)
+	public boolean apply(EntityLivingBase entity, IEntityReaction reaction, GasType type, BlockPos pos, ItemStack itemstack)
 	{
-		if (blockedReactions.contains(reaction.getClass()))
+		int headY = (int) (entity.posY + entity.getEyeHeight());
+		if (pos.getY() == headY && blockedReactions.contains(reaction.getClass()))
 		{
-			if (itemstack.isItemStackDamageable() && entity.world.getWorldTime() % GasesMainConfigurations.GASES.respiratorDamageRate == 0)
+			if (!entity.world.isRemote && itemstack.isItemStackDamageable() && entity.world.getWorldTime() % GasesMainConfigurations.GASES.respiratorDamageRate == 0)
 			{
 				itemstack.damageItem(GasesMainConfigurations.GASES.respiratorDamageAmount, entity);
 			}
