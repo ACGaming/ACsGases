@@ -6,17 +6,21 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import net.trentv.gases.GasesRegistry;
+import net.trentv.gases.common.GasesObjects;
 import net.trentv.gases.common.block.BlockHeated;
 import net.trentv.gasesframework.api.GFRegistrationAPI;
+import net.trentv.gasesframework.api.IGasEffectProtector;
+import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
 
 public class GasesConfigLists
 {
 	public static final List<Block> COAL_DUST_EMISSION_BLOCKS = new ArrayList<>();
 	public static final List<Block> DUST_EMISSION_BLOCKS = new ArrayList<>();
-	public static final List<Item> RESPIRATORS_PRIMITIVE = new ArrayList<>();
-	public static final List<Item> RESPIRATORS_ADVANCED = new ArrayList<>();
+	public static final Map<Item, IGasEffectProtector> RESPIRATORS = new IdentityHashMap<>();
 
 	public static void preInit()
 	{
@@ -59,13 +63,26 @@ public class GasesConfigLists
 
 			if (edition.equals("primitive"))
 			{
-				RESPIRATORS_PRIMITIVE.add(respirator);
+				RESPIRATORS.put(respirator, createRespirator(GasesObjects.BLOCKED_REACTIONS_PRIMITIVE));
 			}
 			else if (edition.equals("advanced"))
 			{
-				RESPIRATORS_ADVANCED.add(respirator);
+				RESPIRATORS.put(respirator, createRespirator(GasesObjects.BLOCKED_REACTIONS_ADVANCED));
 			}
 		}
+	}
+
+	private static IGasEffectProtector createRespirator(List<Class<? extends IEntityReaction>> blockedReactions)
+	{
+		return (entity, reaction, gasType, pos, stack) -> {
+			int headY = (int) (entity.posY + entity.getEyeHeight());
+			if (pos.getY() != headY || !blockedReactions.contains(reaction.getClass())) return false;
+			if (!entity.world.isRemote && stack.isItemStackDamageable() && entity.world.getWorldTime() % GasesMainConfigurations.GASES.respiratorDamageRate == 0)
+			{
+				stack.damageItem(GasesMainConfigurations.GASES.respiratorDamageAmount, entity);
+			}
+			return true;
+		};
 	}
 
 	private static void registerHeatedRecipes()

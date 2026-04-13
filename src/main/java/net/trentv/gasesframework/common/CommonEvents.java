@@ -1,7 +1,10 @@
 package net.trentv.gasesframework.common;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -15,42 +18,29 @@ import com.github.bsideup.jabel.Desugar;
 import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import net.trentv.gases.common.GasesObjects;
 import net.trentv.gases.common.configuration.GasesConfigLists;
-import net.trentv.gases.common.configuration.GasesMainConfigurations;
 import net.trentv.gasesframework.GasesFramework;
 import net.trentv.gasesframework.api.GasesFrameworkAPI;
+import net.trentv.gasesframework.api.IGasEffectProtector;
 import net.trentv.gasesframework.api.capability.IGasEffects;
-import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
 import net.trentv.gasesframework.common.capability.GasEffectsProvider;
 
 public class CommonEvents
 {
 	private static final Queue<PendingExplosion> EXPLOSION_QUEUE = new ConcurrentLinkedDeque<>();
 
-	public static boolean applyGasEffectProtection(EntityLivingBase entity, IEntityReaction reaction, BlockPos pos, ItemStack itemstack)
-	{
-		int headY = (int) (entity.posY + entity.getEyeHeight());
-		if (pos.getY() == headY && isValidCustomRespirator(reaction, itemstack))
-		{
-			if (!entity.world.isRemote && itemstack.isItemStackDamageable() && entity.world.getWorldTime() % GasesMainConfigurations.GASES.respiratorDamageRate == 0)
-			{
-				itemstack.damageItem(1, entity);
-			}
-			return true;
-		}
-		return false;
-	}
-
 	public static void scheduleExplosion(WorldServer world, BlockPos pos, float power, int delayTicks)
 	{
 		EXPLOSION_QUEUE.add(new PendingExplosion(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, power, world.getTotalWorldTime() + delayTicks));
 	}
 
-	private static boolean isValidCustomRespirator(IEntityReaction reaction, ItemStack itemstack)
+	@Nullable
+	public static IGasEffectProtector getProtector(ItemStack stack)
 	{
-		if (GasesConfigLists.RESPIRATORS_PRIMITIVE.contains(itemstack.getItem()) && GasesObjects.BLOCKED_REACTIONS_PRIMITIVE.contains(reaction.getClass())) return true;
-		return GasesConfigLists.RESPIRATORS_ADVANCED.contains(itemstack.getItem()) && GasesObjects.BLOCKED_REACTIONS_ADVANCED.contains(reaction.getClass());
+		if (stack.isEmpty()) return null;
+		Item item = stack.getItem();
+		if (item instanceof IGasEffectProtector prot) return prot;
+		return GasesConfigLists.RESPIRATORS.get(item);
 	}
 
 	@SubscribeEvent

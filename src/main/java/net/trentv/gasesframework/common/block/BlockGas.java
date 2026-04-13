@@ -293,17 +293,8 @@ public class BlockGas extends Block implements ISample
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
-		if (!(entity instanceof EntityLivingBase living))
-		{
-			return;
-		}
-		if (living instanceof EntityPlayer player)
-		{
-			if (player.isCreative() || player.isSpectator())
-			{
-				return;
-			}
-		}
+		if (!(entity instanceof EntityLivingBase living)) return;
+		if (living instanceof EntityPlayer player && (player.isCreative() || player.isSpectator())) return;
 		IEntityReaction[] reactions = this.gasType.getEntityReactions();
 		int protectedCount = 0;
 		for (IEntityReaction r : reactions)
@@ -313,23 +304,12 @@ public class BlockGas extends Block implements ISample
 			{
 				for (ItemStack stack : living.getArmorInventoryList())
 				{
-					if (!stack.isEmpty())
+					IGasEffectProtector prot = CommonEvents.getProtector(stack);
+					if (prot != null && prot.apply(living, r, gasType, pos, stack))
 					{
-						if (stack.getItem() instanceof IGasEffectProtector prot)
-						{
-							if (prot.apply(living, r, this.gasType, pos, stack))
-							{
-								hasProtected = true;
-								++protectedCount;
-								break;
-							}
-						}
-						else if (CommonEvents.applyGasEffectProtection(living, r, pos, stack))
-						{
-							hasProtected = true;
-							++protectedCount;
-							break;
-						}
+						hasProtected = true;
+						++protectedCount;
+						break;
 					}
 				}
 			}
