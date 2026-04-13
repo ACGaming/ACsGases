@@ -23,7 +23,7 @@ public class ClientEvents
 			IGasEffects q = a.getCapability(GasEffectsProvider.GAS_EFFECTS, null);
 			float f = q.getBlindness() / 250.0f;
 
-			if (f > 0)
+			if (f >= 0.1f)
 			{
 				event.setDensity(f * f);
 				GlStateManager.setFog(GlStateManager.FogMode.EXP);
