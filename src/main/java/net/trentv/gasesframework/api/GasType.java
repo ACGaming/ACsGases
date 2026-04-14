@@ -46,7 +46,6 @@ public class GasType
 	public int cohesion = 16;
 	public float lightLevel = 0.0F;
 	public CreativeTabs creativeTab;
-	public ResourceLocation texture;
 	public boolean tintindex = true;
 
 	public List<IBlockReaction> blockReactions = new ArrayList<>();
@@ -82,9 +81,8 @@ public class GasType
 		return this;
 	}
 
-	public GasType setTexture(ResourceLocation texture, boolean tintindex)
+	public GasType setTintIndex(boolean tintindex)
 	{
-		this.texture = texture;
 		this.tintindex = tintindex;
 		return this;
 	}

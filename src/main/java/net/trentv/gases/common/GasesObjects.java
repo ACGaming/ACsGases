@@ -48,7 +48,7 @@ public class GasesObjects
 	public static final GasType STONE_DUST = new GasType("stone_dust", 0x7F7F7F, 2, -1, Combustibility.NONE).setDissipation(8, 4);
 	public static final GasType IOCALFAEUS = new GasTypeLightSensitive("iocalfaeus", 0x5C2B77, 8, -1, Combustibility.NONE);
 	public static final GasType HELIUM = new GasType("helium", 0x00FFFF, 14, 1, Combustibility.NONE).setCohesion(16);
-	public static final GasType FININE = new GasType("finine", 0xFFFEE8, 2, 0, Combustibility.NONE).setCohesion(16).setTexture(new ResourceLocation(Gases.MODID, "block/finine"), false);
+	public static final GasType FININE = new GasType("finine", 0xFFFEE8, 2, 0, Combustibility.NONE).setCohesion(16).setTintIndex(false);
 	public static final GasType WHISPERING_FOG = new GasType("whispering_fog", 0x000000, 15, -1, Combustibility.HIGHLY_EXPLOSIVE);
 
 	public static final GasType[] IMPLEMENTED_GASES = new GasType[] {STEAM, NATURAL_GAS, RED_GAS, VOID_GAS, ELECTRIC, CORROSIVE, NITROUS, ACID_VAPOUR, COAL_DUST, BLACK_DAMP, CHLORINE, STONE_DUST, IOCALFAEUS, HELIUM, FININE, WHISPERING_FOG};

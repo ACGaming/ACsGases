@@ -1,11 +1,9 @@
 package net.trentv.gasesframework.common;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
-import net.trentv.gases.common.configuration.GasesConfigLists;
 import net.trentv.gasesframework.GasesFramework;
 import net.trentv.gasesframework.GasesFrameworkRegistry;
 import net.trentv.gasesframework.api.Combustibility;
@@ -22,7 +20,7 @@ import net.trentv.gasesframework.common.block.BlockLantern;
 public class GasesFrameworkObjects
 {
 	public static final GasType SMOKE = new GasType("smoke", 0xAAAAAA, 4, 1, Combustibility.NONE).setCreativeTab(GasesFramework.CREATIVE_TAB).setCohesion(10).registerEntityReaction(new EntityReactionSuffocation(3, 3)).registerEntityReaction(new EntityReactionBlindness(4)).registerEntityReaction(new EntityReactionSlowness(2));
-	public static final GasType FIRE = new GasType("fire", 0x7F4F4F7F, 4, 0, Combustibility.NONE).setCreativeTab(GasesFramework.CREATIVE_TAB).setCohesion(8).setDissipation(8, 8).setTexture(new ResourceLocation(GasesFramework.MODID, "block/gas_fire"), false);
+	public static final GasType FIRE = new GasType("fire", 0x7F4F4F7F, 4, 0, Combustibility.NONE).setCreativeTab(GasesFramework.CREATIVE_TAB).setCohesion(8).setDissipation(8, 8).setTintIndex(false);
 
 	public static final LanternType LANTERN_TYPE_EMPTY = new LanternType("empty", 0.0f, "gasesframework:lantern_empty", null, null, 0).setCreativeTab(GasesFramework.CREATIVE_TAB);
 	public static final LanternType LANTERN_TYPE_GAS_EMPTY = new LanternType("gas_empty", 0.0f, "gasesframework:lantern_gas_empty", Items.GLASS_BOTTLE, LANTERN_TYPE_EMPTY, 0).setCreativeTab(GasesFramework.CREATIVE_TAB);

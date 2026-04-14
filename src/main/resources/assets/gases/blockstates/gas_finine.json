@@ -3,7 +3,7 @@
   "defaults": {
     "model": "gasesframework:gas_base",
     "textures": {
-      "all": "gasesframework:block/gas_2"
+      "all": "gases:block/finine"
     }
   },
   "variants": {
