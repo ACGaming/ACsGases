@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -247,6 +248,12 @@ public class BlockGas extends Block implements ISample
 		return 0;
 	}
 
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face)
+	{
+		return BlockFaceShape.UNDEFINED;
+	}
+
 	// Client Side
 
 	@Override
@@ -254,6 +261,20 @@ public class BlockGas extends Block implements ISample
 	public BlockRenderLayer getRenderLayer()
 	{
 		return BlockRenderLayer.TRANSLUCENT;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+	{
+		if (blockAccess.getBlockState(pos.offset(side)).getMaterial() == this.material)
+		{
+			return false;
+		}
+		else
+		{
+			return side == EnumFacing.UP || super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+		}
 	}
 
 	// Gases relevant
