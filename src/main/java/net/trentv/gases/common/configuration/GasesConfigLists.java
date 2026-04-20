@@ -2,13 +2,16 @@ package net.trentv.gases.common.configuration;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import net.trentv.gases.Gases;
 import net.trentv.gases.GasesRegistry;
 import net.trentv.gases.common.GasesObjects;
 import net.trentv.gases.common.block.BlockHeated;
@@ -29,23 +32,43 @@ public class GasesConfigLists
 
 	public static void postInit()
 	{
-		addBlocksToList(GasesMainConfigurations.GASES.COAL_DUST.blocks, COAL_DUST_EMISSION_BLOCKS);
-		addBlocksToList(GasesMainConfigurations.GASES.DUST.blocks, DUST_EMISSION_BLOCKS);
+		COAL_DUST_EMISSION_BLOCKS.addAll(addBlocksToList(GasesMainConfigurations.GASES.COAL_DUST.blocks, "coal dust"));
+		DUST_EMISSION_BLOCKS.addAll(addBlocksToList(GasesMainConfigurations.GASES.DUST.blocks, "dust"));
 		registerCustomRespirators();
 		registerIgnitionSources();
 		registerRustableMaterials();
 	}
 
-	private static void addBlocksToList(String[] blocks, List<Block> list)
+	private static List<Block> addBlocksToList(String[] blocks, String listName)
 	{
+		List<Block> list = new ArrayList<>();
 		for (String s : blocks)
 		{
-			Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s));
-			if (b != null)
+			// Assume regular resource location
+			if (s.contains(":"))
 			{
-				list.add(b);
+				Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s));
+				if (b != null)
+				{
+					list.add(b);
+					Gases.logger.info("Added block {} to {} list", b.getRegistryName(), listName);
+				}
+			}
+			// Assume ore dictionary name
+			else
+			{
+				for (ItemStack is : OreDictionary.getOres(s))
+				{
+					Block b = Block.getBlockFromItem(is.getItem());
+					if (b != null)
+					{
+						list.add(b);
+						Gases.logger.info("Added block {} to {} list", b.getRegistryName(), listName);
+					}
+				}
 			}
 		}
+		return list;
 	}
 
 	private static void registerCustomRespirators()
@@ -109,13 +132,10 @@ public class GasesConfigLists
 
 	private static void registerIgnitionSources()
 	{
-		for (String s : GasesMainConfigurations.GASES.ignitionSources)
+		List<Block> l = addBlocksToList(GasesMainConfigurations.GASES.ignitionSources, "ignition sources");
+		for (Block b : l)
 		{
-			Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(s));
-			if (b != null)
-			{
-				GFRegistrationAPI.registerIgnitionSource(b.getDefaultState());
-			}
+			GFRegistrationAPI.registerIgnitionSource(b.getDefaultState());
 		}
 	}
 

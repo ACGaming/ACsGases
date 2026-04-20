@@ -196,9 +196,9 @@ public class GasesMainConfigurations
 			@Config.RangeInt(min = 0, max = 16)
 			public int amountOnMine = 16;
 
-			@Config.Comment("Blocks that can emit coal dust when mined")
+			@Config.Comment({"Blocks that can emit coal dust when mined", "Syntax: modid:block or ore dictionary name"})
 			@Config.Name("Blocks")
-			public String[] blocks = new String[] {"minecraft:coal_ore"};
+			public String[] blocks = new String[] {"oreCoal"};
 		}
 
 		@Config.Comment("Steam generation")
@@ -224,9 +224,9 @@ public class GasesMainConfigurations
 			@Config.RangeInt(min = 0, max = 16)
 			public int amountOnMine = 3;
 
-			@Config.Comment("Blocks that can emit dust when mined")
+			@Config.Comment({"Blocks that can emit dust when mined", "Syntax: modid:block or ore dictionary name"})
 			@Config.Name("Blocks")
-			public String[] blocks = new String[] {"minecraft:stone", "minecraft:cobblestone"};
+			public String[] blocks = new String[] {"stone", "cobblestone"};
 		}
 
 		@Config.Comment("Chlorine gas effects")
@@ -276,13 +276,13 @@ public class GasesMainConfigurations
 			public int tickRate = 80;
 		}
 
-		@Config.Comment({"Custom items to act as respirators to prevent gas entity reactions", "Syntax: item;primitive/advanced"})
+		@Config.Comment({"Custom items to act as respirators to prevent gas entity reactions", "Syntax: modid:item;primitive/advanced"})
 		@Config.Name("Custom Respirators")
 		public String[] customRespirators = new String[] {};
 
-		@Config.Comment("Blocks that cause flammable gas to ignite")
+		@Config.Comment({"Blocks that cause flammable gas to ignite", "Syntax: modid:block or ore dictionary name"})
 		@Config.Name("Ignition Sources")
-		public String[] ignitionSources = new String[] {"minecraft:fire", "minecraft:lava", "minecraft:flowing_lava", "minecraft:torch", "minecraft:lit_furnace"};
+		public String[] ignitionSources = new String[] {"minecraft:fire", "minecraft:lava", "minecraft:flowing_lava", "torch", "minecraft:lit_furnace"};
 
 		@Config.Comment("Damage interval for respirators in ticks")
 		@Config.Name("Respirator Damage Rate")
