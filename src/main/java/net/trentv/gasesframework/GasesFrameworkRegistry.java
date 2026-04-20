@@ -17,10 +17,7 @@ public class GasesFrameworkRegistry
 {
 	public static final List<Block> BLOCKS = new ArrayList<>();
 	public static final List<Item> ITEMS = new ArrayList<>();
-	public static final Set<LanternType> REGISTERED_LANTERN_TYPES = Collections.newSetFromMap(new IdentityHashMap<>());
-	public static final Map<String, LanternType> LANTERN_TYPES_BY_NAME = new HashMap<>();
-	public static final Map<Item, LanternType> LANTERN_TYPES_BY_ITEM = new HashMap<>();
-	public static final Map<LanternType, BlockLantern> LANTERN_TYPE_LANTERN_BLOCKS = new IdentityHashMap<>();
+	public static final Map<LanternType, BlockLantern> LANTERN_BLOCKS_BY_TYPE = new IdentityHashMap<>();
 
 	// Utility methods
 
@@ -48,10 +45,7 @@ public class GasesFrameworkRegistry
 	public static void registerLantern(BlockLantern block)
 	{
 		registerBlockAndItem(block);
-		REGISTERED_LANTERN_TYPES.add(block.type);
-		LANTERN_TYPES_BY_NAME.put(block.type.name, block.type);
-		LANTERN_TYPES_BY_ITEM.put(block.type.itemOut, block.type);
-		LANTERN_TYPE_LANTERN_BLOCKS.put(block.type, block);
+		LANTERN_BLOCKS_BY_TYPE.put(block.type, block);
 	}
 
 	// Events

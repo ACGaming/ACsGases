@@ -3,14 +3,17 @@ package net.trentv.gasesframework.common.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -27,6 +30,7 @@ import net.trentv.gasesframework.api.block.IGasReceptor;
 import net.trentv.gasesframework.api.block.IGasTransporter;
 import net.trentv.gasesframework.api.lanterntype.LanternType;
 import net.trentv.gasesframework.common.GasesFrameworkObjects;
+import net.trentv.gasesframework.common.item.ItemGasBottle;
 
 public class BlockLantern extends Block implements IGasReceptor
 {
@@ -41,10 +45,7 @@ public class BlockLantern extends Block implements IGasReceptor
 		setHardness(0.25F);
 		setLightLevel(type.lightLevel);
 		setCreativeTab(type.creativeTab);
-		if (type.expirationRate > 0)
-		{
-			setTickRandomly(true);
-		}
+		setTickRandomly(type.expirationRate > 0);
 		setRegistryName("lantern_" + type.name);
 		setTranslationKey(type.getUnlocalizedName());
 	}
@@ -100,12 +101,14 @@ public class BlockLantern extends Block implements IGasReceptor
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
 	{
-		if (type.expirationRate > 0 && random.nextInt(type.expirationRate) == 0)
+		if (type.expirationRate <= 0) return;
+		if (random.nextInt(type.expirationRate) == 0)
 		{
 			int metadata = state.getValue(EXPIRATION) + 1;
 			if (metadata >= 16)
 			{
-				world.setBlockState(pos, GasesFrameworkObjects.getLanternBlock(type.expirationLanternType).getDefaultState());
+				world.setBlockState(pos, GasesFrameworkObjects.LANTERN_GAS_EMPTY.getDefaultState());
+				world.playSound(null, pos, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.BLOCKS, 0.4F, 0.2F);
 			}
 			else
 			{
@@ -156,40 +159,37 @@ public class BlockLantern extends Block implements IGasReceptor
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
+		if (world.isRemote) return true;
 		ItemStack heldItem = entityPlayer.getHeldItem(hand);
-		LanternType replacementType = GasesFrameworkObjects.getLanternTypeByInput(heldItem.getItem());
 		ItemStack itemStackOut = new ItemStack(type.itemOut);
-
-		if (replacementType == null)
+		// Fill empty lantern with gas bottle
+		if (heldItem.getItem() instanceof ItemGasBottle && type == GasesFrameworkObjects.LANTERN_TYPE_EMPTY)
 		{
-			replacementType = GasesFrameworkObjects.LANTERN_TYPE_EMPTY;
-			if (!entityPlayer.capabilities.isCreativeMode)
+			GasType gas = ItemGasBottle.getGasType(heldItem);
+			if (gas != null && gas.combustability != Combustibility.NONE)
 			{
-				heldItem.shrink(1);
-				if (!itemStackOut.equals(ItemStack.EMPTY) && !entityPlayer.inventory.addItemStackToInventory(itemStackOut) && !world.isRemote)
-				{
-					spawnAsEntity(world, pos, itemStackOut);
-				}
-			}
-		}
-		else
-		{
-			if (world.getBlockState(pos).getBlock() != GasesFrameworkObjects.getLanternBlock(replacementType))
-			{
+				LanternType newType = GasesFrameworkObjects.getGasLanternTypeForBurnRate(gas.combustability.burnRate);
 				if (!entityPlayer.capabilities.isCreativeMode)
 				{
 					heldItem.shrink(1);
-					if (!itemStackOut.equals(ItemStack.EMPTY) && !entityPlayer.inventory.addItemStackToInventory(itemStackOut) && !world.isRemote)
-					{
-						spawnAsEntity(world, pos, itemStackOut);
-					}
 				}
+				world.setBlockState(pos, GasesFrameworkObjects.getLanternBlock(newType).getDefaultState());
+				world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL_DRAGONBREATH, SoundCategory.BLOCKS, 0.6F, 2.0F);
+				return true;
 			}
 		}
-
-		world.setBlockState(pos, GasesFrameworkObjects.getLanternBlock(replacementType).getDefaultState());
-
-		return true;
+		// Retrieve glass bottle from (empty) gas lantern
+		if (type == GasesFrameworkObjects.LANTERN_TYPE_GAS_EMPTY)
+		{
+			if (!entityPlayer.capabilities.isCreativeMode && !entityPlayer.inventory.addItemStackToInventory(itemStackOut))
+			{
+				entityPlayer.dropItem(itemStackOut, false);
+			}
+			world.setBlockState(pos, GasesFrameworkObjects.LANTERN_EMPTY.getDefaultState());
+			world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL_DRAGONBREATH, SoundCategory.BLOCKS, 0.6F, 2.0F);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -201,15 +201,15 @@ public class BlockLantern extends Block implements IGasReceptor
 	@Override
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
 	{
-		ArrayList<ItemStack> ret = new ArrayList<>();
-
-		ret.add(new ItemStack(GasesFrameworkObjects.getLanternBlock(GasesFrameworkObjects.LANTERN_TYPE_EMPTY)));
-		if (type.itemOut != null)
-		{
-			ret.add(new ItemStack(type.itemOut));
-		}
-
+		List<ItemStack> ret = new ArrayList<>();
+		ret.add(new ItemStack(GasesFrameworkObjects.getLanternBlock(type)));
 		return ret;
+	}
+
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face)
+	{
+		return BlockFaceShape.UNDEFINED;
 	}
 
 	@Override
@@ -223,13 +223,11 @@ public class BlockLantern extends Block implements IGasReceptor
 	{
 		if (canReceiveGas(world, x, y, z, side, gasType))
 		{
-			world.setBlockState(new BlockPos(x, y, z), GasesFrameworkObjects.getLanternBlock(GasesFrameworkObjects.LANTERN_TYPES_GAS[gasType.combustability.burnRate]).getDefaultState());
+			LanternType newType = GasesFrameworkObjects.getGasLanternTypeForBurnRate(gasType.combustability.burnRate);
+			world.setBlockState(new BlockPos(x, y, z), GasesFrameworkObjects.getLanternBlock(newType).getDefaultState());
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 
 	@Override

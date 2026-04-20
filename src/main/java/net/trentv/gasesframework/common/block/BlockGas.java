@@ -10,10 +10,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
@@ -34,6 +38,7 @@ import net.trentv.gasesframework.api.reaction.gas.IGasReaction;
 import net.trentv.gasesframework.api.sample.ISample;
 import net.trentv.gasesframework.common.CommonEvents;
 import net.trentv.gasesframework.common.GasesFrameworkObjects;
+import net.trentv.gasesframework.common.item.ItemGasBottle;
 
 public class BlockGas extends Block implements ISample
 {
@@ -187,15 +192,45 @@ public class BlockGas extends Block implements ISample
 	}
 
 	@Override
-	public BlockStateContainer createBlockState()
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		return new BlockStateContainer(this, CAPACITY);
+		if (!world.isRemote)
+		{
+			ItemStack held = player.getHeldItem(hand);
+			if (held.getItem() != Items.GLASS_BOTTLE) return false;
+			int capacity = state.getValue(CAPACITY);
+			if (capacity < 8) return false;
+			// Conditions met, bottling...
+			if (!player.capabilities.isCreativeMode)
+			{
+				held.shrink(1);
+			}
+			ItemStack filledBottle = new ItemStack(GasesFrameworkObjects.GAS_BOTTLE);
+			ItemGasBottle.setGasType(filledBottle, gasType);
+			if (!player.inventory.addItemStackToInventory(filledBottle))
+			{
+				player.dropItem(filledBottle, false);
+			}
+			// Reduce gas block capacity
+			int newCapacity = capacity - 8;
+			if (newCapacity <= 0)
+			{
+				world.setBlockToAir(pos);
+			}
+			else
+			{
+				GFManipulationAPI.setGasLevel(pos, world, gasType, newCapacity);
+			}
+			world.playSound(null, pos, SoundEvents.ITEM_BOTTLE_FILL_DRAGONBREATH, SoundCategory.BLOCKS, 0.6F, 2.0F);
+			return true;
+		}
+		return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos)
+	public BlockStateContainer createBlockState()
 	{
-		return state;
+		return new BlockStateContainer(this, CAPACITY);
 	}
 
 	@Override
@@ -217,6 +252,13 @@ public class BlockGas extends Block implements ISample
 	}
 
 	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	{
+		double height = (double) state.getValue(CAPACITY) / 16;
+		return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, height, 1.0D);
+	}
+
+	@Override
 	@Nullable
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos)
 	{
@@ -224,16 +266,15 @@ public class BlockGas extends Block implements ISample
 	}
 
 	@Override
-	public boolean canCollideCheck(IBlockState state, boolean fullHit)
+	public boolean isFullCube(IBlockState state)
 	{
 		return false;
 	}
 
-	// Necessary so you can walk through the block. Don't remove it, dumbass.
 	@Override
-	public boolean isFullCube(IBlockState state)
+	public boolean isPassable(IBlockAccess world, BlockPos pos)
 	{
-		return false;
+		return true;
 	}
 
 	@Override
@@ -316,7 +357,7 @@ public class BlockGas extends Block implements ISample
 	{
 		if (!(entity instanceof EntityLivingBase living)) return;
 		if (living instanceof EntityPlayer player && (player.isCreative() || player.isSpectator())) return;
-		IEntityReaction[] reactions = this.gasType.getEntityReactions();
+		IEntityReaction[] reactions = gasType.getEntityReactions();
 		int protectedCount = 0;
 		for (IEntityReaction r : reactions)
 		{
@@ -336,7 +377,7 @@ public class BlockGas extends Block implements ISample
 			}
 			if (!hasProtected)
 			{
-				r.react(entity, world, this.gasType, pos);
+				r.react(entity, world, gasType, pos);
 			}
 		}
 	}
@@ -351,6 +392,6 @@ public class BlockGas extends Block implements ISample
 	@Override
 	public GasType onSample(IBlockAccess access, BlockPos pos, GasType gas, EnumFacing side)
 	{
-		return this.gasType;
+		return gasType;
 	}
 }

@@ -9,3 +9,7 @@ tile.gf_lantern.gas_2.name=Gas Lantern
 tile.gf_lantern.gas_3.name=Gas Lantern
 tile.gf_lantern.gas_4.name=Gas Lantern
 tile.gf_lantern.gas_5.name=Gas Lantern
+
+item.gas_bottle.name=Gas Bottle
+
+tooltip.gasesframework.burnrate=Burn Rate

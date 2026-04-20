@@ -31,7 +31,7 @@ public class GasesFramework
 
 	public static final String MODID = "gasesframework";
 	public static final String VERSION = Tags.VERSION;
-	public static final GasesFrameworkCreativeTab CREATIVE_TAB = new GasesFrameworkCreativeTab("gasesframework");
+	public static final GasesFrameworkCreativeTab CREATIVE_TAB = new GasesFrameworkCreativeTab(MODID);
 	public static final WorldGeneratorGasesFramework worldGenerator = new WorldGeneratorGasesFramework();
 
 	@SidedProxy(clientSide = "net.trentv.gasesframework.client.ClientProxy", serverSide = "net.trentv.gasesframework.server.ServerProxy")

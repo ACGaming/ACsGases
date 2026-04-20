@@ -1,7 +1,6 @@
 package net.trentv.gasesframework.common;
 
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
 import net.trentv.gasesframework.GasesFramework;
@@ -16,14 +15,17 @@ import net.trentv.gasesframework.api.reaction.entity.EntityReactionSlowness;
 import net.trentv.gasesframework.api.reaction.entity.EntityReactionSuffocation;
 import net.trentv.gasesframework.common.block.BlockGas;
 import net.trentv.gasesframework.common.block.BlockLantern;
+import net.trentv.gasesframework.common.item.ItemGasBottle;
 
 public class GasesFrameworkObjects
 {
 	public static final GasType SMOKE = new GasType("smoke", 0xAAAAAA, 4, 1, Combustibility.NONE).setCreativeTab(GasesFramework.CREATIVE_TAB).setCohesion(10).registerEntityReaction(new EntityReactionSuffocation(3, 3)).registerEntityReaction(new EntityReactionBlindness(4)).registerEntityReaction(new EntityReactionSlowness(2));
-	public static final GasType FIRE = new GasType("fire", 0x7F4F4F7F, 4, 0, Combustibility.NONE).setCreativeTab(GasesFramework.CREATIVE_TAB).setCohesion(8).setDissipation(8, 8).setTintIndex(false);
+	public static final GasType FIRE = new GasType("fire", 0xFFFFFF, 4, 0, Combustibility.NONE).setCreativeTab(GasesFramework.CREATIVE_TAB).setCohesion(8).setDissipation(8, 8).setTintIndex(false);
+
+	public static final ItemGasBottle GAS_BOTTLE = new ItemGasBottle();
 
 	public static final LanternType LANTERN_TYPE_EMPTY = new LanternType("empty", 0.0f, "gasesframework:lantern_empty", null, null, 0).setCreativeTab(GasesFramework.CREATIVE_TAB);
-	public static final LanternType LANTERN_TYPE_GAS_EMPTY = new LanternType("gas_empty", 0.0f, "gasesframework:lantern_gas_empty", Items.GLASS_BOTTLE, LANTERN_TYPE_EMPTY, 0).setCreativeTab(GasesFramework.CREATIVE_TAB);
+	public static final LanternType LANTERN_TYPE_GAS_EMPTY = new LanternType("gas_empty", 0.0f, "gasesframework:lantern_gas_empty", Items.GLASS_BOTTLE, LANTERN_TYPE_EMPTY, 0);
 	public static final LanternType LANTERN_TYPE_GAS_1 = new LanternType("gas_1", 1.0f, "gasesframework:lantern_gas_1", Items.GLASS_BOTTLE, LANTERN_TYPE_GAS_EMPTY, 1);
 	public static final LanternType LANTERN_TYPE_GAS_2 = new LanternType("gas_2", 1.0f, "gasesframework:lantern_gas_2", Items.GLASS_BOTTLE, LANTERN_TYPE_GAS_EMPTY, 2);
 	public static final LanternType LANTERN_TYPE_GAS_3 = new LanternType("gas_3", 1.0f, "gasesframework:lantern_gas_3", Items.GLASS_BOTTLE, LANTERN_TYPE_GAS_EMPTY, 3);
@@ -43,6 +45,8 @@ public class GasesFrameworkObjects
 	{
 		GFRegistrationAPI.registerGasType(SMOKE, new ResourceLocation(GasesFramework.MODID, "gas_" + SMOKE.name));
 		GFRegistrationAPI.registerGasType(FIRE, new ResourceLocation(GasesFramework.MODID, "gas_" + FIRE.name));
+
+		GasesFrameworkRegistry.registerItem(GAS_BOTTLE);
 
 		GasType[] allTypes = GFRegistrationAPI.getGasTypes();
 		for (GasType type : allTypes)
@@ -67,11 +71,18 @@ public class GasesFrameworkObjects
 
 	public static BlockLantern getLanternBlock(LanternType type)
 	{
-		return GasesFrameworkRegistry.LANTERN_TYPE_LANTERN_BLOCKS.get(type);
+		return GasesFrameworkRegistry.LANTERN_BLOCKS_BY_TYPE.get(type);
 	}
 
-	public static LanternType getLanternTypeByInput(Item item)
+	public static LanternType getGasLanternTypeForBurnRate(int burnRate)
 	{
-		return GasesFrameworkRegistry.LANTERN_TYPES_BY_ITEM.get(item);
+		return switch (burnRate)
+		{
+			case 2 -> LANTERN_TYPE_GAS_2;
+			case 3 -> LANTERN_TYPE_GAS_3;
+			case 4 -> LANTERN_TYPE_GAS_4;
+			case 5 -> LANTERN_TYPE_GAS_5;
+			default -> LANTERN_TYPE_GAS_1;
+		};
 	}
 }

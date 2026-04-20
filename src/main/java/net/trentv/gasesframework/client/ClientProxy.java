@@ -10,6 +10,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.trentv.gasesframework.api.GFRegistrationAPI;
 import net.trentv.gasesframework.api.GasType;
 import net.trentv.gasesframework.common.CommonProxy;
+import net.trentv.gasesframework.common.GasesFrameworkObjects;
+import net.trentv.gasesframework.common.item.ItemGasBottle;
 
 public class ClientProxy extends CommonProxy
 {
@@ -35,6 +37,14 @@ public class ClientProxy extends CommonProxy
 				itemColors.registerItemColorHandler(type.getGasColor(), item);
 			}
 		}
+		itemColors.registerItemColorHandler((stack, tintIndex) -> {
+			if (tintIndex == 0)
+			{
+				GasType gas = ItemGasBottle.getGasType(stack);
+				return gas != null ? gas.color : 0xFFFFFF;
+			}
+			return 0xFFFFFF;
+		}, GasesFrameworkObjects.GAS_BOTTLE);
 	}
 
 	@Override
