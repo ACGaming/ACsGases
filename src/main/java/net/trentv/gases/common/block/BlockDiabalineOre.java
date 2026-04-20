@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import net.trentv.gases.Gases;
 import net.trentv.gases.common.GasesObjects;
 import net.trentv.gasesframework.api.GFManipulationAPI;
 import net.trentv.gasesframework.api.GasType;
@@ -35,7 +36,7 @@ public class BlockDiabalineOre extends BlockOre
         setHardness(1.5F);
         setResistance(10.0F);
         setRegistryName(registry);
-        setTranslationKey(registry.getPath());
+        setTranslationKey(Gases.MODID + "." + registry.getPath());
     }
 
     @Override

@@ -24,6 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import net.trentv.gasesframework.GasesFramework;
 import net.trentv.gasesframework.api.Combustibility;
 import net.trentv.gasesframework.api.GasType;
 import net.trentv.gasesframework.api.block.IGasReceptor;
@@ -47,7 +48,7 @@ public class BlockLantern extends Block implements IGasReceptor
 		setCreativeTab(type.creativeTab);
 		setTickRandomly(type.expirationRate > 0);
 		setRegistryName("lantern_" + type.name);
-		setTranslationKey(type.getUnlocalizedName());
+		setTranslationKey(GasesFramework.MODID + "." + type.getUnlocalizedName());
 	}
 
 	public boolean canBlockStay(World world, BlockPos pos)

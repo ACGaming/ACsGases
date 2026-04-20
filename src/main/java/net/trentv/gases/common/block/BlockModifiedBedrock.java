@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import net.trentv.gases.Gases;
 import net.trentv.gases.common.configuration.GasesMainConfigurations;
 import net.trentv.gasesframework.api.GFManipulationAPI;
 import net.trentv.gasesframework.api.GasType;
@@ -33,7 +34,7 @@ public class BlockModifiedBedrock extends BlockEmptyDrops
 		disableStats();
 		setRegistryName(registry);
 		setTickRandomly(true);
-		setTranslationKey(registry.getPath());
+		setTranslationKey(Gases.MODID + "." + registry.getPath());
 	}
 
 	@Override

@@ -52,7 +52,7 @@ public class ItemGasBottle extends Item
 		super();
 		setRegistryName(GasesFramework.MODID, "gas_bottle");
 		setCreativeTab(GasesFramework.CREATIVE_TAB);
-		setTranslationKey("gas_bottle");
+		setTranslationKey(GasesFramework.MODID + ".gas_bottle");
 		setMaxStackSize(16);
 	}
 

@@ -1,3 +1,4 @@
-tile.gas_smoke.name=烟雾
-tile.gas_fire.name=爆燃气体
 itemGroup.gasesframework=气体框架
+
+tile.gasesframework.gas_smoke.name=烟雾
+tile.gasesframework.gas_fire.name=爆燃气体

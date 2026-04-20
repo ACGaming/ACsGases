@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import net.trentv.gases.common.configuration.GasesMainConfigurations;
+import net.trentv.gasesframework.GasesFramework;
 import net.trentv.gasesframework.api.*;
 import net.trentv.gasesframework.api.reaction.block.IBlockReaction;
 import net.trentv.gasesframework.api.reaction.entity.IEntityReaction;
@@ -54,7 +55,7 @@ public class BlockGas extends Block implements ISample
 		setLightOpacity(type.opacity);
 		setCreativeTab(type.creativeTab);
 		setResistance(0);
-		setTranslationKey("gas_" + type.name);
+		setTranslationKey(GasesFramework.MODID + ".gas_" + type.name);
 		setDefaultState(blockState.getBaseState().withProperty(CAPACITY, 16));
 	}
 

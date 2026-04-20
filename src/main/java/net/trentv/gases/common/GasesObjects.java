@@ -53,7 +53,7 @@ public class GasesObjects
 
 	public static final GasType[] IMPLEMENTED_GASES = new GasType[] {STEAM, NATURAL_GAS, RED_GAS, VOID_GAS, ELECTRIC, CORROSIVE, NITROUS, ACID_VAPOUR, COAL_DUST, BLACK_DAMP, CHLORINE, STONE_DUST, IOCALFAEUS, HELIUM, FININE, WHISPERING_FOG};
 
-	public static final BlockModifiedBedrock MODIFIED_BEDROCK = new BlockModifiedBedrock(VOID_GAS, 4, 5, new ResourceLocation(Gases.MODID, "bedrock"));
+	public static final BlockModifiedBedrock MODIFIED_BEDROCK = (BlockModifiedBedrock) new BlockModifiedBedrock(VOID_GAS, 4, 5, new ResourceLocation(Gases.MODID, "bedrock")).setTranslationKey("bedrock");
 	public static final BlockModifiedBedrock WHISPERING_FOG_EMITTER = (BlockModifiedBedrock) new BlockModifiedBedrock(WHISPERING_FOG, 1, 16, new ResourceLocation(Gases.MODID, "whispering_fog_emitter")).setCreativeTab(Gases.CREATIVE_TAB);
 	public static final BlockDiabalineOre DIABALINE_ORE = (BlockDiabalineOre) new BlockDiabalineOre(false, new ResourceLocation(Gases.MODID, "diabaline_ore")).setCreativeTab(Gases.CREATIVE_TAB);
 	public static final BlockDiabalineOre DIABALINE_ORE_GLOWING = (BlockDiabalineOre) new BlockDiabalineOre(true, new ResourceLocation(Gases.MODID, "diabaline_ore_glowing")).setCreativeTab(Gases.CREATIVE_TAB);

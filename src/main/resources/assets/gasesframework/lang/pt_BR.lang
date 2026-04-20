@@ -1,3 +1,4 @@
-tile.gas_smoke.name=Fumaça
-tile.gas_fire.name=Gás Aceso
 itemGroup.gasesframework=Estrutura de Gases
+
+tile.gasesframework.gas_smoke.name=Fumaça
+tile.gasesframework.gas_fire.name=Gás Aceso

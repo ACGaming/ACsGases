@@ -34,7 +34,7 @@ public class BlockHeated extends Block
 		setResistance(10.0F);
 		setSoundType(SoundType.STONE);
 		setRegistryName(new ResourceLocation(Gases.MODID, "heated_" + id));
-		setTranslationKey("heated_" + id);
+		setTranslationKey(Gases.MODID + ".heated_" + id);
 		this.original = original;
 		this.refined = refined;
 		this.ruined = ruined;

@@ -26,7 +26,7 @@ public class ItemRespirator extends ItemArmor implements IGasEffectProtector
 		this.blockedReactions = list;
 		this.repairMaterial = repairMaterial;
 		setRegistryName(Gases.MODID, name);
-		setTranslationKey(name);
+		setTranslationKey(Gases.MODID + "." + name);
 	}
 
 	@Override
