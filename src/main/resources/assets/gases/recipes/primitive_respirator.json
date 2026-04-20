@@ -1,0 +1,29 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " W ",
+    "SCS",
+    " L "
+  ],
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "wool"
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "string"
+    },
+    "C": {
+      "item": "minecraft:coal",
+      "data": 32767
+    },
+    "L": {
+      "type": "forge:ore_dict",
+      "ore": "leather"
+    }
+  },
+  "result": {
+    "item": "gases:primitive_respirator"
+  }
+}

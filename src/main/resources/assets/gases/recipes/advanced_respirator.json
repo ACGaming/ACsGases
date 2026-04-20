@@ -1,0 +1,28 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " I ",
+    " G ",
+    "CLC"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_helmet"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "paneGlass"
+    },
+    "C": {
+      "item": "minecraft:coal",
+      "data": 32767
+    },
+    "L": {
+      "type": "forge:ore_dict",
+      "ore": "leather"
+    }
+  },
+  "result": {
+    "item": "gases:advanced_respirator"
+  }
+}
