@@ -1,0 +1,16 @@
+itemGroup.gasesframework=Gases Framework
+
+tile.gasesframework.gas_smoke.name=Rauch
+tile.gasesframework.gas_fire.name=Entzündetes Gas
+
+tile.gasesframework.lantern.empty.name=Leere Laterne
+tile.gasesframework.lantern.gas_empty.name=Leere Gaslaterne
+tile.gasesframework.lantern.gas_1.name=Gaslaterne
+tile.gasesframework.lantern.gas_2.name=Gaslaterne
+tile.gasesframework.lantern.gas_3.name=Gaslaterne
+tile.gasesframework.lantern.gas_4.name=Gaslaterne
+tile.gasesframework.lantern.gas_5.name=Gaslaterne
+
+item.gasesframework.gas_bottle.name=Gasflasche
+
+tooltip.gasesframework.burnrate=Verbrennungsrate
