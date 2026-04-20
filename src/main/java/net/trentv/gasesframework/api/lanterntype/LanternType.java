@@ -3,6 +3,8 @@ package net.trentv.gasesframework.api.lanterntype;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
+import net.trentv.gasesframework.GasesFramework;
+
 public class LanternType
 {
 	/**
@@ -87,11 +89,9 @@ public class LanternType
 
 	/**
 	 * Get the unlocalized name of the lantern.
-	 *
-	 * @return "gf_lantern." + {@link #name};
 	 */
 	public String getUnlocalizedName()
 	{
-		return "gf_lantern." + name;
+		return GasesFramework.MODID + ".lantern." + name;
 	}
 }

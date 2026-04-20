@@ -3,13 +3,13 @@ itemGroup.gasesframework=Gases Framework
 tile.gasesframework.gas_smoke.name=Smoke
 tile.gasesframework.gas_fire.name=Ignited Gas
 
-tile.gasesframework.gf_lantern.empty.name=Empty Lantern
-tile.gasesframework.gf_lantern.gas_empty.name=Empty Gas Lantern
-tile.gasesframework.gf_lantern.gas_1.name=Gas Lantern
-tile.gasesframework.gf_lantern.gas_2.name=Gas Lantern
-tile.gasesframework.gf_lantern.gas_3.name=Gas Lantern
-tile.gasesframework.gf_lantern.gas_4.name=Gas Lantern
-tile.gasesframework.gf_lantern.gas_5.name=Gas Lantern
+tile.gasesframework.lantern.empty.name=Empty Lantern
+tile.gasesframework.lantern.gas_empty.name=Empty Gas Lantern
+tile.gasesframework.lantern.gas_1.name=Gas Lantern
+tile.gasesframework.lantern.gas_2.name=Gas Lantern
+tile.gasesframework.lantern.gas_3.name=Gas Lantern
+tile.gasesframework.lantern.gas_4.name=Gas Lantern
+tile.gasesframework.lantern.gas_5.name=Gas Lantern
 
 item.gasesframework.gas_bottle.name=Gas Bottle
 

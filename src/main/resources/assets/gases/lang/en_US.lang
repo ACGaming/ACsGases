@@ -17,14 +17,15 @@ tile.gasesframework.gas_corrosive.name=Corrosive Gas
 tile.gasesframework.gas_acid_vapour.name=Acidic Vapour
 tile.gasesframework.gas_stone_dust.name=Dust
 
-tile.gasesframework.gf_lantern.torch.name=Torch Lantern
-tile.gasesframework.gf_lantern.glowstone.name=Glowstone Lantern
+tile.gasesframework.lantern.torch.name=Torch Lantern
+tile.gasesframework.lantern.glowstone.name=Glowstone Lantern
 
 tile.gases.heated_iron.name=Heated Iron Ore
 tile.gases.heated_diamond.name=Heated Diamond Ore
 tile.gases.heated_gold.name=Heated Gold Ore
 tile.gases.heated_redstone.name=Heated Redstone Ore
 tile.gases.heated_lapis.name=Heated Lapis Lazuli Ore
+tile.gases.heated_emerald.name=Heated Emerald Ore
 tile.gases.heated_stone.name=Heated Stone
 
 tile.gases.whispering_fog_emitter.name=Cracked Bedrock
