@@ -23,6 +23,7 @@ public class GasesConfigLists
 {
 	public static final List<Block> COAL_DUST_EMISSION_BLOCKS = new ArrayList<>();
 	public static final List<Block> DUST_EMISSION_BLOCKS = new ArrayList<>();
+	public static final List<Block> SMOKE_EMISSION_BLOCKS = new ArrayList<>();
 	public static final Map<Item, IGasEffectProtector> RESPIRATORS = new IdentityHashMap<>();
 
 	public static void preInit()
@@ -34,6 +35,7 @@ public class GasesConfigLists
 	{
 		COAL_DUST_EMISSION_BLOCKS.addAll(addBlocksToList(GasesMainConfigurations.GASES.COAL_DUST.blocks, "coal dust"));
 		DUST_EMISSION_BLOCKS.addAll(addBlocksToList(GasesMainConfigurations.GASES.DUST.blocks, "dust"));
+		SMOKE_EMISSION_BLOCKS.addAll(addBlocksToList(GasesMainConfigurations.GASES.SMOKE.blocks, "smoke"));
 		registerCustomRespirators();
 		registerIgnitionSources();
 		registerRustableMaterials();

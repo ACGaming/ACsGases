@@ -1,7 +1,6 @@
 package net.trentv.gases.common;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFire;
 import net.minecraft.block.BlockObsidian;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
@@ -37,9 +36,9 @@ public class CommonEvents
 				GFManipulationAPI.addGasLevel(event.getPos().up(2), event.getWorld(), GasesObjects.STEAM, GasesMainConfigurations.GASES.STEAM.amountOnReaction);
 			}
 			// Fire -> Smoke
-			if (event.getState().getBlock() instanceof BlockFire)
+			if (GasesConfigLists.SMOKE_EMISSION_BLOCKS.contains(event.getState().getBlock()))
 			{
-				GFManipulationAPI.addGasLevel(event.getPos().up(), event.getWorld(), GasesFrameworkObjects.SMOKE, GasesMainConfigurations.GASES.SMOKE.fireSmokeAmount);
+				GFManipulationAPI.addGasLevel(event.getPos().up(), event.getWorld(), GasesFrameworkObjects.SMOKE, GasesMainConfigurations.GASES.SMOKE.smokeAmount);
 			}
 		}
 	}
