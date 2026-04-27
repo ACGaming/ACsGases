@@ -256,6 +256,7 @@ public class BlockGas extends Block implements ISample
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
 		double height = (double) state.getValue(CAPACITY) / 16;
+		if (gasType.density > 0) return new AxisAlignedBB(0.0D, 1.0D - height, 0.0D, 1.0D, 1.0D, 1.0D);
 		return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, height, 1.0D);
 	}
 
