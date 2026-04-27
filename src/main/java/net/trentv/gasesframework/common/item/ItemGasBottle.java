@@ -77,11 +77,18 @@ public class ItemGasBottle extends Item
 				GFManipulationAPI.setGasLevel(placePos, world, gasType, levelNew);
 				if (!player.capabilities.isCreativeMode)
 				{
-					stack.shrink(1);
 					ItemStack emptyBottle = new ItemStack(Items.GLASS_BOTTLE);
-					if (!player.inventory.addItemStackToInventory(emptyBottle))
+					if (stack.getCount() > 1)
 					{
-						player.dropItem(emptyBottle, false);
+						stack.shrink(1);
+						if (!player.inventory.addItemStackToInventory(emptyBottle))
+						{
+							player.dropItem(emptyBottle, false);
+						}
+					}
+					else
+					{
+						player.setHeldItem(hand, emptyBottle);
 					}
 				}
 				world.playSound(null, placePos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 0.6F, 1.0F);
