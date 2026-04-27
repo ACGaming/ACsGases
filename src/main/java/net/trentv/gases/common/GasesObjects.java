@@ -36,7 +36,7 @@ public class GasesObjects
 
 	public static final GasType STEAM = new GasType("steam", 0xFFFFFF, 12, 1, Combustibility.NONE).setCohesion(2).setDissipation(4, 2);
 	public static final GasType NATURAL_GAS = new GasType("natural", 0x6F7F6F, 8, 1, Combustibility.FLAMMABLE);
-	public static final GasType RED_GAS = new GasType("red", 0x7F4F4F, 4, -1, Combustibility.EXPLOSIVE);
+	public static final GasType RED_GAS = new GasType("red", 0x7F0000, 4, -1, Combustibility.EXPLOSIVE);
 	public static final GasType VOID_GAS = new GasTypeVoid("void", 0x1F1F1F, 2, -1, Combustibility.NONE);
 	public static final GasType ELECTRIC = new GasType("electric", 0x1F7F7F, 2, 0, Combustibility.NONE).setCohesion(16);
 	public static final GasType CORROSIVE = new GasType("corrosive", 0x1F1FDF, 2, 0, Combustibility.NONE).setCohesion(16);
