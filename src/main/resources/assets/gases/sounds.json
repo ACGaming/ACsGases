@@ -1,0 +1,9 @@
+{
+  "effect.gas_whisper": {
+    "sounds": [
+      {
+        "name": "gases:effect/gas_whisper"
+      }
+    ]
+  }
+}
