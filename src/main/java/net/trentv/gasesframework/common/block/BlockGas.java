@@ -51,7 +51,7 @@ public class BlockGas extends Block implements ISample
 		super(MaterialGas.INSTANCE);
 		this.gasType = type;
 		disableStats();
-		setHardness(0.0f);
+		setBlockUnbreakable();
 		setLightOpacity(type.opacity);
 		setCreativeTab(type.creativeTab);
 		setResistance(0);
@@ -288,6 +288,31 @@ public class BlockGas extends Block implements ISample
 	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face)
 	{
 		return 0;
+	}
+
+	// TODO: Caveats?
+	@Override
+	public boolean isAir(IBlockState state, IBlockAccess world, BlockPos pos)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isReplaceable(IBlockAccess blockAccess, BlockPos pos)
+	{
+		if (blockAccess instanceof World world)
+		{
+			for (EnumFacing facing : EnumFacing.VALUES)
+			{
+				BlockPos scanPos = pos.offset(facing);
+				if (GFManipulationAPI.canPlaceGas(scanPos, world, gasType))
+				{
+					GFManipulationAPI.addGasLevel(scanPos, world, gasType, world.getBlockState(pos).getValue(CAPACITY));
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
