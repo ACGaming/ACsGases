@@ -319,6 +319,12 @@ public class BlockGas extends Block implements ISample
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
+	public float getAmbientOcclusionLightValue(IBlockState state)
+	{
+		return 1.0F;
+	}
+
 	// Gases relevant
 
 	public void ignite(BlockPos pos, World world)
