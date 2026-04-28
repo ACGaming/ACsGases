@@ -45,7 +45,7 @@ public class GasesObjects
 	public static final GasType ACID_VAPOUR = new GasType("acid_vapour", 0x4F7FBF, 2, 1, Combustibility.NONE).setDissipation(1, 1);
 	public static final GasType COAL_DUST = new GasType("coal_dust", 0x2F2F2F, 4, 0, Combustibility.EXPLOSIVE).setCohesion(6).setDissipation(2, 4);
 	public static final GasType BLACK_DAMP = new GasTypeBlackDamp("black_damp", 0x000000, 16, 0, Combustibility.NONE);
-	public static final GasType CHLORINE = new GasType("chlorine", 0xC2F29C, 3, 8, Combustibility.NONE);
+	public static final GasType CHLORINE = new GasType("chlorine", 0xC2F29C, 3, 0, Combustibility.NONE);
 	public static final GasType STONE_DUST = new GasType("stone_dust", 0x7F7F7F, 2, -1, Combustibility.NONE).setDissipation(8, 4);
 	public static final GasType IOCALFAEUS = new GasTypeLightSensitive("iocalfaeus", 0x5C2B77, 8, -1, Combustibility.CONTROLLABLE);
 	public static final GasType HELIUM = new GasType("helium", 0x00FFFF, 14, 1, Combustibility.NONE).setCohesion(16);
