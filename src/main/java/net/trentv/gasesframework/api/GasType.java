@@ -212,4 +212,48 @@ public class GasType
 		}
 		return false;
 	}
+
+	public double getMinY(World world, BlockPos pos, int volume)
+	{
+		if (density > 0)
+		{
+			return 0.0D;
+		}
+		else if (density < 0)
+		{
+			return 1.0D - volume / 16.0D;
+		}
+		else
+		{
+			if (GFManipulationAPI.getGasType(pos.down(), world) == this)
+			{
+				return 0.0D;
+			}
+			boolean b = GFManipulationAPI.getGasType(pos.up(), world) == this;
+			double d = (0.5D - volume / 8.0D) * (b ? 2.0D : 1.0D);
+			return Math.max(d, 0.0D);
+		}
+	}
+
+	public double getMaxY(World world, BlockPos pos, int volume)
+	{
+		if (density > 0)
+		{
+			return volume / 16.0D;
+		}
+		else if (density < 0)
+		{
+			return 1.0D;
+		}
+		else
+		{
+			if (GFManipulationAPI.getGasType(pos.up(), world) == this)
+			{
+				return 1.0D;
+			}
+			boolean b = GFManipulationAPI.getGasType(pos.down(), world) == this;
+			double d = 1.0D - (0.5D - volume / 8.0D) * (b ? 2.0D : 1.0D);
+			return Math.min(d, 1.0D);
+		}
+	}
 }

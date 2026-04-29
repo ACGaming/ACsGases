@@ -15,12 +15,13 @@ import net.trentv.gasesframework.api.reaction.entity.EntityReactionSlowness;
 import net.trentv.gasesframework.api.reaction.entity.EntityReactionSuffocation;
 import net.trentv.gasesframework.common.block.BlockGas;
 import net.trentv.gasesframework.common.block.BlockLantern;
+import net.trentv.gasesframework.common.gastype.GasTypeFire;
 import net.trentv.gasesframework.common.item.ItemGasBottle;
 
 public class GasesFrameworkObjects
 {
 	public static final GasType SMOKE = new GasType("smoke", 0xAAAAAA, 4, 1, Combustibility.NONE).setCreativeTab(GasesFramework.CREATIVE_TAB).setCohesion(10).registerEntityReaction(new EntityReactionSuffocation(3, 3)).registerEntityReaction(new EntityReactionBlindness(4)).registerEntityReaction(new EntityReactionSlowness(2));
-	public static final GasType FIRE = new GasType("fire", 0xFF8922, 4, 0, Combustibility.NONE).setCreativeTab(GasesFramework.CREATIVE_TAB).setCohesion(8).setDissipation(8, 8).setTintIndex(false);
+	public static final GasType FIRE = new GasTypeFire("fire", 0xFF8922, 4, 0, Combustibility.NONE).setCreativeTab(GasesFramework.CREATIVE_TAB).setCohesion(8).setDissipation(8, 8).setTintIndex(false);
 
 	public static final ItemGasBottle GAS_BOTTLE = new ItemGasBottle();
 
