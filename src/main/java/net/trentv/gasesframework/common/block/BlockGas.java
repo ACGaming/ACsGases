@@ -52,6 +52,7 @@ public class BlockGas extends Block implements ISample
 		this.gasType = type;
 		disableStats();
 		setBlockUnbreakable();
+		setLightLevel(type.lightLevel);
 		setLightOpacity(type.opacity);
 		setCreativeTab(type.creativeTab);
 		setResistance(0);
