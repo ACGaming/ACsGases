@@ -4,10 +4,12 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -15,8 +17,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import com.github.bsideup.jabel.Desugar;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import net.trentv.gases.common.configuration.GasesConfigLists;
 import net.trentv.gasesframework.GasesFramework;
@@ -27,6 +31,7 @@ import net.trentv.gasesframework.common.capability.GasEffectsProvider;
 
 public class CommonEvents
 {
+	private static final Set<Long> OCCUPIED_CHUNKS = new HashSet<>();
 	private static final Queue<PendingExplosion> EXPLOSION_QUEUE = new ConcurrentLinkedDeque<>();
 
 	public static void scheduleExplosion(WorldServer world, BlockPos pos, float power, int delayTicks)
@@ -41,6 +46,13 @@ public class CommonEvents
 		Item item = stack.getItem();
 		if (item instanceof IGasEffectProtector prot) return prot;
 		return GasesConfigLists.RESPIRATORS.get(item);
+	}
+
+	public static boolean isPlayerNearby(BlockPos pos)
+	{
+		int cx = pos.getX() >> 4;
+		int cz = pos.getZ() >> 4;
+		return OCCUPIED_CHUNKS.contains(ChunkPos.asLong(cx, cz));
 	}
 
 	@SubscribeEvent
@@ -80,10 +92,33 @@ public class CommonEvents
 	}
 
 	@SubscribeEvent
-	public void onWorldTick(TickEvent.WorldTickEvent event)
+	public void onWorldTickOccupiedChunks(TickEvent.WorldTickEvent event)
+	{
+		if (event.phase != TickEvent.Phase.START) return;
+		if (event.world.isRemote) return;
+		if (event.world.getWorldTime() % 5 != 0) return;
+
+		OCCUPIED_CHUNKS.clear();
+		for (EntityPlayer player : event.world.playerEntities)
+		{
+			int cx = (int) player.posX >> 4;
+			int cz = (int) player.posZ >> 4;
+			for (int dx = -1; dx <= 1; dx++)
+			{
+				for (int dz = -1; dz <= 1; dz++)
+				{
+					OCCUPIED_CHUNKS.add(ChunkPos.asLong(cx + dx, cz + dz));
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onWorldTickExplosionQueue(TickEvent.WorldTickEvent event)
 	{
 		if (event.phase != TickEvent.Phase.END) return;
 		if (!(event.world instanceof WorldServer server)) return;
+		if (event.world.getWorldTime() % 5 != 0) return;
 
 		long time = server.getTotalWorldTime();
 		Iterator<PendingExplosion> it = EXPLOSION_QUEUE.iterator();

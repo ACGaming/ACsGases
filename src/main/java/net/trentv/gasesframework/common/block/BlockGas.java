@@ -73,92 +73,98 @@ public class BlockGas extends Block implements ISample
 	{
 		if (!gasType.preTick(world, state, currentPosition)) return;
 
-		// Reaction scan and ignition check
-		for (EnumFacing facing : EnumFacing.VALUES)
+		boolean playerNearby = false;
+		if (CommonEvents.isPlayerNearby(currentPosition))
 		{
-			BlockPos scanPos = currentPosition.offset(facing);
-			IBlockState scanState = world.getBlockState(scanPos);
-			Block scanBlock = scanState.getBlock();
+			playerNearby = true;
 
-			for (IBlockReaction r : gasType.getBlockReactions())
-			{
-				r.react(scanBlock, world, gasType, currentPosition, scanPos);
-			}
-			if (scanBlock instanceof BlockGas neighborGas)
-			{
-				for (IGasReaction r : gasType.getGasReactions())
-				{
-					r.react(gasType, world, neighborGas.gasType, currentPosition, scanPos);
-				}
-			}
-			if (gasType.combustability != Combustibility.NONE && GFRegistrationAPI.isIgnitionSource(scanBlock.getDefaultState()))
-			{
-				ignite(currentPosition, world);
-				return;
-			}
-		}
-
-		// Dissipation, re-read state afterward so thisValue is current
-		if (gasType.dissipationRate > 0 && rand.nextInt(16) < gasType.dissipationRate)
-		{
-			int newAmount = state.getValue(CAPACITY) - gasType.dissipationAmount;
-			GFManipulationAPI.setGasLevel(currentPosition, world, gasType, newAmount);
-			state = world.getBlockState(currentPosition);
-			if (!(state.getBlock() instanceof BlockGas)) return;
-		}
-
-		int thisValue = state.getValue(CAPACITY);
-
-		// If density is 0, we're going to be spreading out in a cloud
-		if (gasType.density == 0)
-		{
-			// Iterate through all directions (up/down/left/right/front/back)
+			// Reaction scan and ignition check
 			for (EnumFacing facing : EnumFacing.VALUES)
 			{
-				BlockPos flowToBlock = currentPosition.offset(facing);
-				// Checks if it can flow into the block AND the current gas capacity is over the cohesion level
-				if (GFManipulationAPI.canPlaceGas(flowToBlock, world, gasType) && thisValue > gasType.cohesion)
+				BlockPos scanPos = currentPosition.offset(facing);
+				IBlockState scanState = world.getBlockState(scanPos);
+				Block scanBlock = scanState.getBlock();
+
+				for (IBlockReaction r : gasType.getBlockReactions())
 				{
-					int flowValue = GFManipulationAPI.getGasLevel(flowToBlock, world);
-					if (flowValue + 1 < thisValue)
+					r.react(scanBlock, world, gasType, currentPosition, scanPos);
+				}
+				if (scanBlock instanceof BlockGas neighborGas)
+				{
+					for (IGasReaction r : gasType.getGasReactions())
 					{
-						GFManipulationAPI.addGasLevel(flowToBlock, world, gasType, 1);
-						thisValue--;
-						GFManipulationAPI.setGasLevel(currentPosition, world, gasType, thisValue);
+						r.react(gasType, world, neighborGas.gasType, currentPosition, scanPos);
 					}
 				}
-			}
-		}
-		// We're going to be flowing either up or down here because density != 0
-		else
-		{
-			// Decide which direction we're going
-			EnumFacing direction = gasType.density > 0 ? EnumFacing.UP : EnumFacing.DOWN;
-			BlockPos nextPosition = scanForOpenBlock(world, this, currentPosition, direction);
-
-			if (!nextPosition.equals(currentPosition)) // In this case, we'll be flowing somewhere above or below.
-			{
-				int remaining = GFManipulationAPI.addGasLevel(nextPosition, world, gasType, thisValue);
-				if (thisValue != remaining)
+				if (gasType.combustability != Combustibility.NONE && GFRegistrationAPI.isIgnitionSource(scanBlock.getDefaultState()))
 				{
-					GFManipulationAPI.setGasLevel(currentPosition, world, gasType, remaining);
+					ignite(currentPosition, world);
+					return;
 				}
 			}
-			else if (thisValue > 1) // Can't flow above or below, so time to spill out on the ground
+
+			// Dissipation, re-read state afterward so thisValue is current
+			if (gasType.dissipationRate > 0 && rand.nextInt(16) < gasType.dissipationRate)
 			{
-				EnumFacing newDir = EnumFacing.SOUTH;
-				for (int i = 0; i < 4; i++)
+				int newAmount = state.getValue(CAPACITY) - gasType.dissipationAmount;
+				GFManipulationAPI.setGasLevel(currentPosition, world, gasType, newAmount);
+				state = world.getBlockState(currentPosition);
+				if (!(state.getBlock() instanceof BlockGas)) return;
+			}
+
+			int thisValue = state.getValue(CAPACITY);
+
+			// If density is 0, we're going to be spreading out in a cloud
+			if (gasType.density == 0)
+			{
+				// Iterate through all directions (up/down/left/right/front/back)
+				for (EnumFacing facing : EnumFacing.VALUES)
 				{
-					newDir = newDir.rotateY();
-					BlockPos flowToBlock = nextPosition.offset(newDir);
-					if (GFManipulationAPI.canPlaceGas(flowToBlock, world, gasType))
+					BlockPos flowToBlock = currentPosition.offset(facing);
+					// Checks if it can flow into the block AND the current gas capacity is over the cohesion level
+					if (GFManipulationAPI.canPlaceGas(flowToBlock, world, gasType) && thisValue > gasType.cohesion)
 					{
 						int flowValue = GFManipulationAPI.getGasLevel(flowToBlock, world);
 						if (flowValue + 1 < thisValue)
 						{
 							GFManipulationAPI.addGasLevel(flowToBlock, world, gasType, 1);
 							thisValue--;
-							GFManipulationAPI.setGasLevel(nextPosition, world, gasType, thisValue);
+							GFManipulationAPI.setGasLevel(currentPosition, world, gasType, thisValue);
+						}
+					}
+				}
+			}
+			// We're going to be flowing either up or down here because density != 0
+			else
+			{
+				// Decide which direction we're going
+				EnumFacing direction = gasType.density > 0 ? EnumFacing.UP : EnumFacing.DOWN;
+				BlockPos nextPosition = scanForOpenBlock(world, this, currentPosition, direction);
+
+				if (!nextPosition.equals(currentPosition)) // In this case, we'll be flowing somewhere above or below.
+				{
+					int remaining = GFManipulationAPI.addGasLevel(nextPosition, world, gasType, thisValue);
+					if (thisValue != remaining)
+					{
+						GFManipulationAPI.setGasLevel(currentPosition, world, gasType, remaining);
+					}
+				}
+				else if (thisValue > 1) // Can't flow above or below, so time to spill out on the ground
+				{
+					EnumFacing newDir = EnumFacing.SOUTH;
+					for (int i = 0; i < 4; i++)
+					{
+						newDir = newDir.rotateY();
+						BlockPos flowToBlock = nextPosition.offset(newDir);
+						if (GFManipulationAPI.canPlaceGas(flowToBlock, world, gasType))
+						{
+							int flowValue = GFManipulationAPI.getGasLevel(flowToBlock, world);
+							if (flowValue + 1 < thisValue)
+							{
+								GFManipulationAPI.addGasLevel(flowToBlock, world, gasType, 1);
+								thisValue--;
+								GFManipulationAPI.setGasLevel(nextPosition, world, gasType, thisValue);
+							}
 						}
 					}
 				}
@@ -169,7 +175,9 @@ public class BlockGas extends Block implements ISample
 
 		if (gasType.requiresNewTick(world, state, currentPosition))
 		{
-			world.scheduleBlockUpdate(currentPosition, this, GasesMainConfigurations.GASES.tickRate + RANDOM.nextInt(6), 1);
+			int delay = GasesMainConfigurations.GASES.tickRate + RANDOM.nextInt(6);
+			if (!playerNearby) delay *= 2;
+			world.scheduleBlockUpdate(currentPosition, this, delay, 1);
 		}
 	}
 
